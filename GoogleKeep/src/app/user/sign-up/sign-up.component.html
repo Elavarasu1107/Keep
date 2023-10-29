@@ -1,0 +1,65 @@
+<div class="container h-100">
+    <mat-card class="card container">
+        <mat-card-header class="d-flex justify-content-center">
+            <mat-card-title>Google Keep</mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="mt-2">
+            <form [formGroup]="registerForm" (ngSubmit)="registerUser()" class="d-flex flex-column gap-2">
+                <div>
+                    <mat-form-field>
+                        <mat-label>Email</mat-label>
+                        <input matInput type="email" placeholder="abc@xyz.com" formControlName="email" required>
+                        <mat-error *ngIf="getErrors(email)[0] && email?.touched">{{ getErrors(email)[1] }}</mat-error>
+                    </mat-form-field>
+                </div>
+                <div>
+                    <mat-form-field>
+                        <mat-label>Password</mat-label>
+                        <input matInput [type]="hide ? 'password' : 'text'" formControlName="password" required>
+                        <!-- <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
+                            [attr.aria-pressed]="hide">
+                            <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                        </button> -->
+                        <mat-error *ngIf="getErrors(password) && password?.touched">{{
+                            getErrors(password)[1]}}</mat-error>
+                    </mat-form-field>
+                </div>
+                <div>
+                    <mat-form-field>
+                        <mat-label>First Name</mat-label>
+                        <input matInput type="text" placeholder="ex: john" formControlName="first_name" required>
+                        <mat-error *ngIf="getErrors(firstName) && firstName?.touched">{{
+                            getErrors(firstName)[1]}}</mat-error>
+                    </mat-form-field>
+                </div>
+                <div>
+                    <mat-form-field>
+                        <mat-label>Last Name</mat-label>
+                        <input matInput type="text" placeholder="ex: doe" formControlName="last_name" required>
+                        <mat-error *ngIf="getErrors(lastName) && lastName?.touched">{{
+                            getErrors(lastName)[1]}}</mat-error>
+                    </mat-form-field>
+                </div>
+                <div>
+                    <mat-form-field>
+                        <mat-label>Mobile</mat-label>
+                        <input matInput type="number" placeholder="ex: 9876543210" formControlName="mobile" required>
+                        <mat-error *ngIf="getErrors(mobile) && mobile?.touched">{{ getErrors(mobile)[1]}}</mat-error>
+                    </mat-form-field>
+                </div>
+                <div>
+                    <mat-form-field>
+                        <mat-label>Location</mat-label>
+                        <textarea matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="1"
+                            cdkAutosizeMaxRows="3" formControlName="location"></textarea>
+                        <mat-error *ngIf=""></mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="d-flex justify-content-between align-items-center">
+                    <a [routerLink]="['/login']" class="text-decoration-none">Go back to login.</a>
+                    <button mat-raised-button color="primary" [disabled]="registerForm.invalid">Sign Up</button>
+                </div>
+            </form>
+        </mat-card-content>
+    </mat-card>
+</div>

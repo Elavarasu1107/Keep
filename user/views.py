@@ -42,8 +42,8 @@ class UserLogin(viewsets.ViewSet):
             serializer.is_valid(raise_exception=True)
             serializer.save()
             return Response(
-                {"message": "Logged in Successfully", "status": 201, "data": serializer.data},
-                status=status.HTTP_201_CREATED,
+                {"message": "Logged in Successfully", "status": 200, "data": serializer.data},
+                status=status.HTTP_200_OK,
             )
         except Exception as ex:
             return Response({"message": ex.args[0], "status": 400, "data": {}}, status=400)
