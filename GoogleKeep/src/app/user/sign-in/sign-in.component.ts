@@ -17,7 +17,7 @@ export class SignInComponent {
     this.http
       .post('/user/api/login/', form.value)
       .subscribe((resp: Observer<any>) => {
-        console.log(resp);
+        this.router.navigate(['/notes']);
       });
   }
 }

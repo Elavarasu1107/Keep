@@ -1,0 +1,43 @@
+.spacer {
+    flex: 1 1 auto;
+}
+
+mat-toolbar{
+    background-color: #FFFFFF;
+}
+
+.logo-div{
+    margin-left: 10px;
+}
+
+
+.header{
+    background-color: #FFFFFF;
+}
+
+.search{
+    height: 50px;
+    background-color: #F1F3F4;
+    border-radius: 10px;
+    margin-left: -160px;
+}
+
+input{
+    background-color: #F1F3F4;
+}
+
+input:focus {
+    outline: none;
+}
+
+input::placeholder{
+    font-size: medium;
+}
+
+.div-hover{
+    height: 50px;
+    width: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

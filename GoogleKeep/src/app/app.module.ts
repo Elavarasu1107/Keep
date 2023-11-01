@@ -8,6 +8,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { ErrorHandlerService } from './services/error-handler.service';
+import { NotesModule } from './notes/notes.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -15,6 +16,7 @@ import { ErrorHandlerService } from './services/error-handler.service';
     BrowserModule,
     AppRoutingModule,
     UserModule,
+    NotesModule,
     BrowserAnimationsModule,
     HttpClientModule,
     MatSnackBarModule,

@@ -1,4 +1,4 @@
-<div class="container h-100">
+<div class="container d-flex justify-content-center align-items-center h-100">
     <mat-card class="card container">
         <mat-card-header class="d-flex justify-content-center">
             <mat-card-title>Google Keep</mat-card-title>
@@ -56,7 +56,7 @@
                     </mat-form-field>
                 </div>
                 <div class="d-flex justify-content-between align-items-center">
-                    <a [routerLink]="['/login']" class="text-decoration-none">Go back to login.</a>
+                    <a [routerLink]="['/login']" class="text-decoration-none">Go back to login</a>
                     <button mat-raised-button color="primary" [disabled]="registerForm.invalid">Sign Up</button>
                 </div>
             </form>
