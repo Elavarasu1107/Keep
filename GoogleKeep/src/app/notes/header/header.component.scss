@@ -19,7 +19,7 @@ mat-toolbar{
     height: 50px;
     background-color: #F1F3F4;
     border-radius: 10px;
-    margin-left: -160px;
+    // margin-left: -160px;
 }
 
 input{
@@ -40,4 +40,9 @@ input::placeholder{
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.div-hover:hover{
+    background-color: #F1F3F4;
+    cursor: pointer;
 }

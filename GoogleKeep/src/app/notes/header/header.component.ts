@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
+import { SideNavTogglerService } from 'src/app/services/side-nav-toggler.service';
 
 @Component({
   selector: 'app-header',
@@ -6,5 +7,13 @@ import { Component } from '@angular/core';
   styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent {
-  keepLogo: string = '../../assets/keep_2020q4_48dp.png';
+  @ViewChild('sideNavBar') sideMenuBar!: ElementRef;
+
+  constructor(private togglerService: SideNavTogglerService) {}
+
+  // booleanValue$ = this.togglerService.booleanValue$;
+
+  triggerToggleService() {
+    this.togglerService.toggleBoolean();
+  }
 }
