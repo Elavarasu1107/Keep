@@ -13,9 +13,11 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatGridListModule } from '@angular/material/grid-list';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { NoteExpansionPanelComponent } from './note-expansion-panel/note-expansion-panel.component';
 
 @NgModule({
-  declarations: [NoteComponent, HeaderComponent, SideNavBarComponent],
+  declarations: [NoteComponent, HeaderComponent, SideNavBarComponent, NoteExpansionPanelComponent],
   imports: [
     CommonModule,
     NotesRoutingModule,
@@ -27,6 +29,7 @@ import { MatGridListModule } from '@angular/material/grid-list';
     MatRadioModule,
     MatListModule,
     MatGridListModule,
+    MatExpansionModule,
   ],
 })
 export class NotesModule {}

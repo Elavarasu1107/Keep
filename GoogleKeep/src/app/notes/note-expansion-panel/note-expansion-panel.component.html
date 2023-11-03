@@ -1,0 +1,187 @@
+<mat-expansion-panel hideToggle class="w-50 mt-3" id="note-expansion-panel" #panel (click)="expandPanel($event)">
+    <mat-expansion-panel-header class="d-flex justify-content-between p-0">
+        <mat-panel-title class="">
+            <input class="bg-transparent border border-0 px-3" type="text" name="" [placeholder]="inputPlaceHolder">
+        </mat-panel-title>
+        <mat-panel-description class="d-flex justify-content-end gap-4 p-0 m-0 nei">
+            <div class="div-hover rounded-circle">
+                <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+                    stroke="#757575">
+                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                    <g id="SVGRepo_iconCarrier">
+                        <g id="Interface / Checkbox_Check">
+                            <path id="Vector"
+                                d="M8 12L11 15L16 9M4 16.8002V7.2002C4 6.08009 4 5.51962 4.21799 5.0918C4.40973 4.71547 4.71547 4.40973 5.0918 4.21799C5.51962 4 6.08009 4 7.2002 4H16.8002C17.9203 4 18.4796 4 18.9074 4.21799C19.2837 4.40973 19.5905 4.71547 19.7822 5.0918C20 5.5192 20 6.07899 20 7.19691V16.8036C20 17.9215 20 18.4805 19.7822 18.9079C19.5905 19.2842 19.2837 19.5905 18.9074 19.7822C18.48 20 17.921 20 16.8031 20H7.19691C6.07899 20 5.5192 20 5.0918 19.7822C4.71547 19.5905 4.40973 19.2842 4.21799 18.9079C4 18.4801 4 17.9203 4 16.8002Z"
+                                stroke="#757575" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                        </g>
+                    </g>
+                </svg>
+            </div>
+            <div class="div-hover rounded-circle">
+                <svg fill="#757575" height="20px" width="20px" version="1.1" id="Capa_1"
+                    xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                    viewBox="0 0 325.041 325.041" xml:space="preserve" stroke="#757575"
+                    stroke-width="16.577091000000003">
+                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                    <g id="SVGRepo_iconCarrier">
+                        <path
+                            d="M322.527,12.199c-1.143-1.156-3.198-2.535-6.502-2.535c-4.23,0-17.1,0-96.105,67.513 c-32.901,28.114-70.303,62.189-101.975,92.75c-0.021,0.021-0.047,0.034-0.068,0.056c-0.017,0.017-0.028,0.037-0.045,0.054 c-9.177,8.856-17.867,17.413-25.828,25.444c-49.301,5.987-55.696,37.56-60.849,62.994c-4.418,21.811-7.564,33.278-25.637,34.735 c-2.762,0.223-5.011,2.342-5.444,5.078c-0.433,2.736,1.064,5.486,3.623,6.549c1.02,0.426,25.324,10.541,53.75,10.541 c0.004,0,0.006,0,0.01,0c31.21,0,70.925-12.289,83.776-69.823c37.496-38.058,85.295-91.189,122.204-135.857 c20.302-24.57,35.903-44.828,46.372-60.211C324.732,27.557,328.06,17.799,322.527,12.199z M122.005,182.698l31.977,32.364 c-6.297,6.646-12.424,13.018-18.282,19.004l-32.467-32.862C109.143,195.274,115.438,189.073,122.005,182.698z M57.457,303.377 c-0.002,0-0.007,0-0.009,0c-12.082,0-23.517-2.178-32.312-4.361c11.79-8.469,14.922-23.962,17.779-38.07 c5.017-24.764,9.759-48.222,49.659-53.384l36.562,37.079C119.891,283.524,95.791,303.377,57.457,303.377z M249.185,108.079 c-26.36,31.61-58.044,67.337-86.973,98.241l-31.572-31.956c30.51-29.266,65.794-61.332,97.011-88.011 c54.185-46.306,75.798-59.491,83.939-63.226C307.948,31.325,294.992,53.149,249.185,108.079z">
+                        </path>
+                    </g>
+                </svg>
+            </div>
+            <div class="div-hover rounded-circle">
+                <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+                    stroke="#757575">
+                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                    <g id="SVGRepo_iconCarrier">
+                        <path
+                            d="M18 4.25H6C5.27065 4.25 4.57118 4.53973 4.05546 5.05546C3.53973 5.57118 3.25 6.27065 3.25 7V17C3.25 17.7293 3.53973 18.4288 4.05546 18.9445C4.57118 19.4603 5.27065 19.75 6 19.75H18C18.7293 19.75 19.4288 19.4603 19.9445 18.9445C20.4603 18.4288 20.75 17.7293 20.75 17V7C20.75 6.27065 20.4603 5.57118 19.9445 5.05546C19.4288 4.53973 18.7293 4.25 18 4.25ZM6 5.75H18C18.3315 5.75 18.6495 5.8817 18.8839 6.11612C19.1183 6.35054 19.25 6.66848 19.25 7V15.19L16.53 12.47C16.4589 12.394 16.3717 12.3348 16.2748 12.2968C16.178 12.2587 16.0738 12.2427 15.97 12.25C15.865 12.2561 15.7622 12.2831 15.6678 12.3295C15.5733 12.3759 15.4891 12.4406 15.42 12.52L14.13 14.07L9.53 9.47C9.46222 9.39797 9.37993 9.34111 9.28858 9.30319C9.19723 9.26527 9.09887 9.24714 9 9.25C8.89496 9.25611 8.79221 9.28314 8.69776 9.32951C8.60331 9.37587 8.51908 9.44064 8.45 9.52L4.75 13.93V7C4.75 6.66848 4.8817 6.35054 5.11612 6.11612C5.35054 5.8817 5.66848 5.75 6 5.75ZM4.75 17V16.27L9.05 11.11L13.17 15.23L10.65 18.23H6C5.67192 18.23 5.35697 18.1011 5.12311 17.871C4.88926 17.6409 4.75525 17.328 4.75 17ZM18 18.25H12.6L16.05 14.11L19.2 17.26C19.1447 17.538 18.9951 17.7884 18.7764 17.9688C18.5577 18.1492 18.2835 18.2485 18 18.25Z"
+                            fill="#757575"></path>
+                    </g>
+                </svg>
+            </div>
+        </mat-panel-description>
+    </mat-expansion-panel-header>
+    <div class="p-0 position-relative mt-1" style="left: -10px;">
+        <input class="bg-transparent border border-0 w-100" type="text" name="" placeholder="Take a note...">
+        <div class="d-flex justify-content-between align-items-center mt-2">
+            <div class="d-flex gap-3">
+                <div class="div-hover rounded-circle">
+                    <svg width=" 18px" height="18px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+                        stroke="#757575">
+                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                        <g id="SVGRepo_iconCarrier">
+                            <g id="Communication / Bell_Add">
+                                <path id="Vector"
+                                    d="M15 17V18C15 19.6569 13.6569 21 12 21C10.3431 21 9 19.6569 9 18V17M15 17H9M15 17H18.5905C18.973 17 19.1652 17 19.3201 16.9478C19.616 16.848 19.8475 16.6156 19.9473 16.3198C19.9997 16.1643 19.9997 15.9715 19.9997 15.5859C19.9997 15.4172 19.9995 15.3329 19.9863 15.2524C19.9614 15.1004 19.9024 14.9563 19.8126 14.8312C19.7651 14.7651 19.7048 14.7048 19.5858 14.5858L19.1963 14.1963C19.0706 14.0706 19 13.9001 19 13.7224V10C19 6.134 15.866 2.99999 12 3C8.13401 3.00001 5 6.13401 5 10V13.7224C5 13.9002 4.92924 14.0706 4.80357 14.1963L4.41406 14.5858C4.29476 14.7051 4.23504 14.765 4.1875 14.8312C4.09766 14.9564 4.03815 15.1004 4.0132 15.2524C4 15.3329 4 15.4172 4 15.586C4 15.9715 4 16.1642 4.05245 16.3197C4.15225 16.6156 4.3848 16.848 4.68066 16.9478C4.83556 17 5.02701 17 5.40956 17H9M12 13V10M12 10V7M12 10H9M12 10H15"
+                                    stroke="#757575" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                </path>
+                            </g>
+                        </g>
+                    </svg>
+                </div>
+                <div class="div-hover rounded-circle">
+                    <svg fill="#757575" height="18px" width="18px" version="1.1" id="Layer_1"
+                        xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                        viewBox="0 0 24 24" xml:space="preserve" stroke="#757575">
+                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                        <g id="SVGRepo_iconCarrier">
+                            <g>
+                                <path
+                                    d="M6,12h1v1h6v-1h1v-1h1V5h-1V4h-1V3H7v1H6v1H5v6h1V12z M7,7h1V6h1V5h2v1h1v1h1v2h-1v1h-1v1H9v-1H8V9H7V7z">
+                                </path>
+                                <polygon
+                                    points="17,15 16,15 16,14 4,14 4,15 3,15 3,16 2,16 2,21 4,21 4,18 5,18 5,17 6,17 6,16 14,16 14,17 15,17 15,18 16,18 16,19 16,20 16,21 18,21 18,16 17,16 ">
+                                </polygon>
+                                <polygon points="20,7 20,6 20,5 18,5 18,7 16,7 16,9 18,9 18,11 20,11 20,9 22,9 22,7 ">
+                                </polygon>
+                            </g>
+                        </g>
+                    </svg>
+                </div>
+                <div class="div-hover rounded-circle">
+                    <svg fill="#757575" height="17px" width="17px" version="1.1" id="Layer_1"
+                        xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                        viewBox="0 0 511.991 511.991" xml:space="preserve" stroke="#757575">
+                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                        <g id="SVGRepo_iconCarrier">
+                            <g>
+                                <g>
+                                    <g>
+                                        <path
+                                            d="M498.677,159.031C455.711,54.162,348.499-11.2,232.626,1.592C115.347,14.551,20.235,109.663,7.277,226.939 c-16.904,153.037,102.1,285.052,254.399,285.052h32.704c40.033,0,66.087-42.143,48.18-77.957l-44.054-88.087 c-3.166-6.325,0.242-13.949,7.054-15.806l125.804-34.304C490.31,279.751,521.842,215.594,498.677,159.031z M420.134,254.675 l-125.799,34.303c-32.794,8.941-49.208,45.656-33.987,76.062l44.05,88.078c3.72,7.44-1.7,16.207-10.018,16.207h-32.704 c-126.944,0-226.097-109.993-211.99-237.701C60.45,134.203,139.887,54.765,237.31,44.001 c96.744-10.68,186.064,43.774,221.884,131.204C472.653,208.067,454.333,245.342,420.134,254.675z">
+                                        </path>
+                                        <path
+                                            d="M379.009,149.325c-17.664,0-32,14.336-32,32s14.336,32,32,32c17.664,0,32-14.336,32-32S396.673,149.325,379.009,149.325z ">
+                                        </path>
+                                        <path
+                                            d="M272.343,85.325c-17.664,0-32,14.336-32,32s14.336,32,32,32s32-14.336,32-32S290.007,85.325,272.343,85.325z">
+                                        </path>
+                                        <path
+                                            d="M165.676,127.991c-17.664,0-32,14.336-32,32s14.336,32,32,32s32-14.336,32-32S183.34,127.991,165.676,127.991z">
+                                        </path>
+                                        <path
+                                            d="M155.009,266.658c0-17.664-14.336-32-32-32s-32,14.336-32,32s14.336,32,32,32S155.009,284.322,155.009,266.658z">
+                                        </path>
+                                        <path
+                                            d="M165.676,341.325c-17.664,0-32,14.336-32,32c0,17.664,14.336,32,32,32s32-14.336,32-32 C197.676,355.661,183.34,341.325,165.676,341.325z">
+                                        </path>
+                                    </g>
+                                </g>
+                            </g>
+                        </g>
+                    </svg>
+                </div>
+                <div class="div-hover rounded-circle">
+                    <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+                        stroke="#757575">
+                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                        <g id="SVGRepo_iconCarrier">
+                            <path
+                                d="M18 4.25H6C5.27065 4.25 4.57118 4.53973 4.05546 5.05546C3.53973 5.57118 3.25 6.27065 3.25 7V17C3.25 17.7293 3.53973 18.4288 4.05546 18.9445C4.57118 19.4603 5.27065 19.75 6 19.75H18C18.7293 19.75 19.4288 19.4603 19.9445 18.9445C20.4603 18.4288 20.75 17.7293 20.75 17V7C20.75 6.27065 20.4603 5.57118 19.9445 5.05546C19.4288 4.53973 18.7293 4.25 18 4.25ZM6 5.75H18C18.3315 5.75 18.6495 5.8817 18.8839 6.11612C19.1183 6.35054 19.25 6.66848 19.25 7V15.19L16.53 12.47C16.4589 12.394 16.3717 12.3348 16.2748 12.2968C16.178 12.2587 16.0738 12.2427 15.97 12.25C15.865 12.2561 15.7622 12.2831 15.6678 12.3295C15.5733 12.3759 15.4891 12.4406 15.42 12.52L14.13 14.07L9.53 9.47C9.46222 9.39797 9.37993 9.34111 9.28858 9.30319C9.19723 9.26527 9.09887 9.24714 9 9.25C8.89496 9.25611 8.79221 9.28314 8.69776 9.32951C8.60331 9.37587 8.51908 9.44064 8.45 9.52L4.75 13.93V7C4.75 6.66848 4.8817 6.35054 5.11612 6.11612C5.35054 5.8817 5.66848 5.75 6 5.75ZM4.75 17V16.27L9.05 11.11L13.17 15.23L10.65 18.23H6C5.67192 18.23 5.35697 18.1011 5.12311 17.871C4.88926 17.6409 4.75525 17.328 4.75 17ZM18 18.25H12.6L16.05 14.11L19.2 17.26C19.1447 17.538 18.9951 17.7884 18.7764 17.9688C18.5577 18.1492 18.2835 18.2485 18 18.25Z"
+                                fill="#757575"></path>
+                        </g>
+                    </svg>
+                </div>
+                <div class="div-hover rounded-circle">
+                    <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+                        stroke="#757575" stroke-width="0.00024000000000000003">
+                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                        <g id="SVGRepo_iconCarrier">
+                            <path fill-rule="evenodd" clip-rule="evenodd"
+                                d="M6.24223 4.5H17.7578L19.5 8.85556V18L18.75 18.75H5.25L4.5 18V8.85556L6.24223 4.5ZM7.25777 6L6.35777 8.25H17.6422L16.7422 6H7.25777ZM18 9.75H6V17.25H18V9.75ZM9.59473 13.6553L10.6554 12.5946L11.25 13.1892V11.25H12.75V13.1894L13.3447 12.5946L14.4054 13.6553L12.0001 16.0606L9.59473 13.6553Z"
+                                fill="#757575"></path>
+                        </g>
+                    </svg>
+                </div>
+                <div class="div-hover rounded-circle">
+                    <svg width="16px" height="16px" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"
+                        fill="#757575" stroke="#757575" stroke-width="0.00032">
+                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                        <g id="SVGRepo_iconCarrier">
+                            <path
+                                d="M19 16a3 3 0 0 1-3 3 3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3zm0 13a3 3 0 0 1-3 3 3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3zm0-26a3 3 0 0 1-3 3 3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3z"
+                                fill="#757575"></path>
+                        </g>
+                    </svg>
+                </div>
+                <div class="div-hover rounded-circle">
+                    <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+                        stroke="#757575" stroke-width="0.00024000000000000003">
+                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                        <g id="SVGRepo_iconCarrier">
+                            <path fill-rule="evenodd" clip-rule="evenodd"
+                                d="M7.53033 3.46967C7.82322 3.76256 7.82322 4.23744 7.53033 4.53033L5.81066 6.25H15C18.1756 6.25 20.75 8.82436 20.75 12C20.75 15.1756 18.1756 17.75 15 17.75H8.00001C7.58579 17.75 7.25001 17.4142 7.25001 17C7.25001 16.5858 7.58579 16.25 8.00001 16.25H15C17.3472 16.25 19.25 14.3472 19.25 12C19.25 9.65279 17.3472 7.75 15 7.75H5.81066L7.53033 9.46967C7.82322 9.76256 7.82322 10.2374 7.53033 10.5303C7.23744 10.8232 6.76256 10.8232 6.46967 10.5303L3.46967 7.53033C3.17678 7.23744 3.17678 6.76256 3.46967 6.46967L6.46967 3.46967C6.76256 3.17678 7.23744 3.17678 7.53033 3.46967Z"
+                                fill="#757575"></path>
+                        </g>
+                    </svg>
+                </div>
+                <div class="div-hover rounded-circle">
+                    <svg width="22px" height="22px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+                        stroke="#757575">
+                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                        <g id="SVGRepo_iconCarrier">
+                            <path
+                                d="M20 7H9.00001C6.23858 7 4 9.23857 4 12C4 14.7614 6.23858 17 9 17H16M20 7L17 4M20 7L17 10"
+                                stroke="#757575" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+                            </path>
+                        </g>
+                    </svg>
+                </div>
+            </div>
+            <button id="panel-close" mat-button (click)="panel.close()">Close</button>
+        </div>
+    </div>
+</mat-expansion-panel>
