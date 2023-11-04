@@ -1,0 +1,9 @@
+.note-list{
+    overflow-y: scroll;
+    max-height: 33rem;
+}
+
+::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+  }

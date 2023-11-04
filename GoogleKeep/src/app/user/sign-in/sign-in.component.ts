@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observer } from 'rxjs';
+import { CookieService } from '../../services/cookie.service';
 import { HttpService } from 'src/app/services/http.service';
 
 @Component({
@@ -11,13 +12,21 @@ import { HttpService } from 'src/app/services/http.service';
 export class SignInComponent {
   hide: boolean = true;
 
-  constructor(private router: Router, private http: HttpService) {}
+  constructor(
+    private router: Router,
+    private http: HttpService,
+    private cookie: CookieService
+  ) {}
 
   loginSubmit(form: any) {
-    this.http
-      .post('/user/api/login/', form.value)
-      .subscribe((resp: Observer<any>) => {
-        this.router.navigate(['/notes']);
-      });
+    this.http.post('/user/api/login/', form.value, {}).subscribe(
+      (resp) => {
+        if (resp.status === 200) {
+          this.cookie.setToken(resp.data.access);
+          this.router.navigate(['/notes']);
+        }
+      },
+      (error) => {}
+    );
   }
 }

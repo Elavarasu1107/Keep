@@ -9,7 +9,7 @@
                     <mat-form-field>
                         <mat-label>Email</mat-label>
                         <input matInput type="email" placeholder="abc@xyz.com" name="email" ngModel #email="ngModel"
-                            required email>
+                            required email autocomplete="username">
                         <mat-error *ngIf="email.invalid && email.touched">Invalid Email!</mat-error>
                     </mat-form-field>
                 </div>
@@ -17,7 +17,7 @@
                     <mat-form-field>
                         <mat-label>Password</mat-label>
                         <input matInput [type]="hide ? 'password' : 'text'" name="password" ngModel #password="ngModel"
-                            required>
+                            required autocomplete="current-password">
                         <!-- <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
                             [attr.aria-pressed]="hide">
                             <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>

@@ -1,5 +1,3 @@
-import json
-
 import requests
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import redirect, render
@@ -8,8 +6,9 @@ from rest_framework import status, viewsets
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
-
+from rest_framework_simplejwt.tokens import RefreshToken
 from .serializer import LoginSerializer, RegisterSerializer
+
 
 # Create your views here.
 
@@ -41,8 +40,12 @@ class UserLogin(viewsets.ViewSet):
             serializer = LoginSerializer(data=request.data, context=request)
             serializer.is_valid(raise_exception=True)
             serializer.save()
+            token = RefreshToken.for_user(serializer.instance)
             return Response(
-                {"message": "Logged in Successfully", "status": 200, "data": serializer.data},
+                {"message": "Logged in Successfully", "status": 200, "data": {
+                    'access': str(token.access_token),
+                    'refresh': str(token)
+                }},
                 status=status.HTTP_200_OK,
             )
         except Exception as ex:

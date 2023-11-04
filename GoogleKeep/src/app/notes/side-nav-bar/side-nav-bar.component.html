@@ -1,5 +1,5 @@
 <mat-drawer-container class="" autosize hasBackdrop="false">
-    <mat-drawer #sideNav class="" mode="push" opened="true">
+    <mat-drawer #sideNav class="" mode="side" opened="true">
         <div class="d-flex px-1">
             <div>
                 <div class="mt-2 div-hover rounded-circle a-active">
@@ -86,7 +86,8 @@
         </div>
     </mat-drawer>
 
-    <div class="container d-flex mt-2">
-        <app-note-expansion-panel class="w-100 d-flex justify-content-center"></app-note-expansion-panel>
+    <div class="container d-flex flex-column mt-2">
+        <!-- <router-outlet></router-outlet> -->
+        <app-note-list></app-note-list>
     </div>
 </mat-drawer-container>

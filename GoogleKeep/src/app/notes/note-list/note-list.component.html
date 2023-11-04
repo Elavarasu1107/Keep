@@ -1,0 +1,13 @@
+<app-note-expansion-panel class="w-100 d-flex justify-content-center"></app-note-expansion-panel>
+<div class="container note-list mt-3">
+    <div class="row d-flex gap-3">
+        <div class="col" *ngFor="let note of noteList">
+            <div class="card" style="width: 15rem;">
+                <div class="card-body">
+                    <h4 class="card-title">{{ note.title }}</h4>
+                    <p class="card-text">{{ note.description }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

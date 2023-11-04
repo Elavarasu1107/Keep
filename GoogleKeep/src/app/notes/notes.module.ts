@@ -15,9 +15,10 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { NoteExpansionPanelComponent } from './note-expansion-panel/note-expansion-panel.component';
+import { NoteListComponent } from './note-list/note-list.component';
 
 @NgModule({
-  declarations: [NoteComponent, HeaderComponent, SideNavBarComponent, NoteExpansionPanelComponent],
+  declarations: [NoteComponent, HeaderComponent, SideNavBarComponent, NoteExpansionPanelComponent, NoteListComponent],
   imports: [
     CommonModule,
     NotesRoutingModule,
