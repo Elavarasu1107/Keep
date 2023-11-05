@@ -6,15 +6,6 @@ input:focus{
     max-width: 10rem;
 }
 
-.div-hover{
-    height: 30px;
-    width: 30px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.div-hover:hover{
-    background-color: #F1F3F4;
-    cursor: pointer;
+mat-icon{
+    font-size: 20px;
 }

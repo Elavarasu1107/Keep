@@ -9,12 +9,7 @@ export class CookieService {
   constructor(private cookie: CS, private router: Router) {}
 
   setToken(token: string) {
-    this.cookie.set(
-      'Auth-Token',
-      token,
-      new Date().getTime() + 1000 * 60 * 60,
-      '/'
-    );
+    this.cookie.set('Auth-Token', token, 0.0417);
   }
 
   getToken(): any {

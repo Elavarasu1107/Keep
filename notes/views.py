@@ -47,10 +47,11 @@ class Notes(viewsets.ViewSet):
         try:
             redis_data = self.redis_instance.hget_notes_user(request.user.id)
             if redis_data:
+                redis_data.sort(key=lambda x: x.get('id'), reverse=True)
                 return Response(
                     {"message": "Cache Notes Retrieved", "status": 200, "data": redis_data}, status=200
                 )
-            notes = Note.objects.filter(user=request.user.id)
+            notes = Note.objects.filter(user=request.user.id).order_by('-id')
             serializer = NoteSerializer(notes, many=True)
             return Response(
                 {"message": "Notes Retrieved", "status": 200, "data": serializer.data}, status=200

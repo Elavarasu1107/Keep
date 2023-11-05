@@ -1,11 +1,49 @@
 <app-note-expansion-panel class="w-100 d-flex justify-content-center"></app-note-expansion-panel>
 <div class="container note-list mt-3">
     <div class="row d-flex gap-3">
-        <div class="col" *ngFor="let note of noteList">
-            <div class="card" style="width: 15rem;">
+        <div class="col" *ngFor="let note of getNoteList()">
+            <div class="card" style="width: 15rem;" (mouseenter)="showOptions()" (mouseleave)="hideOptions()">
                 <div class="card-body">
                     <h4 class="card-title">{{ note.title }}</h4>
                     <p class="card-text">{{ note.description }}</p>
+                    <div class="d-flex justify-content-between" [ngClass]="{'show-options': !showNoteOptions}">
+                        <div class="div-hover d-flex justify-content-center align-items-center">
+                            <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="menu">
+                                <mat-icon>notifications_none</mat-icon>
+                            </button>
+                            <mat-menu #menu="matMenu">
+                            </mat-menu>
+                        </div>
+                        <div class="div-hover d-flex justify-content-center align-items-center">
+                            <button mat-icon-button aria-label="menu">
+                                <mat-icon>person_add</mat-icon>
+                            </button>
+                        </div>
+                        <div class="div-hover d-flex justify-content-center align-items-center">
+                            <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="menu">
+                                <mat-icon>palette</mat-icon>
+                            </button>
+                            <mat-menu #menu="matMenu">
+                            </mat-menu>
+                        </div>
+                        <div class="div-hover d-flex justify-content-center align-items-center">
+                            <button mat-icon-button aria-label="menu">
+                                <mat-icon>image</mat-icon>
+                            </button>
+                        </div>
+                        <div class="div-hover d-flex justify-content-center align-items-center">
+                            <button mat-icon-button aria-label="menu">
+                                <mat-icon>archive</mat-icon>
+                            </button>
+                        </div>
+                        <div class="div-hover d-flex justify-content-center align-items-center">
+                            <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="menu">
+                                <mat-icon>more_vert</mat-icon>
+                            </button>
+                            <mat-menu #menu="matMenu">
+                            </mat-menu>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

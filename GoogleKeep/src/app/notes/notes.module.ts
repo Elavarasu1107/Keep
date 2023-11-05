@@ -16,9 +16,18 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { NoteExpansionPanelComponent } from './note-expansion-panel/note-expansion-panel.component';
 import { NoteListComponent } from './note-list/note-list.component';
+import { MatMenuModule } from '@angular/material/menu';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 @NgModule({
-  declarations: [NoteComponent, HeaderComponent, SideNavBarComponent, NoteExpansionPanelComponent, NoteListComponent],
+  declarations: [
+    NoteComponent,
+    HeaderComponent,
+    SideNavBarComponent,
+    NoteExpansionPanelComponent,
+    NoteListComponent,
+  ],
   imports: [
     CommonModule,
     NotesRoutingModule,
@@ -31,6 +40,10 @@ import { NoteListComponent } from './note-list/note-list.component';
     MatListModule,
     MatGridListModule,
     MatExpansionModule,
+    MatMenuModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
   ],
 })
 export class NotesModule {}

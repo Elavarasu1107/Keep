@@ -10,15 +10,19 @@ import { catchError } from 'rxjs/operators';
 export class HttpService {
   constructor(private http: HttpClient, private snackBar: MatSnackBar) {}
 
+  snackMessageBox(message: string) {
+    this.snackBar.open('Something went wrong!', 'Close', {
+      duration: 5000,
+      horizontalPosition: 'center',
+      verticalPosition: 'top',
+    });
+  }
+
   post(endPoint: string, data: any, headers: any): Observable<any> {
     return this.http.post(endPoint, data, headers).pipe(
       catchError((error: HttpErrorResponse) => {
-        this.snackBar.open('Something went wrong!', 'Close', {
-          duration: 5000,
-          horizontalPosition: 'center',
-          verticalPosition: 'top',
-        });
-
+        this.snackMessageBox('');
+        // console.log(error);
         return throwError(() => 'Something went wrong!');
       })
     );
@@ -27,11 +31,7 @@ export class HttpService {
   get(endPoint: string, token: string): Observable<any> {
     return this.http.get(endPoint, { headers: { Authorization: token } }).pipe(
       catchError((error: HttpErrorResponse) => {
-        this.snackBar.open('Something went wrong!', 'Close', {
-          duration: 5000,
-          horizontalPosition: 'center',
-          verticalPosition: 'top',
-        });
+        this.snackMessageBox('');
 
         return throwError(() => 'Something went wrong!');
       })
