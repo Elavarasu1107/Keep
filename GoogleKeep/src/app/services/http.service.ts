@@ -16,6 +16,8 @@ export class HttpService {
   ) {}
 
   snackMessageBox(message: any) {
+    console.log(message);
+
     if (message.status === 401) {
       this.router.navigate(['/login']);
     }

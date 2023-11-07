@@ -1,22 +1,19 @@
 import { Component } from '@angular/core';
-import { CookieService } from '../../services/cookie.service';
-import { Observer } from 'rxjs';
-import { HttpService } from 'src/app/services/http.service';
 import { NotesService } from 'src/app/services/notes.service';
 
 @Component({
-  selector: 'app-archive',
-  templateUrl: './archive.component.html',
-  styleUrls: ['./archive.component.scss'],
+  selector: 'app-reminders',
+  templateUrl: './reminders.component.html',
+  styleUrls: ['./reminders.component.scss'],
 })
-export class ArchiveComponent {
+export class RemindersComponent {
   noteList!: any;
   showNoteOptions: boolean = false;
 
   constructor(private noteService: NotesService) {}
 
   ngOnInit(): void {
-    this.noteService.getNotesFromDB('/notes/archive/');
+    this.noteService.getNotesFromDB('/notes/?fetch=remainder');
   }
 
   removeReminder(id: number) {
@@ -24,8 +21,6 @@ export class ArchiveComponent {
   }
 
   getNoteList() {
-    // console.log(this.noteService.noteList);
-
     return this.noteService.noteList;
   }
 

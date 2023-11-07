@@ -74,11 +74,11 @@
             <div *ngIf="getBooleanService() || isSideNavOpen">
                 <div class="h-100">
                     <mat-nav-list class="d-flex flex-column sideBar-label">
-                        <a mat-list-item routerLink="">Notes</a>
-                        <a mat-list-item routerLink="">Reminders</a>
-                        <a mat-list-item routerLink="">Edit labels</a>
-                        <a mat-list-item routerLink="">Archive</a>
-                        <a mat-list-item routerLink="">Trash</a>
+                        <a mat-list-item>Notes</a>
+                        <a mat-list-item>Reminders</a>
+                        <a mat-list-item>Edit labels</a>
+                        <a mat-list-item>Archive</a>
+                        <a mat-list-item>Trash</a>
                     </mat-nav-list>
                 </div>
             </div>
@@ -87,8 +87,6 @@
     </mat-drawer>
 
     <div class="container d-flex flex-column mt-2">
-        <!-- <router-outlet></router-outlet> -->
-        <!-- <app-note-list></app-note-list> -->
         <ng-container #dynamicContent></ng-container>
     </div>
 </mat-drawer-container>

@@ -51,7 +51,12 @@ class Notes(viewsets.ViewSet):
             #     return Response(
             #         {"message": "Cache Notes Retrieved", "status": 200, "data": redis_data}, status=200
             #     )
-            notes = Note.objects.filter(user=request.user.id, is_archive=False, is_trash=False).order_by('-id')
+            if request.query_params.get('fetch') == 'remainder':
+                notes = Note.objects.filter(user=request.user.id, remainder__isnull=False).order_by('-id')
+            elif request.query_params.get('fetch') == 'trash':
+                notes = Note.objects.filter(user=request.user.id, is_trash=True).order_by('-id')
+            else:
+                notes = Note.objects.filter(user=request.user.id, is_archive=False, is_trash=False).order_by('-id')
             serializer = NoteSerializer(notes, many=True)
             return Response(
                 {"message": "Notes Retrieved", "status": 200, "data": serializer.data}, status=200

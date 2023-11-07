@@ -34,7 +34,7 @@ export class NoteOptionsComponent implements AfterViewInit {
     // this.noteService.noteId = this.noteId;
   }
 
-  showId() {
+  setNoteId() {
     this.noteService.noteId = this.noteId;
   }
 

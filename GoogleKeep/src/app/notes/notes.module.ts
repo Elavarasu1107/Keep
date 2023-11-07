@@ -23,6 +23,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { NoteOptionsComponent } from './note-options/note-options.component';
 import { MatChipsModule } from '@angular/material/chips';
 import { ArchiveComponent } from './archive/archive.component';
+import { RemindersComponent } from './reminders/reminders.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { ArchiveComponent } from './archive/archive.component';
     NoteListComponent,
     NoteOptionsComponent,
     ArchiveComponent,
+    RemindersComponent,
   ],
   imports: [
     CommonModule,

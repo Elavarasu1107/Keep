@@ -8,6 +8,7 @@ import { MatSidenav } from '@angular/material/sidenav';
 import { SideNavTogglerService } from 'src/app/services/side-nav-toggler.service';
 import { NoteListComponent } from '../note-list/note-list.component';
 import { ArchiveComponent } from '../archive/archive.component';
+import { RemindersComponent } from '../reminders/reminders.component';
 
 @Component({
   selector: 'app-side-nav-bar',
@@ -58,7 +59,7 @@ export class SideNavBarComponent implements AfterViewInit {
         componentType = NoteListComponent;
         break;
       case 'reminders':
-        componentType = '';
+        componentType = RemindersComponent;
         break;
       case 'labels':
         componentType = '';
