@@ -35,6 +35,7 @@ export class NoteExpansionPanelComponent implements AfterViewInit, OnInit {
     this.noteForm = this.fb.group({
       title: new FormControl(),
       description: new FormControl(),
+      reminder: new FormControl(),
     });
   }
 
@@ -48,19 +49,34 @@ export class NoteExpansionPanelComponent implements AfterViewInit, OnInit {
     this.expansionPanel.open();
   }
 
+  getReminderDate() {
+    if (this.noteService.reminderData) {
+      this.noteForm.get('reminder')?.patchValue(this.noteService.reminderData);
+      return this.noteService.reminderData;
+    }
+    return null;
+  }
+
+  removeReminder() {
+    this.noteForm.get('reminder')?.patchValue(null);
+    this.noteService.reminderData = null;
+  }
+
   addNote(form: any) {
     const noteData = form.value;
-    if (noteData.title != null || noteData.description != null) {
-      this.httpService
-        .post('/notes/', form.value, `Bearer ${this.cookie.getToken()}`)
-        .subscribe((resp) => {
-          complete: {
-            const data = resp;
-            this.noteService.setNoteToView(data.data);
-          }
-        });
-    }
-    this.noteForm.reset();
+    console.log(form.value);
+
+    // if (noteData.title != null || noteData.description != null) {
+    //   this.httpService
+    //     .post('/notes/', form.value, `Bearer ${this.cookie.getToken()}`)
+    //     .subscribe((resp) => {
+    //       complete: {
+    //         const data = resp;
+    //         this.noteService.setNoteToView(data.data);
+    //       }
+    //     });
+    // }
+    // this.noteForm.reset();
   }
 
   panelCloseBtn() {

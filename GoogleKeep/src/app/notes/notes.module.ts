@@ -19,6 +19,9 @@ import { NoteListComponent } from './note-list/note-list.component';
 import { MatMenuModule } from '@angular/material/menu';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatDialogModule } from '@angular/material/dialog';
+import { NoteOptionsComponent } from './note-options/note-options.component';
+import { MatChipsModule } from '@angular/material/chips';
 
 @NgModule({
   declarations: [
@@ -27,6 +30,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     SideNavBarComponent,
     NoteExpansionPanelComponent,
     NoteListComponent,
+    NoteOptionsComponent,
   ],
   imports: [
     CommonModule,
@@ -44,6 +48,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     FormsModule,
     ReactiveFormsModule,
     MatFormFieldModule,
+    MatDialogModule,
+    MatChipsModule,
   ],
 })
 export class NotesModule {}

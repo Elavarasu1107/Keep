@@ -17,12 +17,30 @@ interface note {
   providedIn: 'root',
 })
 export class NotesService {
-  noteData!: any;
   noteList!: note[];
+  reminderData!: any;
+  noteListReminder!: any;
+  noteId!: number;
 
-  constructor() {}
+  constructor() {
+    // this.noteId = 0;
+    // this.noteListReminder = {};
+  }
 
   setNoteToView(newNoteData: note) {
     this.noteList = [newNoteData, ...this.noteList];
+  }
+
+  setReminderForNotes(date: string) {
+    this.reminderData = date;
+  }
+
+  updateReminderForNotes(id: number, data: string) {
+    this.noteList.map((item) => {
+      if (item.id === id) {
+        item.remainder = data;
+        this.noteList = [...this.noteList];
+      }
+    });
   }
 }
