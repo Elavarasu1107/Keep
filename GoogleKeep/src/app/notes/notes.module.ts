@@ -24,6 +24,8 @@ import { NoteOptionsComponent } from './note-options/note-options.component';
 import { MatChipsModule } from '@angular/material/chips';
 import { ArchiveComponent } from './archive/archive.component';
 import { RemindersComponent } from './reminders/reminders.component';
+import { LabelsComponent } from './labels/labels.component';
+import { TrashComponent } from './trash/trash.component';
 
 @NgModule({
   declarations: [
@@ -35,6 +37,8 @@ import { RemindersComponent } from './reminders/reminders.component';
     NoteOptionsComponent,
     ArchiveComponent,
     RemindersComponent,
+    LabelsComponent,
+    TrashComponent,
   ],
   imports: [
     CommonModule,
