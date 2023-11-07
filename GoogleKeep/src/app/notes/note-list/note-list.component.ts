@@ -23,18 +23,29 @@ export class NoteListComponent implements OnInit {
   ngOnInit(): void {
     this.http.get('/notes/', `Bearer ${this.cookie.getToken()}`).subscribe(
       (observer: Observer<any>) => {
-        // error: () => {};
         complete: {
-          // this.noteList = observer;
-          // this.noteList = this.noteList.data;
-          // this.noteService.noteList = this.noteList;
           const data: any = observer;
           this.noteService.noteList = data?.data;
-          // this.noteList = this.noteService.noteList;
         }
       },
       (error) => {}
     );
+  }
+
+  removeReminder(id: number) {
+    this.noteService.noteList.map((item) => {
+      if (item.id === id) {
+        item.remainder = null;
+        this.noteService.noteList = [...this.noteService.noteList];
+        this.http
+          .update(
+            `/notes/?id=${item.id}`,
+            { remainder: item.remainder },
+            `Bearer ${this.cookie.getToken()}`
+          )
+          .subscribe((resp: any) => {});
+      }
+    });
   }
 
   getNoteList() {

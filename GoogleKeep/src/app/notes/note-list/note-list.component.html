@@ -6,8 +6,8 @@
                 <div class="card-body">
                     <h4 class="card-title">{{ note.title }}</h4>
                     <p class="card-text">{{ note.description }}</p>
-                    <mat-chip-row *ngIf="note.remainder != null" class="mt-1">
-                        <p class="m-0">{{ note.remainder }}</p>
+                    <mat-chip-row *ngIf="note.remainder != null" class="mt-1" (removed)="removeReminder(note.id)">
+                        <h5 class="m-0">{{ note.remainder }}</h5>
                         <button matChipRemove [attr.aria-label]="'remove reminder '">
                             <mat-icon>cancel</mat-icon>
                         </button>

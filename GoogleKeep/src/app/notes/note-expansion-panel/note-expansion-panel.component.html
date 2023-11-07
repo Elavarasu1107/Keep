@@ -26,10 +26,10 @@
         <div class="p-0 position-relative" style="left: -10px;">
             <input matInput class="bg-transparent border border-0 w-100" type="text" placeholder="Take a note..."
                 formControlName="description">
-            <mat-chip-row *ngIf="getReminderDate() != null" class="mt-1">
-                <p class="m-0">{{ getReminderDate() }}</p>
+            <mat-chip-row *ngIf="getReminderDate() != null" class="mt-1" (removed)="removeReminder()">
+                <h5 class="m-0">{{ getReminderDate() }}</h5>
                 <button matChipRemove [attr.aria-label]="'remove reminder '">
-                    <mat-icon (click)="removeReminder()">cancel</mat-icon>
+                    <mat-icon>cancel</mat-icon>
                 </button>
             </mat-chip-row>
             <div class="d-flex justify-content-between align-items-center">
@@ -46,7 +46,7 @@
                         </button>
                     </div>
                 </div>
-                <button id="panel-close" mat-button (click)="panelCloseBtn()">Close</button>
+                <button id="panel-close" mat-button>Close</button>
             </div>
         </div>
     </mat-expansion-panel>

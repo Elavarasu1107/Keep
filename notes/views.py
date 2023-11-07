@@ -51,7 +51,7 @@ class Notes(viewsets.ViewSet):
                 return Response(
                     {"message": "Cache Notes Retrieved", "status": 200, "data": redis_data}, status=200
                 )
-            notes = Note.objects.filter(user=request.user.id).order_by('-id')
+            notes = Note.objects.filter(user=request.user.id, is_archive=False, is_trash=False).order_by('-id')
             serializer = NoteSerializer(notes, many=True)
             return Response(
                 {"message": "Notes Retrieved", "status": 200, "data": serializer.data}, status=200
@@ -66,12 +66,12 @@ class Notes(viewsets.ViewSet):
             note = Note.objects.get(
                 id=request.query_params.get("id"), user=request.data.get("user")
             )
-            serializer = NoteSerializer(note, data=request.data)
+            serializer = NoteSerializer(note, data=request.data, partial=True)
             serializer.is_valid(raise_exception=True)
             serializer.save()
             self.redis_instance.hset_notes(request.user.id, serializer.data)
             return Response(
-                {"message": "Note Updated", "status": 201, "data": serializer.data}, status=201
+                {"message": "Note Updated", "status": 200, "data": serializer.data}, status=200
             )
         except Exception as ex:
             return Response({"message": ex.args[0], "status": 400, "data": {}}, status=400)

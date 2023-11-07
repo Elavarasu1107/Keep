@@ -37,4 +37,14 @@ export class HttpService {
       })
     );
   }
+
+  update(endPoint: string, data: any, headers: any): Observable<any> {
+    return this.http.put(endPoint, data, headers).pipe(
+      catchError((error: HttpErrorResponse) => {
+        this.snackMessageBox('');
+        // console.log(error);
+        return throwError(() => 'Something went wrong!');
+      })
+    );
+  }
 }
