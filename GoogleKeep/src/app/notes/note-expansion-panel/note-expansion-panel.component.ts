@@ -1,5 +1,6 @@
 import {
   AfterViewInit,
+  AfterContentChecked,
   Component,
   HostListener,
   OnInit,
@@ -16,12 +17,14 @@ import { NotesService } from '../../services/notes.service';
   templateUrl: './note-expansion-panel.component.html',
   styleUrls: ['./note-expansion-panel.component.scss'],
 })
-export class NoteExpansionPanelComponent implements AfterViewInit, OnInit {
+export class NoteExpansionPanelComponent
+  implements AfterViewInit, OnInit, AfterContentChecked
+{
   @ViewChild('panel') expansionPanel!: MatExpansionPanel;
 
   panel!: any;
   panelClose!: any;
-  inputPlaceHolder: string = 'Take a note...';
+  inputPlaceHolder!: string;
   noteForm!: FormGroup;
 
   constructor(
@@ -42,6 +45,10 @@ export class NoteExpansionPanelComponent implements AfterViewInit, OnInit {
   ngAfterViewInit(): void {
     this.panel = document.getElementById('note-expansion-panel');
     this.panelClose = document.getElementById('panel-close');
+  }
+
+  ngAfterContentChecked(): void {
+    this.inputPlaceHolder = 'Take a note...';
   }
 
   expandPanel(event: any) {
@@ -76,6 +83,7 @@ export class NoteExpansionPanelComponent implements AfterViewInit, OnInit {
         });
     }
     this.noteForm.reset();
+    this.removeReminder();
   }
 
   @HostListener('click', ['$event'])

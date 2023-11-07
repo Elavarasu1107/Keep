@@ -1,6 +1,7 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
@@ -8,9 +9,17 @@ import { catchError } from 'rxjs/operators';
   providedIn: 'root',
 })
 export class HttpService {
-  constructor(private http: HttpClient, private snackBar: MatSnackBar) {}
+  constructor(
+    private http: HttpClient,
+    private snackBar: MatSnackBar,
+    private router: Router
+  ) {}
 
-  snackMessageBox(message: string) {
+  snackMessageBox(message: any) {
+    if (message.status === 401) {
+      this.router.navigate(['/login']);
+    }
+
     this.snackBar.open('Something went wrong!', 'Close', {
       duration: 5000,
       horizontalPosition: 'center',
@@ -21,8 +30,7 @@ export class HttpService {
   post(endPoint: string, data: any, headers: any): Observable<any> {
     return this.http.post(endPoint, data, headers).pipe(
       catchError((error: HttpErrorResponse) => {
-        this.snackMessageBox('');
-        // console.log(error);
+        this.snackMessageBox(error);
         return throwError(() => 'Something went wrong!');
       })
     );
@@ -31,7 +39,7 @@ export class HttpService {
   get(endPoint: string, token: string): Observable<any> {
     return this.http.get(endPoint, { headers: { Authorization: token } }).pipe(
       catchError((error: HttpErrorResponse) => {
-        this.snackMessageBox('');
+        this.snackMessageBox(error);
 
         return throwError(() => 'Something went wrong!');
       })
@@ -41,8 +49,7 @@ export class HttpService {
   update(endPoint: string, data: any, headers: any): Observable<any> {
     return this.http.put(endPoint, data, headers).pipe(
       catchError((error: HttpErrorResponse) => {
-        this.snackMessageBox('');
-        // console.log(error);
+        this.snackMessageBox(error);
         return throwError(() => 'Something went wrong!');
       })
     );

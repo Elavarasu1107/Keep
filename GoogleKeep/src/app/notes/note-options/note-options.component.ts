@@ -10,6 +10,8 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { NotesService } from '../../services/notes.service';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { HttpService } from '../../services/http.service';
+import { CookieService } from '../../services/cookie.service';
 
 @Component({
   selector: 'app-note-options',
@@ -20,7 +22,12 @@ export class NoteOptionsComponent implements AfterViewInit {
   @ViewChild('menuTrigger') menuTrigger!: MatMenuTrigger;
   @Input() noteId!: any;
 
-  constructor(private dialog: MatDialog, private noteService: NotesService) {}
+  constructor(
+    private dialog: MatDialog,
+    private noteService: NotesService,
+    private httpService: HttpService,
+    private cookie: CookieService
+  ) {}
 
   ngAfterViewInit(): void {
     // console.log(this.noteId);
@@ -29,6 +36,23 @@ export class NoteOptionsComponent implements AfterViewInit {
 
   showId() {
     this.noteService.noteId = this.noteId;
+  }
+
+  addNoteToArchive() {
+    this.noteService.noteList.map((item) => {
+      if (item.id === this.noteId) {
+        item.is_archive = !item.is_archive;
+        this.noteService.noteList = [...this.noteService.noteList];
+      }
+    });
+
+    this.httpService
+      .update(
+        `/notes/archive/?id=${this.noteId}`,
+        {},
+        `Bearer ${this.cookie.getToken()}`
+      )
+      .subscribe((resp: any) => {});
   }
 
   openDialog() {

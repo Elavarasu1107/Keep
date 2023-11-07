@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpService } from './http.service';
 import { CookieService } from './cookie.service';
+import { Observer } from 'rxjs';
 
 interface note {
   id: number;
@@ -46,6 +47,36 @@ export class NotesService {
           .update(
             `/notes/?id=${item.id}`,
             { remainder: data },
+            `Bearer ${this.cookie.getToken()}`
+          )
+          .subscribe((resp: any) => {});
+      }
+    });
+  }
+
+  getNotesFromDB(endPoint: string) {
+    this.httpService
+      .get(endPoint, `Bearer ${this.cookie.getToken()}`)
+      .subscribe(
+        (observer: Observer<any>) => {
+          complete: {
+            const data: any = observer;
+            this.noteList = data?.data;
+          }
+        },
+        (error) => {}
+      );
+  }
+
+  removeReminderFromDB(id: number) {
+    this.noteList.map((item) => {
+      if (item.id === id) {
+        item.remainder = null;
+        this.noteList = [...this.noteList];
+        this.httpService
+          .update(
+            `/notes/?id=${item.id}`,
+            { remainder: item.remainder },
             `Bearer ${this.cookie.getToken()}`
           )
           .subscribe((resp: any) => {});

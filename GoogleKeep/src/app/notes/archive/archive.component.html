@@ -1,9 +1,8 @@
-<app-note-expansion-panel class="w-100 d-flex justify-content-center"></app-note-expansion-panel>
 <div class="container note-list mt-3">
     <div class="row d-flex gap-3">
         <div class="col" *ngFor="let note of getNoteList()">
             <div class="card" style="width: 20rem;" (mouseenter)="showOptions()" (mouseleave)="hideOptions()"
-                *ngIf="note.is_archive === false && note.is_trash === false">
+                *ngIf="note.is_archive === true && note.is_trash === false">
                 <div class="card-body">
                     <h4 class="card-title">{{ note.title }}</h4>
                     <p class="card-text">{{ note.description }}</p>

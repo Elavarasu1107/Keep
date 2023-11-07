@@ -45,12 +45,12 @@ class Notes(viewsets.ViewSet):
 
     def list(self, request):
         try:
-            redis_data = self.redis_instance.hget_notes_user(request.user.id)
-            if redis_data:
-                redis_data.sort(key=lambda x: x.get('id'), reverse=True)
-                return Response(
-                    {"message": "Cache Notes Retrieved", "status": 200, "data": redis_data}, status=200
-                )
+            # redis_data = self.redis_instance.hget_notes_user(request.user.id)
+            # if redis_data:
+            #     redis_data.sort(key=lambda x: x.get('id'), reverse=True)
+            #     return Response(
+            #         {"message": "Cache Notes Retrieved", "status": 200, "data": redis_data}, status=200
+            #     )
             notes = Note.objects.filter(user=request.user.id, is_archive=False, is_trash=False).order_by('-id')
             serializer = NoteSerializer(notes, many=True)
             return Response(
@@ -93,7 +93,7 @@ class Notes(viewsets.ViewSet):
     @action(methods=["PUT"], detail=True)
     def to_archive(self, request):
         try:
-            note = Note.objects.get(id=request.data.get("id"), user=request.user.id)
+            note = Note.objects.get(id=request.query_params.get("id"), user=request.user.id)
             note.is_archive = True if not note.is_archive else False
             note.save()
             return Response({"message": "Note Archived", "status": 200, "data": {}}, status=200)

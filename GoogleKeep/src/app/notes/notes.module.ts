@@ -22,6 +22,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDialogModule } from '@angular/material/dialog';
 import { NoteOptionsComponent } from './note-options/note-options.component';
 import { MatChipsModule } from '@angular/material/chips';
+import { ArchiveComponent } from './archive/archive.component';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { MatChipsModule } from '@angular/material/chips';
     NoteExpansionPanelComponent,
     NoteListComponent,
     NoteOptionsComponent,
+    ArchiveComponent,
   ],
   imports: [
     CommonModule,
