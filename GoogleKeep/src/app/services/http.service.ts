@@ -56,4 +56,13 @@ export class HttpService {
       })
     );
   }
+
+  delete(endPoint: string, headers: any): Observable<any> {
+    return this.http.delete(endPoint, headers).pipe(
+      catchError((error: HttpErrorResponse) => {
+        this.snackMessageBox(error);
+        return throwError(() => 'Something went wrong!');
+      })
+    );
+  }
 }

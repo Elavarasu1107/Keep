@@ -12,7 +12,7 @@
                         </button>
                     </mat-chip-row>
                     <div class="d-flex justify-content-between" [ngClass]="{'show-options': !showNoteOptions}">
-                        <app-note-options [noteId]="note.id"></app-note-options>
+                        <app-note-options [noteId]="note.id" [fromComp]="'archive'"></app-note-options>
                     </div>
                 </div>
             </div>

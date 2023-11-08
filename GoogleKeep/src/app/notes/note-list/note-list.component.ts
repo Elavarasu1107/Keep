@@ -21,7 +21,7 @@ export class NoteListComponent implements OnInit {
   }
 
   removeReminder(id: number) {
-    this.noteService.removeReminderFromDB(id);
+    this.noteService.removeReminderFromDB(id, 'notes');
   }
 
   getNoteList() {

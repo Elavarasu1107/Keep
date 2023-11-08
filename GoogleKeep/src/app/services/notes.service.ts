@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { ChangeDetectorRef, Injectable } from '@angular/core';
 import { HttpService } from './http.service';
 import { CookieService } from './cookie.service';
 import { Observer } from 'rxjs';
@@ -77,12 +77,14 @@ export class NotesService {
       );
   }
 
-  removeReminderFromDB(id: number) {
+  removeReminderFromDB(id: number, component: string) {
     this.noteList.map((item) => {
       if (item.id === id) {
         item.remainder = null;
-        let index = this.noteList.indexOf(item);
-        this.noteList.splice(index, 1);
+        if (component === 'notes') {
+          let index = this.noteList.indexOf(item);
+          this.noteList.splice(index, 1);
+        }
         this.noteList = [...this.noteList];
         this.httpService
           .update(
@@ -92,6 +94,7 @@ export class NotesService {
           )
           .subscribe((resp: any) => {});
       }
+      // this.changeDetectorRef.markForCheck();
     });
   }
 

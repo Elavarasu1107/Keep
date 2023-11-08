@@ -26,7 +26,7 @@ export class RemindersComponent implements AfterContentChecked {
   }
 
   removeReminder(id: number) {
-    this.noteService.removeReminderFromDB(id);
+    this.noteService.removeReminderFromDB(id, 'reminder');
   }
 
   getNoteList() {

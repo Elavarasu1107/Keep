@@ -20,6 +20,7 @@ import { CookieService } from '../../services/cookie.service';
 })
 export class NoteOptionsComponent implements AfterViewInit {
   @ViewChild('menuTrigger') menuTrigger!: MatMenuTrigger;
+  @Input() fromComp!: string;
   @Input() noteId!: any;
 
   constructor(
@@ -42,8 +43,10 @@ export class NoteOptionsComponent implements AfterViewInit {
     this.noteService.noteList.map((item) => {
       if (item.id === this.noteId) {
         item.is_archive = !item.is_archive;
-        let index = this.noteService.noteList.indexOf(item);
-        this.noteService.noteList.splice(index, 1);
+        if (this.fromComp === 'notes') {
+          let index = this.noteService.noteList.indexOf(item);
+          this.noteService.noteList.splice(index, 1);
+        }
         this.noteService.noteList = [...this.noteService.noteList];
       }
     });
