@@ -86,6 +86,12 @@ export class NoteExpansionPanelComponent implements AfterViewInit, OnInit {
     this.removeReminder();
   }
 
+  preventKeyEvents(event: any): void {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+    }
+  }
+
   @HostListener('click', ['$event'])
   hideExpansionPanel(event: any) {
     if (

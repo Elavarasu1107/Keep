@@ -1,5 +1,6 @@
 <form class="w-50 mt-3" [formGroup]="noteForm">
-    <mat-expansion-panel hideToggle id="note-expansion-panel" #panel (click)="expandPanel($event)">
+    <mat-expansion-panel hideToggle id="note-expansion-panel" #panel (click)="expandPanel($event)"
+        (keydown)="preventKeyEvents($event)">
         <mat-expansion-panel-header class="d-flex justify-content-between p-0">
             <mat-panel-title class="">
                 <input matInput class="bg-transparent border border-0 px-3" type="text" [placeholder]="inputPlaceHolder"

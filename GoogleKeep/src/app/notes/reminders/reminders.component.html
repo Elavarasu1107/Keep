@@ -1,7 +1,7 @@
 <!-- <app-note-expansion-panel class="w-100 d-flex justify-content-center"></app-note-expansion-panel> -->
 <div class="container note-list mt-3">
     <div class="row d-flex gap-3">
-        <div class="col" *ngFor="let note of getNoteList()">
+        <div class="col" *ngFor="let note of noteList">
             <div class="card" style="width: 20rem;" (mouseenter)="showOptions()" (mouseleave)="hideOptions()"
                 *ngIf="note.remainder != null && note.is_trash === false">
                 <div class="card-body">
@@ -19,7 +19,7 @@
                 </div>
             </div>
         </div>
-        <div *ngIf="getNoteList().length === 0" class=" d-flex justify-content-center align-items-center">
+        <div *ngIf="noteList.length === 0" class=" d-flex justify-content-center align-items-center">
             <h4>Notes with upcoming reminders appears here</h4>
         </div>
     </div>

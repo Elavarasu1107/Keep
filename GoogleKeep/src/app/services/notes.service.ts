@@ -16,6 +16,14 @@ interface note {
   label: [];
 }
 
+interface label {
+  id: number | null;
+  title: string;
+  font: string | null;
+  color: string | null;
+  user: number | null;
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -24,6 +32,7 @@ export class NotesService {
   reminderData!: any;
   noteListReminder!: any;
   noteId!: number;
+  labelList!: label[];
 
   constructor(private httpService: HttpService, private cookie: CookieService) {
     // this.noteId = 0;
@@ -72,6 +81,8 @@ export class NotesService {
     this.noteList.map((item) => {
       if (item.id === id) {
         item.remainder = null;
+        let index = this.noteList.indexOf(item);
+        this.noteList.splice(index, 1);
         this.noteList = [...this.noteList];
         this.httpService
           .update(
@@ -82,5 +93,19 @@ export class NotesService {
           .subscribe((resp: any) => {});
       }
     });
+  }
+
+  getLabelFromDB(endPoint: string) {
+    this.httpService
+      .get(endPoint, `Bearer ${this.cookie.getToken()}`)
+      .subscribe(
+        (observer: Observer<any>) => {
+          complete: {
+            const data: any = observer;
+            this.labelList = data?.data;
+          }
+        },
+        (error) => {}
+      );
   }
 }

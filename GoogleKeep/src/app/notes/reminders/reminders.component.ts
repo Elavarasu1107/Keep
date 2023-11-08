@@ -1,4 +1,9 @@
-import { Component } from '@angular/core';
+import {
+  Component,
+  AfterContentChecked,
+  AfterViewInit,
+  AfterContentInit,
+} from '@angular/core';
 import { NotesService } from 'src/app/services/notes.service';
 
 @Component({
@@ -6,7 +11,7 @@ import { NotesService } from 'src/app/services/notes.service';
   templateUrl: './reminders.component.html',
   styleUrls: ['./reminders.component.scss'],
 })
-export class RemindersComponent {
+export class RemindersComponent implements AfterContentChecked {
   noteList!: any;
   showNoteOptions: boolean = false;
 
@@ -14,6 +19,10 @@ export class RemindersComponent {
 
   ngOnInit(): void {
     this.noteService.getNotesFromDB('/notes/?fetch=remainder');
+  }
+
+  ngAfterContentChecked(): void {
+    this.noteList = this.getNoteList();
   }
 
   removeReminder(id: number) {

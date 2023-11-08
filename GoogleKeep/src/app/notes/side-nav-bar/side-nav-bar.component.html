@@ -2,7 +2,8 @@
     <mat-drawer #sideNav class="" mode="side" opened="true">
         <div class="d-flex px-1">
             <div>
-                <div class="mt-2 div-hover rounded-circle a-active" (click)="loadComponent('notes')">
+                <div class="mt-2 div-hover rounded-circle" (click)="loadComponent('notes')"
+                    [class.active]="activeTab==='notes'">
                     <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
                         stroke="#757575">
                         <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
@@ -17,7 +18,8 @@
                         </g>
                     </svg>
                 </div>
-                <div class="div-hover rounded-circle" (click)="loadComponent('reminders')">
+                <div class="div-hover rounded-circle" (click)="loadComponent('reminders')"
+                    [class.active]="activeTab==='reminders'">
                     <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
                         stroke="#757575">
                         <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
@@ -30,7 +32,8 @@
                     </svg>
                 </div>
 
-                <div class="div-hover rounded-circle" (click)="loadComponent('labels')">
+                <div class="div-hover rounded-circle" (click)="loadComponent('labels')"
+                    [class.active]="activeTab==='labels'">
                     <svg width="25px" height="20px" fill="#757575" viewBox="0 0 32 32" version="1.1"
                         xmlns="http://www.w3.org/2000/svg" stroke="#757575">
                         <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
@@ -41,7 +44,8 @@
                         </g>
                     </svg>
                 </div>
-                <div class="div-hover rounded-circle" (click)="loadComponent('archive')">
+                <div class="div-hover rounded-circle" (click)="loadComponent('archive')"
+                    [class.active]="activeTab==='archive'">
                     <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
                         stroke="#757575">
                         <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
@@ -58,7 +62,8 @@
                         </g>
                     </svg>
                 </div>
-                <div class="div-hover rounded-circle" (click)="loadComponent('trash')">
+                <div class="div-hover rounded-circle" (click)="loadComponent('trash')"
+                    [class.active]="activeTab==='trash'">
                     <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
                         stroke="#757575">
                         <g id="SVGRepo_bgCarrier" stroke-width="0"></g>

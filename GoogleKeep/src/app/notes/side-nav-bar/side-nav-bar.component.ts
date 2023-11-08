@@ -9,6 +9,8 @@ import { SideNavTogglerService } from 'src/app/services/side-nav-toggler.service
 import { NoteListComponent } from '../note-list/note-list.component';
 import { ArchiveComponent } from '../archive/archive.component';
 import { RemindersComponent } from '../reminders/reminders.component';
+import { LabelsComponent } from '../labels/labels.component';
+import { TrashComponent } from '../trash/trash.component';
 
 @Component({
   selector: 'app-side-nav-bar',
@@ -19,6 +21,7 @@ export class SideNavBarComponent implements AfterViewInit {
   @ViewChild('sideNav') sideNav!: MatSidenav;
   @ViewChild('dynamicContent', { read: ViewContainerRef })
   dynamicContent!: ViewContainerRef;
+  activeTab: string = 'notes';
 
   isSideNavOpen: boolean = false;
   constructor(private togglerService: SideNavTogglerService) {}
@@ -50,6 +53,7 @@ export class SideNavBarComponent implements AfterViewInit {
   }
 
   loadComponent(componentName: string) {
+    this.activeTab = componentName;
     this.dynamicContent.clear();
 
     let componentType!: any;
@@ -62,13 +66,13 @@ export class SideNavBarComponent implements AfterViewInit {
         componentType = RemindersComponent;
         break;
       case 'labels':
-        componentType = '';
+        componentType = LabelsComponent;
         break;
       case 'archive':
         componentType = ArchiveComponent;
         break;
       case 'trash':
-        componentType = '';
+        componentType = TrashComponent;
         break;
       default:
         componentType = NoteListComponent;
