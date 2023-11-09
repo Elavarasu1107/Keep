@@ -46,7 +46,7 @@ class Labels(viewsets.ViewSet):
         try:
             request.data.update({'user': request.user.id})
             note = Label.objects.get(id=request.query_params.get('id'), user=request.data.get('user'))
-            serializer = LabelSerializer(note, data=request.data)
+            serializer = LabelSerializer(note, data=request.data, partial=True)
             serializer.is_valid(raise_exception=True)
             serializer.save()
             # self.redis_instance.save(serializer.data, request.user.id)

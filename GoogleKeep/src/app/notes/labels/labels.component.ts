@@ -2,6 +2,7 @@ import {
   AfterContentChecked,
   AfterViewInit,
   Component,
+  ElementRef,
   OnInit,
 } from '@angular/core';
 import { FormArray, FormControl } from '@angular/forms';
@@ -33,8 +34,8 @@ export class LabelsComponent implements OnInit {
 
 @Component({
   selector: 'dialog-elements-example-dialog',
-  template: ` <h1 mat-dialog-title>Edit labels</h1>
-    <mat-dialog-actions>
+  template: ` <h1 mat-dialog-title class="text-center">Edit labels</h1>
+    <mat-dialog-actions class="d-flex justify-content-center">
       <input
         matInput
         #label
@@ -47,7 +48,7 @@ export class LabelsComponent implements OnInit {
     <div style="overflow: auto; max-height:10rem;">
       <div *ngFor="let label of labels">
         <div class="mx-2 mt-1 align-items-center">
-          <button class="btn" (click)="enableInput()">
+          <button class="btn" (click)="enableInput(label.title)">
             <svg
               width="20px"
               height="20px"
@@ -84,6 +85,9 @@ export class LabelsComponent implements OnInit {
             [value]="label.title"
             [disabled]="disableInput"
             style="width: 10rem; height: 2rem;"
+            class="label-input rounded"
+            (keydown.enter)="updateLabel(inputValue.value, label.id)"
+            #inputValue
           />
           <button class="btn" (click)="deleteLabel(label.id)">
             <svg
@@ -133,7 +137,8 @@ class LabelDialogComponent implements OnInit, AfterContentChecked {
   constructor(
     private noteService: NotesService,
     private httpService: HttpService,
-    private cookie: CookieService
+    private cookie: CookieService,
+    private el: ElementRef
   ) {}
 
   ngOnInit(): void {
@@ -167,14 +172,42 @@ class LabelDialogComponent implements OnInit, AfterContentChecked {
     return this.labels;
   }
 
-  enableInput() {
-    console.log('Hi');
+  enableInput(label: string) {
+    const labelsDiv =
+      this.el.nativeElement.getElementsByClassName('label-input');
+    Array.from(labelsDiv).forEach((item: any) => {
+      item.disabled = true;
+    });
+    Array.from(labelsDiv).forEach((item: any) => {
+      if (item.value === label) {
+        item.disabled = false;
+      }
+    });
+  }
 
-    this.disableInput = false;
+  updateLabel(newValue: string, id: number) {
+    this.httpService
+      .update(
+        `/labels/?id=${id}`,
+        { title: newValue },
+        `Bearer ${this.cookie.getToken()}`
+      )
+      .subscribe((resp) => {
+        this.noteService.labelList.map((item) => {
+          if (item.id === resp.data.id) {
+            item = resp.data;
+            this.noteService.labelList = [...this.noteService.labelList];
+          }
+        });
+      });
+    const labelsDiv =
+      this.el.nativeElement.getElementsByClassName('label-input');
+    Array.from(labelsDiv).forEach((item: any) => {
+      item.disabled = true;
+    });
   }
 
   deleteLabel(id: number) {
-    console.log(this.noteService.labelList);
     this.httpService
       .delete(`/labels/?id=${id}`, `Bearer ${this.cookie.getToken()}`)
       .subscribe((resp: any) => {
@@ -185,7 +218,6 @@ class LabelDialogComponent implements OnInit, AfterContentChecked {
               1
             );
             this.noteService.labelList = [...this.noteService.labelList];
-            console.log(this.noteService.labelList);
           }
         });
       });

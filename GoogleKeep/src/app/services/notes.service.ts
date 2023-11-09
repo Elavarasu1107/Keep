@@ -82,8 +82,8 @@ export class NotesService {
       if (item.id === id) {
         item.remainder = null;
         if (component === 'notes') {
-          let index = this.noteList.indexOf(item);
-          this.noteList.splice(index, 1);
+          // let index = this.noteList.indexOf(item);
+          // this.noteList.splice(index, 1);
         }
         this.noteList = [...this.noteList];
         this.httpService
@@ -94,7 +94,6 @@ export class NotesService {
           )
           .subscribe((resp: any) => {});
       }
-      // this.changeDetectorRef.markForCheck();
     });
   }
 
