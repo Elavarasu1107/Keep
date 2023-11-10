@@ -1,10 +1,4 @@
-import {
-  Component,
-  ViewChild,
-  Input,
-  AfterViewInit,
-  OnInit,
-} from '@angular/core';
+import { Component, ViewChild, Input, AfterViewInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatMenuTrigger } from '@angular/material/menu';
@@ -39,6 +33,26 @@ export class NoteOptionsComponent implements AfterViewInit {
     this.noteService.noteId = this.noteId;
   }
 
+  deleteNote() {
+    return this.httpService
+      .update(
+        `/notes/trash/?id=${this.noteId}`,
+        {},
+        `Bearer ${this.cookie.getToken()}`
+      )
+      .subscribe((resp) => {
+        this.noteService.noteList.map((item) => {
+          if (item.id === this.noteId) {
+            this.noteService.noteList.splice(
+              this.noteService.noteList.indexOf(item),
+              1
+            );
+          }
+          this.noteService.noteList = [...this.noteService.noteList];
+        });
+      });
+  }
+
   addNoteToArchive() {
     this.noteService.noteList.map((item) => {
       if (item.id === this.noteId) {
@@ -51,7 +65,7 @@ export class NoteOptionsComponent implements AfterViewInit {
       }
     });
 
-    this.httpService
+    return this.httpService
       .update(
         `/notes/archive/?id=${this.noteId}`,
         {},

@@ -53,8 +53,6 @@ class Notes(viewsets.ViewSet):
             #     )
             if request.query_params.get('fetch') == 'remainder':
                 notes = Note.objects.filter(user=request.user.id, remainder__isnull=False).order_by('-id')
-            elif request.query_params.get('fetch') == 'trash':
-                notes = Note.objects.filter(user=request.user.id, is_trash=True).order_by('-id')
             else:
                 notes = Note.objects.filter(user=request.user.id, is_archive=False, is_trash=False).order_by('-id')
             serializer = NoteSerializer(notes, many=True)
@@ -138,7 +136,7 @@ class Notes(viewsets.ViewSet):
     @action(methods=["GET"], detail=True)
     def trash_data(self, request):
         try:
-            notes = Note.objects.filter(is_trash=True, user=request.user.id)
+            notes = Note.objects.filter(is_trash=True, user=request.user.id).order_by('-id')
             serializer = NoteSerializer(notes, many=True)
             return Response(
                 {"message": "Retrieved trash notes", "status": 200, "data": serializer.data},

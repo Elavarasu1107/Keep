@@ -19,7 +19,7 @@ export class TrashComponent {
   ) {}
 
   ngOnInit(): void {
-    this.noteService.getNotesFromDB('/notes/?fetch=trash');
+    this.noteService.getNotesFromDB('/notes/trash/');
   }
 
   ngAfterContentChecked(): void {
@@ -62,11 +62,9 @@ export class TrashComponent {
     this.httpService
       .delete('/notes/?delete_all=true', `Bearer ${this.cookie.getToken()}`)
       .subscribe((resp) => {
-        console.log(this.noteService.noteList);
         this.noteService.noteList = this.noteService.noteList.filter(
           (item) => false
         );
-        console.log(this.noteService.noteList);
       });
   }
 
