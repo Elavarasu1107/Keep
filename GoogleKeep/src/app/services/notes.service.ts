@@ -81,9 +81,9 @@ export class NotesService {
     this.noteList.map((item) => {
       if (item.id === id) {
         item.remainder = null;
-        if (component === 'notes') {
-          // let index = this.noteList.indexOf(item);
-          // this.noteList.splice(index, 1);
+        if (component === 'reminder') {
+          let index = this.noteList.indexOf(item);
+          this.noteList.splice(index, 1);
         }
         this.noteList = [...this.noteList];
         this.httpService

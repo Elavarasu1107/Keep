@@ -86,8 +86,11 @@ class Notes(viewsets.ViewSet):
     )
     def destroy(self, request):
         try:
-            Note.objects.get(id=request.query_params.get("id"), user=request.user.id).delete()
-            self.redis_instance.hdel_notes(request.user.id, request.query_params.get("id"))
+            if request.query_params.get('delete_all') == 'true':
+                Note.objects.filter(is_trash=True, user=request.user.id).delete()
+            else:
+                Note.objects.get(id=request.query_params.get("id"), user=request.user.id).delete()
+                self.redis_instance.hdel_notes(request.user.id, request.query_params.get("id"))
             return Response({"message": "Note Deleted", "status": 200, "data": {}}, status=200)
         except Exception as ex:
             return Response({"message": ex.args[0], "status": 400, "data": {}}, status=400)
@@ -111,7 +114,7 @@ class Notes(viewsets.ViewSet):
     @action(methods=["PUT"], detail=True)
     def to_trash(self, request):
         try:
-            note = Note.objects.get(id=request.data.get("id"), user=request.user.id)
+            note = Note.objects.get(id=request.query_params.get("id"), user=request.user.id)
             note.is_trash = True if not note.is_trash else False
             note.save()
             return Response(

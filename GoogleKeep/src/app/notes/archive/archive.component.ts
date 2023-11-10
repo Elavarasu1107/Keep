@@ -2,10 +2,8 @@ import {
   Component,
   AfterContentInit,
   AfterContentChecked,
+  ChangeDetectorRef,
 } from '@angular/core';
-import { CookieService } from '../../services/cookie.service';
-import { Observer } from 'rxjs';
-import { HttpService } from 'src/app/services/http.service';
 import { NotesService } from 'src/app/services/notes.service';
 
 @Component({
@@ -17,7 +15,10 @@ export class ArchiveComponent implements AfterContentChecked {
   noteList!: any;
   showNoteOptions: boolean = false;
 
-  constructor(private noteService: NotesService) {}
+  constructor(
+    private noteService: NotesService,
+    private changeDetectionRef: ChangeDetectorRef
+  ) {}
 
   ngOnInit(): void {
     this.noteService.getNotesFromDB('/notes/archive/');
@@ -25,6 +26,7 @@ export class ArchiveComponent implements AfterContentChecked {
 
   ngAfterContentChecked(): void {
     this.noteList = this.getNoteList();
+    // this.changeDetectionRef.markForCheck();
   }
 
   removeReminder(id: number) {
