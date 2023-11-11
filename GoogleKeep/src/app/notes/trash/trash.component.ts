@@ -10,7 +10,7 @@ import { CookieService } from '../../services/cookie.service';
 })
 export class TrashComponent {
   noteList!: any;
-  showNoteOptions: boolean = false;
+  showNoteOptions!: number | null;
 
   constructor(
     private noteService: NotesService,
@@ -72,11 +72,11 @@ export class TrashComponent {
     return this.noteService.noteList;
   }
 
-  showOptions() {
-    this.showNoteOptions = true;
+  showOptions(id: number) {
+    this.showNoteOptions = id;
   }
 
   hideOptions() {
-    this.showNoteOptions = false;
+    this.showNoteOptions = null;
   }
 }

@@ -14,7 +14,7 @@ import { UpdateNoteDialogComponent } from './update-note-dialog/update-note-dial
 })
 export class NoteListComponent implements OnInit {
   noteList!: any;
-  showNoteOptions: boolean = false;
+  showNoteOptions!: number | null;
 
   constructor(private noteService: NotesService, private dialog: MatDialog) {}
 
@@ -31,15 +31,14 @@ export class NoteListComponent implements OnInit {
   }
 
   updateNoteDialog(note: any) {
-    // console.log('update note', id);
     this.dialog.open(UpdateNoteDialogComponent, { data: note, width: '30rem' });
   }
 
-  showOptions() {
-    this.showNoteOptions = true;
+  showOptions(id: number) {
+    this.showNoteOptions = id;
   }
 
   hideOptions() {
-    this.showNoteOptions = false;
+    this.showNoteOptions = null;
   }
 }

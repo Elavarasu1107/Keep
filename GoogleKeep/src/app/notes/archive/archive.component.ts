@@ -13,7 +13,7 @@ import { NotesService } from 'src/app/services/notes.service';
 })
 export class ArchiveComponent implements AfterContentChecked {
   noteList!: any;
-  showNoteOptions: boolean = false;
+  showNoteOptions!: number | null;
 
   constructor(
     private noteService: NotesService,
@@ -37,11 +37,11 @@ export class ArchiveComponent implements AfterContentChecked {
     return this.noteService.noteList;
   }
 
-  showOptions() {
-    this.showNoteOptions = true;
+  showOptions(id: number) {
+    this.showNoteOptions = id;
   }
 
   hideOptions() {
-    this.showNoteOptions = false;
+    this.showNoteOptions = null;
   }
 }

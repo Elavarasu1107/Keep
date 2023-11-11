@@ -1,7 +1,8 @@
 <div class="container-fluid note-list mt-3 p-0 h-100">
     <div class="row d-flex gap-3">
         <div class="col w-75" *ngFor="let note of noteList">
-            <div class="card" style="width: 18rem;" *ngIf="note.is_archive === true && note.is_trash === false">
+            <div class="card" style="width: 18rem;" *ngIf="note.is_archive === true && note.is_trash === false"
+                (mouseenter)="showOptions(note.id)" (mouseleave)="hideOptions()">
                 <div class="card-body p-0 m-0">
                     <div class="px-2 mx-1">
                         <h4 class="card-title my-2">{{ note.title }}</h4>
@@ -13,7 +14,7 @@
                             <mat-icon>cancel</mat-icon>
                         </button>
                     </mat-chip-row>
-                    <div class="d-flex justify-content-between" [ngClass]="{'show-options': !showNoteOptions}">
+                    <div class="d-flex justify-content-between invisible" [ngClass]="{'show-options': showNoteOptions}">
                         <app-note-options [noteId]="note.id" [fromComp]="'archive'"></app-note-options>
                     </div>
                 </div>
