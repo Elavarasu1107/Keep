@@ -4,6 +4,8 @@ import { HttpService } from '../../services/http.service';
 import { HttpHeaders } from '@angular/common/http';
 import { Observer } from 'rxjs';
 import { NotesService } from '../../services/notes.service';
+import { MatDialog } from '@angular/material/dialog';
+import { UpdateNoteDialogComponent } from './update-note-dialog/update-note-dialog.component';
 
 @Component({
   selector: 'app-note-list',
@@ -14,7 +16,7 @@ export class NoteListComponent implements OnInit {
   noteList!: any;
   showNoteOptions: boolean = false;
 
-  constructor(private noteService: NotesService) {}
+  constructor(private noteService: NotesService, private dialog: MatDialog) {}
 
   ngOnInit(): void {
     this.noteService.getNotesFromDB('/notes/');
@@ -26,6 +28,11 @@ export class NoteListComponent implements OnInit {
 
   getNoteList() {
     return this.noteService.noteList;
+  }
+
+  updateNoteDialog(note: any) {
+    // console.log('update note', id);
+    this.dialog.open(UpdateNoteDialogComponent, { data: note, width: '30rem' });
   }
 
   showOptions() {

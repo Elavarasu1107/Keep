@@ -5,15 +5,17 @@
             <div class="card" style="width: 20rem;" (mouseenter)="showOptions()" (mouseleave)="hideOptions()"
                 *ngIf="note.is_archive === false && note.is_trash === false">
                 <div class="card-body">
-                    <h4 class="card-title">{{ note.title }}</h4>
-                    <p class="card-text">{{ note.description }}</p>
+                    <div (click)="updateNoteDialog(note)">
+                        <h4 class="card-title">{{ note.title }}</h4>
+                        <p class="card-text">{{ note.description }}</p>
+                    </div>
                     <mat-chip-row *ngIf="note.remainder != null" class="mt-1" (removed)="removeReminder(note.id)">
                         <h5 class="m-0">{{ note.remainder }}</h5>
                         <button matChipRemove [attr.aria-label]="'remove reminder '">
                             <mat-icon>cancel</mat-icon>
                         </button>
                     </mat-chip-row>
-                    <div class="d-flex justify-content-between" [ngClass]="{'show-options': !showNoteOptions}">
+                    <div class="d-flex justify-content-between mt-2" [ngClass]="{'show-options': !showNoteOptions}">
                         <app-note-options [noteId]="note.id" [fromComp]="'notes'"></app-note-options>
                     </div>
                 </div>

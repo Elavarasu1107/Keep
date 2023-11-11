@@ -63,6 +63,23 @@ export class NotesService {
     });
   }
 
+  updateNotesData(data: any) {
+    this.noteList.map((item) => {
+      if (item.id === data.id) {
+        item.title = data.title;
+        item.description = data.description;
+        this.noteList = [...this.noteList];
+        this.httpService
+          .update(
+            `/notes/?id=${item.id}`,
+            data,
+            `Bearer ${this.cookie.getToken()}`
+          )
+          .subscribe((resp: any) => {});
+      }
+    });
+  }
+
   getNotesFromDB(endPoint: string) {
     this.httpService
       .get(endPoint, `Bearer ${this.cookie.getToken()}`)

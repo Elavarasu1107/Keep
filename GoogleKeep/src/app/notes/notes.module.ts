@@ -26,6 +26,7 @@ import { ArchiveComponent } from './archive/archive.component';
 import { RemindersComponent } from './reminders/reminders.component';
 import { LabelsComponent } from './labels/labels.component';
 import { TrashComponent } from './trash/trash.component';
+import { UpdateNoteDialogComponent } from './note-list/update-note-dialog/update-note-dialog.component';
 
 @NgModule({
   declarations: [
@@ -39,6 +40,7 @@ import { TrashComponent } from './trash/trash.component';
     RemindersComponent,
     LabelsComponent,
     TrashComponent,
+    UpdateNoteDialogComponent,
   ],
   imports: [
     CommonModule,
