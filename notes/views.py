@@ -35,7 +35,7 @@ class Notes(viewsets.ViewSet):
             serializer = NoteSerializer(data=request.data)
             serializer.is_valid(raise_exception=True)
             serializer.save()
-            self.redis_instance.hset_notes(request.user.id, serializer.data)
+            # self.redis_instance.hset_notes(request.user.id, serializer.data)
             return Response(
                 {"message": "Note Created", "status": 201, "data": serializer.data}, status=201
             )
@@ -72,7 +72,7 @@ class Notes(viewsets.ViewSet):
             serializer = NoteSerializer(note, data=request.data, partial=True)
             serializer.is_valid(raise_exception=True)
             serializer.save()
-            self.redis_instance.hset_notes(request.user.id, serializer.data)
+            # self.redis_instance.hset_notes(request.user.id, serializer.data)
             return Response(
                 {"message": "Note Updated", "status": 200, "data": serializer.data}, status=200
             )
@@ -88,7 +88,7 @@ class Notes(viewsets.ViewSet):
                 Note.objects.filter(is_trash=True, user=request.user.id).delete()
             else:
                 Note.objects.get(id=request.query_params.get("id"), user=request.user.id).delete()
-                self.redis_instance.hdel_notes(request.user.id, request.query_params.get("id"))
+                # self.redis_instance.hdel_notes(request.user.id, request.query_params.get("id"))
             return Response({"message": "Note Deleted", "status": 200, "data": {}}, status=200)
         except Exception as ex:
             return Response({"message": ex.args[0], "status": 400, "data": {}}, status=400)

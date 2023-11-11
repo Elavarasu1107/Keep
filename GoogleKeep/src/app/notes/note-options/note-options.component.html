@@ -5,19 +5,19 @@
         </button>
         <mat-menu #reminder="matMenu">
             <h5 class="px-3">Reminder:</h5>
-            <div style="width: 15rem;">
+            <div style="width: 15rem;" (click)="setReminderForToday('today')">
                 <button class="d-flex w-100 btn btn-light justify-content-between align-items-center h-50">
                     <h5 class="m-0 p-0">Later Today</h5>
                     <h5 class="m-0 p-0">8:00PM</h5>
                 </button>
             </div>
-            <div style="width: 15rem;">
+            <div style="width: 15rem;" (click)="setReminderForToday('tomorrow')">
                 <button class="d-flex w-100 btn btn-light justify-content-between align-items-center h-50">
                     <h5 class="m-0 p-0">Tomorrow</h5>
                     <h5 class="m-0 p-0">8:00AM</h5>
                 </button>
             </div>
-            <div style="width: 15rem;">
+            <div style="width: 15rem;" (click)="setReminderForToday('nextMonday')">
                 <button class="d-flex w-100 btn btn-light justify-content-between align-items-center h-50">
                     <h5 class="m-0 p-0">Next Week</h5>
                     <h5 class="m-0 p-0">Mon,8:00AM</h5>
@@ -44,7 +44,8 @@
         </mat-menu>
     </div>
     <div>
-        <button mat-icon-button aria-label="image">
+        <input type="file" #fileInput (change)="onFileSelected($event)" style="display: none;" />
+        <button mat-icon-button aria-label="image" (click)="fileInput.click()">
             <mat-icon>image</mat-icon>
         </button>
 

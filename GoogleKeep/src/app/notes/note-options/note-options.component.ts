@@ -1,4 +1,11 @@
-import { Component, ViewChild, Input, AfterViewInit } from '@angular/core';
+import {
+  Component,
+  ViewChild,
+  Input,
+  AfterViewInit,
+  EventEmitter,
+  Output,
+} from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatMenuTrigger } from '@angular/material/menu';
@@ -16,6 +23,7 @@ export class NoteOptionsComponent implements AfterViewInit {
   @ViewChild('menuTrigger') menuTrigger!: MatMenuTrigger;
   @Input() fromComp!: string;
   @Input() noteId!: any;
+  @Output() noteImage = new EventEmitter<File>();
 
   constructor(
     private dialog: MatDialog,
@@ -31,6 +39,36 @@ export class NoteOptionsComponent implements AfterViewInit {
 
   setNoteId() {
     this.noteService.noteId = this.noteId;
+  }
+
+  setReminderForToday(day: string) {
+    const now = new Date();
+
+    let time: string = '';
+    if (day === 'today') {
+      time = `${now.getFullYear()}-${
+        now.getMonth() + 1
+      }-${now.getDate()}T20:00Z`;
+    } else if (day === 'tomorrow') {
+      time = `${now.getFullYear()}-${now.getMonth() + 1}-${
+        now.getDate() + 1
+      }T08:00Z`;
+    } else {
+      const daysUntilMonday = (1 + 7 - now.getDay()) % 7;
+      now.setDate(now.getDate() + daysUntilMonday);
+      time = `${now.getFullYear()}-${
+        now.getMonth() + 1
+      }-${now.getDate()}T08:00Z`;
+    }
+    if (this.noteService.noteId === undefined) {
+      this.noteService.setReminderForNotes(time);
+      return;
+    }
+    this.noteService.updateReminderForNotes(this.noteService.noteId, time);
+  }
+
+  onFileSelected(event: any) {
+    this.noteImage.emit(event.target.files);
   }
 
   deleteNote() {

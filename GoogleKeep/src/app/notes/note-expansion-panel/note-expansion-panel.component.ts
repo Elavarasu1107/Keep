@@ -24,12 +24,13 @@ export class NoteExpansionPanelComponent implements AfterViewInit, OnInit {
   panelClose!: any;
   inputPlaceHolder!: string;
   noteForm!: FormGroup;
+  noteImage!: File;
 
   constructor(
-    private httpService: HttpService,
     private fb: FormBuilder,
+    private noteService: NotesService,
     private cookie: CookieService,
-    private noteService: NotesService
+    private httpService: HttpService
   ) {}
 
   ngOnInit(): void {
@@ -69,12 +70,23 @@ export class NoteExpansionPanelComponent implements AfterViewInit, OnInit {
     this.noteService.reminderData = null;
   }
 
+  getImageData(data: any) {
+    this.noteImage = data[0];
+  }
+
   addNote(form: any) {
     const noteData = form.value;
+    // const formData = new FormData();
+    // Object.keys(noteData).forEach((key) => {
+    //   formData.append(key, noteData[key]);
+    // });
+    // if (this.noteImage != undefined) {
+    //   formData.append('image', this.noteImage, this.noteImage.name);
+    // }
 
     if (noteData.title != null || noteData.description != null) {
       this.httpService
-        .post('/notes/', form.value, `Bearer ${this.cookie.getToken()}`)
+        .post('/notes/', noteData, `Bearer ${this.cookie.getToken()}`)
         .subscribe((resp) => {
           complete: {
             const data = resp;
