@@ -72,7 +72,10 @@ export class NoteOptionsComponent implements AfterViewInit {
   }
 
   deleteNote() {
-    return this.httpService
+    if (!this.noteId) {
+      return;
+    }
+    this.httpService
       .update(
         `/notes/trash/?id=${this.noteId}`,
         {},
@@ -92,6 +95,9 @@ export class NoteOptionsComponent implements AfterViewInit {
   }
 
   addNoteToArchive() {
+    if (!this.noteId) {
+      return;
+    }
     this.noteService.noteList.map((item) => {
       if (item.id === this.noteId) {
         item.is_archive = !item.is_archive;

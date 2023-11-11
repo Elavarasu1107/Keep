@@ -1,15 +1,15 @@
 <app-note-expansion-panel class="w-100 d-flex justify-content-center"></app-note-expansion-panel>
-<div class="container note-list mt-3">
+<div class="container-fluid note-list mt-3 p-0">
     <div class="row d-flex gap-3">
-        <div class="col" *ngFor="let note of getNoteList()">
-            <div class="card" style="width: 20rem;" (mouseenter)="showOptions()" (mouseleave)="hideOptions()"
+        <div class="col w-75" *ngFor="let note of getNoteList()">
+            <div class="card" style="width: 18rem;" (mouseenter)="showOptions()" (mouseleave)="hideOptions()"
                 *ngIf="note.is_archive === false && note.is_trash === false">
-                <div class="card-body">
-                    <div (click)="updateNoteDialog(note)">
-                        <h4 class="card-title">{{ note.title }}</h4>
+                <div class="card-body p-0 m-0">
+                    <div (click)="updateNoteDialog(note)" class="px-2 mx-1">
+                        <h4 class="card-title my-2">{{ note.title }}</h4>
                         <p class="card-text">{{ note.description }}</p>
                     </div>
-                    <mat-chip-row *ngIf="note.remainder != null" class="mt-1" (removed)="removeReminder(note.id)">
+                    <mat-chip-row *ngIf="note.remainder != null" class="mx-2 mt-1" (removed)="removeReminder(note.id)">
                         <h5 class="m-0">{{ note.remainder }}</h5>
                         <button matChipRemove [attr.aria-label]="'remove reminder '">
                             <mat-icon>cancel</mat-icon>
