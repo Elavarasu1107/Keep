@@ -40,7 +40,8 @@ export class NotesService {
   }
 
   setNoteToView(newNoteData: note) {
-    this.noteList = [newNoteData, ...this.noteList];
+    if (!newNoteData.is_archive)
+      this.noteList = [newNoteData, ...this.noteList];
   }
 
   setReminderForNotes(date: string) {

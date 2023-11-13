@@ -24,6 +24,7 @@ export class NoteOptionsComponent implements AfterViewInit {
   @Input() fromComp!: string;
   @Input() noteId!: any;
   @Output() noteImage = new EventEmitter<File>();
+  @Output() is_archive = new EventEmitter<boolean>();
 
   constructor(
     private dialog: MatDialog,
@@ -96,6 +97,7 @@ export class NoteOptionsComponent implements AfterViewInit {
 
   addNoteToArchive() {
     if (!this.noteId) {
+      this.is_archive.emit(true);
       return;
     }
     this.noteService.noteList.map((item) => {

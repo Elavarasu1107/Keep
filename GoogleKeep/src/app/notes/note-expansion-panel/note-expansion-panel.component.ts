@@ -38,6 +38,7 @@ export class NoteExpansionPanelComponent implements AfterViewInit, OnInit {
       title: new FormControl(),
       description: new FormControl(),
       remainder: new FormControl(),
+      is_archive: new FormControl(),
     });
 
     this.inputPlaceHolder = 'Take a note...';
@@ -74,6 +75,10 @@ export class NoteExpansionPanelComponent implements AfterViewInit, OnInit {
     this.noteImage = data[0];
   }
 
+  archiveWhileCreation(data: any) {
+    this.noteForm.get('is_archive')?.patchValue(data);
+  }
+
   addNote(form: any) {
     const noteData = form.value;
     // const formData = new FormData();
@@ -95,7 +100,7 @@ export class NoteExpansionPanelComponent implements AfterViewInit, OnInit {
         });
     }
     this.noteForm.reset();
-    this.removeReminder();
+    // this.removeReminder();
   }
 
   @HostListener('click', ['$event'])

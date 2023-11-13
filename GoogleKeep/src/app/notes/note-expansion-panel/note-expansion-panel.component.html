@@ -34,7 +34,8 @@
             </mat-chip-row>
             <div class="d-flex justify-content-between align-items-center">
                 <div class="d-flex justify-content-between">
-                    <app-note-options (noteImage)="getImageData($event)"></app-note-options>
+                    <app-note-options (noteImage)="getImageData($event)"
+                        (is_archive)="archiveWhileCreation($event)"></app-note-options>
                     <div>
                         <button mat-icon-button aria-label="menu">
                             <mat-icon>undo</mat-icon>
