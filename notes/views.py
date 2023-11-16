@@ -159,7 +159,7 @@ class Notes(viewsets.ViewSet):
         except Exception as ex:
             return Response({"message": ex.args[0], "status": 400, "data": {}}, status=400)
 
-    @action(methods=["DELETE"], detail=True)
+    @action(methods=["PUT"], detail=True)
     def delete_collaborator(self, request):
         try:
             note = Note.objects.get(id=request.data.get("id"), user=request.user.id)

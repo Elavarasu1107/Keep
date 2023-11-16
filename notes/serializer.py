@@ -23,7 +23,7 @@ class NoteSerializer(serializers.ModelSerializer):
             "user",
             "collaborator",
             "label",
-            "image"
+            "image",
         ]
         read_only_fields = ["collaborator", "label", "user"]
 

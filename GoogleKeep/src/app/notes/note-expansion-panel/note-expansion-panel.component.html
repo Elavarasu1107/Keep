@@ -32,6 +32,15 @@
                     <mat-icon>cancel</mat-icon>
                 </button>
             </mat-chip-row>
+            <div *ngIf="getCollaborators().length != 0">
+                <mat-chip-row *ngFor="let col of getCollaborators()" (removed)="removeCollaborator(col)">
+                    <h5 class="m-0">{{ col }}</h5>
+                    <button matChipRemove [attr.aria-label]="'remove collaborator'">
+                        <mat-icon>cancel</mat-icon>
+                    </button>
+                </mat-chip-row>
+            </div>
+
             <div class="d-flex justify-content-between align-items-center">
                 <div class="d-flex justify-content-between">
                     <app-note-options (noteImage)="getImageData($event)"

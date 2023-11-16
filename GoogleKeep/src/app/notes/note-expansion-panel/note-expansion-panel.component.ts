@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 import { MatExpansionPanel } from '@angular/material/expansion';
 import { HttpService } from '../../services/http.service';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { CookieService } from '../../services/cookie.service';
 import { NotesService } from '../../services/notes.service';
 
@@ -38,7 +38,8 @@ export class NoteExpansionPanelComponent implements AfterViewInit, OnInit {
       title: new FormControl(),
       description: new FormControl(),
       remainder: new FormControl(),
-      is_archive: new FormControl(),
+      is_archive: new FormControl(false),
+      collaborator: this.fb.array([]),
     });
 
     this.inputPlaceHolder = 'Take a note...';
@@ -79,8 +80,23 @@ export class NoteExpansionPanelComponent implements AfterViewInit, OnInit {
     this.noteForm.get('is_archive')?.patchValue(data);
   }
 
-  addNote(form: any) {
-    const noteData = form.value;
+  getCollaborators() {
+    return this.noteService.collaborators;
+  }
+
+  removeCollaborator(email: string) {
+    this.noteService.collaborators.splice(
+      this.noteService.collaborators.indexOf(email),
+      1
+    );
+  }
+
+  addNote() {
+    const collaborators = this.noteForm.get('collaborator') as FormArray;
+    this.noteService.collaborators.forEach((email) => {
+      collaborators.push(new FormControl(email));
+    });
+
     // const formData = new FormData();
     // Object.keys(noteData).forEach((key) => {
     //   formData.append(key, noteData[key]);
@@ -89,9 +105,16 @@ export class NoteExpansionPanelComponent implements AfterViewInit, OnInit {
     //   formData.append('image', this.noteImage, this.noteImage.name);
     // }
 
-    if (noteData.title != null || noteData.description != null) {
+    if (
+      this.noteForm.value.title != null ||
+      this.noteForm.value.description != null
+    ) {
       this.httpService
-        .post('/notes/', noteData, `Bearer ${this.cookie.getToken()}`)
+        .post(
+          '/notes/',
+          this.noteForm.value,
+          `Bearer ${this.cookie.getToken()}`
+        )
         .subscribe((resp) => {
           complete: {
             const data = resp;
@@ -110,7 +133,7 @@ export class NoteExpansionPanelComponent implements AfterViewInit, OnInit {
       this.panelClose?.contains(event.target)
     ) {
       this.inputPlaceHolder = 'Take a note...';
-      this.addNote(this.noteForm);
+      this.addNote();
       this.expansionPanel.close();
     }
   }

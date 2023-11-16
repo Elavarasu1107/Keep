@@ -1,4 +1,3 @@
-import requests
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import redirect, render
 from django.views.generic import View
@@ -8,7 +7,7 @@ from rest_framework.response import Response
 from rest_framework.reverse import reverse
 from rest_framework_simplejwt.tokens import RefreshToken
 from .serializer import LoginSerializer, RegisterSerializer
-
+from .models import User
 
 # Create your views here.
 
@@ -25,6 +24,17 @@ class UserRegistration(viewsets.ViewSet):
             return Response(
                 {"message": "User Registered", "status": 201, "data": serializer.data},
                 status=status.HTTP_201_CREATED,
+            )
+        except Exception as ex:
+            return Response({"message": ex.args[0], "status": 400, "data": {}}, status=400)
+
+    def list(self, request):
+        try:
+            users = User.objects.all().values_list('email', flat=True)
+            # serializer = RegisterSerializer(users, many=True)
+            return Response(
+                {"message": "Users Retrieved", "status": 200, "data": users},
+                status=status.HTTP_200_OK,
             )
         except Exception as ex:
             return Response({"message": ex.args[0], "status": 400, "data": {}}, status=400)

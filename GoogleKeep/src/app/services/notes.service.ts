@@ -34,6 +34,8 @@ export class NotesService {
   noteId!: number;
   labelList!: label[];
 
+  collaborators: string[] = [];
+
   constructor(private httpService: HttpService, private cookie: CookieService) {
     // this.noteId = 0;
     // this.noteListReminder = {};

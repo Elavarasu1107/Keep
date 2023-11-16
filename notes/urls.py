@@ -21,7 +21,7 @@ urlpatterns = [
     path(
         "collaborator/",
         views.Notes.as_view(
-            {"post": "add_collaborator", "delete": "delete_collaborator"}, name="collaborator"
+            {"post": "add_collaborator", "put": "delete_collaborator"}, name="collaborator"
         ),
     ),
 ]
