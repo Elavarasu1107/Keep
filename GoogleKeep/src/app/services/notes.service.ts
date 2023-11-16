@@ -12,7 +12,7 @@ interface note {
   is_archive: boolean;
   is_trash: boolean;
   user: number;
-  collaborator: [];
+  collaborator: string[];
   label: [];
 }
 
@@ -83,6 +83,29 @@ export class NotesService {
     });
   }
 
+  setCollaboratorForNotes(collabList: string[]) {
+    if (this.noteId === undefined) {
+      this.collaborators = collabList;
+      return;
+    }
+
+    this.noteList.map((note) => {
+      // note.collaborator = collabList
+      if (note.id === this.noteId) {
+        this.httpService
+          .post(
+            '/notes/collaborator/',
+            { id: note.id, collaborator: collabList },
+            `Bearer ${this.cookie.getToken()}`
+          )
+          .subscribe((resp) => {
+            note.collaborator = [...note.collaborator, ...collabList];
+          });
+      }
+    });
+    this.noteList = [...this.noteList];
+  }
+
   getNotesFromDB(endPoint: string) {
     this.httpService
       .get(endPoint, `Bearer ${this.cookie.getToken()}`)
@@ -110,6 +133,22 @@ export class NotesService {
           .update(
             `/notes/?id=${item.id}`,
             { remainder: item.remainder },
+            `Bearer ${this.cookie.getToken()}`
+          )
+          .subscribe((resp: any) => {});
+      }
+    });
+  }
+
+  removeCollaboratorFromDB(id: number, email: string, component: string) {
+    this.noteList.map((item) => {
+      if (item.id === id) {
+        item.collaborator.splice(item.collaborator.indexOf(email), 1);
+        this.noteList = [...this.noteList];
+        this.httpService
+          .update(
+            `/notes/collaborator/`,
+            { id: id, collaborator: email },
             `Bearer ${this.cookie.getToken()}`
           )
           .subscribe((resp: any) => {});

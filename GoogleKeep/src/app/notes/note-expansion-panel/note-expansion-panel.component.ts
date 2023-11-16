@@ -96,6 +96,7 @@ export class NoteExpansionPanelComponent implements AfterViewInit, OnInit {
     this.noteService.collaborators.forEach((email) => {
       collaborators.push(new FormControl(email));
     });
+    console.log(this.noteForm.value);
 
     // const formData = new FormData();
     // Object.keys(noteData).forEach((key) => {

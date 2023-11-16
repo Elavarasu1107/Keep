@@ -133,10 +133,13 @@ export class NoteOptionsComponent implements AfterViewInit {
   showCollaborators() {
     const dialogRef = this.dialog.open(CollaboratorDialog, {
       restoreFocus: false,
+      width: '30rem',
+      height: '20rem',
     });
 
     dialogRef.afterClosed().subscribe((data) => {
-      this.noteService.collaborators = data.collaborators;
+      // this.noteService.collaborators = data.collaborators;
+      this.noteService.setCollaboratorForNotes(data.collaborators);
       this.menuTrigger.focus;
     });
   }
@@ -181,7 +184,7 @@ export class DialogFromMenu {
     <div mat-dialog-content>
       <div
         *ngFor="let col of collaborators"
-        class="align-items-center d-flex justify-content-between border border-2"
+        class="align-items-center d-flex justify-content-between border border-2 rounded p-2 m-1 bg-light"
       >
         <h4 class="m-0 p-0">{{ col }}</h4>
         <mat-icon (click)="removeCollaborator(col)">close</mat-icon>
@@ -204,7 +207,7 @@ export class DialogFromMenu {
         </button>
       </div>
     </div>
-    <div mat-dialog-actions>
+    <div mat-dialog-actions class="d-flex justify-content-end">
       <button mat-button mat-dialog-close (click)="onClose()">Save</button>
     </div>`,
   standalone: true,
