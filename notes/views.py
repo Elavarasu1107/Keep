@@ -10,6 +10,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework_simplejwt.authentication import JWTAuthentication
 
+from labels.models import Label
 from user.models import User
 from user.utils import CsrfExemptSessionAuthentication
 from utils.redis_cache import RedisManager
@@ -56,6 +57,7 @@ class Notes(viewsets.ViewSet):
             else:
                 notes = Note.objects.filter(user=request.user.id, is_archive=False, is_trash=False).order_by('-id')
             serializer = NoteSerializer(notes, many=True)
+            print(serializer.data)
             return Response(
                 {"message": "Notes Retrieved", "status": 200, "data": serializer.data}, status=200
             )
@@ -167,6 +169,33 @@ class Notes(viewsets.ViewSet):
             note.collaborator.remove(collaborator)
             return Response(
                 {"message": "Collaborator Removed", "status": 200, "data": {}},
+                status=200,
+            )
+        except Exception as ex:
+            return Response({"message": ex.args[0], "status": 400, "data": {}}, status=400)
+
+    @action(methods=["POST"], detail=True)
+    def add_label(self, request):
+        try:
+            note = Note.objects.get(id=request.data.get("id"), user=request.user.id)
+            for lab in request.data.get("label"):
+                label = Label.objects.get(title=lab)
+                note.label.add(label)
+            return Response(
+                {"message": "Labels added to the note", "status": 200, "data": {}},
+                status=200,
+            )
+        except Exception as ex:
+            return Response({"message": ex.args[0], "status": 400, "data": {}}, status=400)
+
+    @action(methods=["PUT"], detail=True)
+    def delete_label(self, request):
+        try:
+            note = Note.objects.get(id=request.data.get("id"), user=request.user.id)
+            label = Label.objects.get(title=request.data.get("label"))
+            note.label.remove(label)
+            return Response(
+                {"message": "Label Removed", "status": 200, "data": {}},
                 status=200,
             )
         except Exception as ex:

@@ -27,6 +27,7 @@ import { RemindersComponent } from './reminders/reminders.component';
 import { LabelsComponent } from './labels/labels.component';
 import { TrashComponent } from './trash/trash.component';
 import { UpdateNoteDialogComponent } from './note-list/update-note-dialog/update-note-dialog.component';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @NgModule({
   declarations: [
@@ -60,6 +61,7 @@ import { UpdateNoteDialogComponent } from './note-list/update-note-dialog/update
     MatFormFieldModule,
     MatDialogModule,
     MatChipsModule,
+    MatCheckboxModule,
   ],
 })
 export class NotesModule {}

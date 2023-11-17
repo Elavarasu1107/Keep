@@ -23,6 +23,7 @@ import { CookieService } from '../../services/cookie.service';
 import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
 import { MatIcon, MatIconModule } from '@angular/material/icon';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @Component({
   selector: 'app-note-options',
@@ -138,7 +139,6 @@ export class NoteOptionsComponent implements AfterViewInit {
     });
 
     dialogRef.afterClosed().subscribe((data) => {
-      // this.noteService.collaborators = data.collaborators;
       this.noteService.setCollaboratorForNotes(data.collaborators);
       this.menuTrigger.focus;
     });
@@ -150,6 +150,19 @@ export class NoteOptionsComponent implements AfterViewInit {
     });
 
     dialogRef.afterClosed().subscribe(() => {
+      this.menuTrigger.focus;
+    });
+  }
+
+  openLabelDialog() {
+    const dialogRef = this.dialog.open(LabelDialog, {
+      restoreFocus: false,
+      width: '20rem',
+      maxHeight: '20rem',
+    });
+
+    dialogRef.afterClosed().subscribe((data) => {
+      this.noteService.setLabelForNotes(data);
       this.menuTrigger.focus;
     });
   }
@@ -263,5 +276,71 @@ export class CollaboratorDialog implements OnInit {
 
   onClose() {
     this.dialogRef.close({ collaborators: this.collaborators });
+  }
+}
+
+@Component({
+  selector: 'dialog-from-menu-dialog',
+  template: `
+    <h2 class="text-center">Labels</h2>
+    <mat-dialog-actions class="d-flex flex-column justify-content-start">
+      <div *ngFor="let label of getLabels()">
+        <mat-checkbox
+          (change)="isChecked($event, label.title)"
+          [value]="label.title"
+          >{{ label.title }}</mat-checkbox
+        >
+      </div>
+      <div mat-dialog-actions class="d-flex justify-content-end">
+        <button
+          mat-button
+          mat-dialog-close
+          (click)="onSave()"
+          class="btn btn-outline-secondary"
+        >
+          Save
+        </button>
+      </div>
+    </mat-dialog-actions>
+  `,
+  standalone: true,
+  imports: [
+    MatDialogModule,
+    ReactiveFormsModule,
+    CommonModule,
+    MatCheckboxModule,
+  ],
+})
+export class LabelDialog implements OnInit {
+  labelList: string[] = [];
+
+  constructor(
+    private noteService: NotesService,
+    private httpService: HttpService,
+    private cookie: CookieService,
+    public dialogRef: MatDialogRef<LabelDialog>,
+    @Optional() @Inject(MAT_DIALOG_DATA) public labelData: string[]
+  ) {}
+
+  ngOnInit(): void {
+    this.httpService
+      .get('/labels/', `Bearer ${this.cookie.getToken()}`)
+      .subscribe((resp) => {
+        this.noteService.labelList = resp.data;
+      });
+  }
+
+  getLabels() {
+    return this.noteService.labelList;
+  }
+
+  isChecked(event: any, labelName: string) {
+    event.checked
+      ? this.labelList.push(labelName)
+      : this.labelList.splice(this.labelList.indexOf(labelName), 1);
+  }
+
+  onSave() {
+    this.dialogRef.close({ labels: this.labelList });
   }
 }

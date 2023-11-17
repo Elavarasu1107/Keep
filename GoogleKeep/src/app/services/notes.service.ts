@@ -13,7 +13,7 @@ interface note {
   is_trash: boolean;
   user: number;
   collaborator: string[];
-  label: [];
+  label: string[];
 }
 
 interface label {
@@ -33,6 +33,7 @@ export class NotesService {
   noteListReminder!: any;
   noteId!: number;
   labelList!: label[];
+  noteLabels: string[] = [];
 
   collaborators: string[] = [];
 
@@ -90,7 +91,6 @@ export class NotesService {
     }
 
     this.noteList.map((note) => {
-      // note.collaborator = collabList
       if (note.id === this.noteId) {
         this.httpService
           .post(
@@ -154,6 +154,44 @@ export class NotesService {
           .subscribe((resp: any) => {});
       }
     });
+  }
+
+  removeLabelFromDB(id: number, label: string, component: string) {
+    this.noteList.map((item) => {
+      if (item.id === id) {
+        item.label.splice(item.label.indexOf(label), 1);
+        this.noteList = [...this.noteList];
+        this.httpService
+          .update(
+            `/notes/label/`,
+            { id: id, label: label },
+            `Bearer ${this.cookie.getToken()}`
+          )
+          .subscribe((resp: any) => {});
+      }
+    });
+  }
+
+  setLabelForNotes(data: any) {
+    if (this.noteId === undefined) {
+      this.noteLabels = data.labels;
+      return;
+    }
+
+    this.noteList.map((note) => {
+      if (note.id === this.noteId) {
+        this.httpService
+          .post(
+            '/notes/label/',
+            { id: note.id, label: data.labels },
+            `Bearer ${this.cookie.getToken()}`
+          )
+          .subscribe((resp) => {
+            note.label = [...note.label, ...data.labels];
+          });
+      }
+    });
+    this.noteList = [...this.noteList];
   }
 
   getLabelFromDB(endPoint: string) {

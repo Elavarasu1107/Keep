@@ -40,6 +40,7 @@ export class NoteExpansionPanelComponent implements AfterViewInit, OnInit {
       remainder: new FormControl(),
       is_archive: new FormControl(false),
       collaborator: this.fb.array([]),
+      label: this.fb.array([]),
     });
 
     this.inputPlaceHolder = 'Take a note...';
@@ -84,6 +85,10 @@ export class NoteExpansionPanelComponent implements AfterViewInit, OnInit {
     return this.noteService.collaborators;
   }
 
+  getLabels() {
+    return this.noteService.noteLabels;
+  }
+
   removeCollaborator(email: string) {
     this.noteService.collaborators.splice(
       this.noteService.collaborators.indexOf(email),
@@ -91,12 +96,23 @@ export class NoteExpansionPanelComponent implements AfterViewInit, OnInit {
     );
   }
 
+  removeLabels(label: string) {
+    this.noteService.noteLabels.splice(
+      this.noteService.noteLabels.indexOf(label),
+      1
+    );
+  }
+
   addNote() {
     const collaborators = this.noteForm.get('collaborator') as FormArray;
+    const label = this.noteForm.get('label') as FormArray;
     this.noteService.collaborators.forEach((email) => {
       collaborators.push(new FormControl(email));
     });
-    console.log(this.noteForm.value);
+
+    this.noteService.noteLabels.forEach((item) => {
+      label.push(new FormControl(item));
+    });
 
     // const formData = new FormData();
     // Object.keys(noteData).forEach((key) => {
@@ -123,8 +139,12 @@ export class NoteExpansionPanelComponent implements AfterViewInit, OnInit {
           }
         });
     }
-    this.noteForm.reset();
-    // this.removeReminder();
+    this.noteForm.reset({ is_archive: false });
+    collaborators.clear();
+    label.clear();
+    this.noteService.noteLabels = [];
+    this.noteService.collaborators = [];
+    this.removeReminder();
   }
 
   @HostListener('click', ['$event'])
