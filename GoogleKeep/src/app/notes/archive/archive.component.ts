@@ -44,4 +44,12 @@ export class ArchiveComponent implements AfterContentChecked {
   hideOptions() {
     this.showNoteOptions = null;
   }
+
+  removeCollaborator(id: number, email: string) {
+    this.noteService.removeCollaboratorFromDB(id, email, 'notes');
+  }
+
+  removeLabel(id: number, label: string) {
+    this.noteService.removeLabelFromDB(id, label, 'notes');
+  }
 }

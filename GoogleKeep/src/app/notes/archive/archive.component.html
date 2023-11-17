@@ -14,6 +14,20 @@
                             <mat-icon>cancel</mat-icon>
                         </button>
                     </mat-chip-row>
+                    <mat-chip-row *ngFor="let col of note.collaborator" class="mt-1 mx-2"
+                        (removed)="removeCollaborator(note.id, col)">
+                        <h5 class="m-0">{{ col }}</h5>
+                        <button matChipRemove [attr.aria-label]="'remove collaborator'">
+                            <mat-icon>cancel</mat-icon>
+                        </button>
+                    </mat-chip-row>
+                    <mat-chip-row *ngFor="let label of note.label" class="mt-1 mx-2"
+                        (removed)="removeLabel(note.id, label)">
+                        <h5 class="m-0">{{ label }}</h5>
+                        <button matChipRemove [attr.aria-label]="'remove label'">
+                            <mat-icon>cancel</mat-icon>
+                        </button>
+                    </mat-chip-row>
                     <div class="d-flex justify-content-between invisible" [ngClass]="{'show-options': showNoteOptions}">
                         <app-note-options [noteId]="note.id" [fromComp]="'archive'"></app-note-options>
                     </div>

@@ -31,8 +31,6 @@ export class NoteListComponent implements OnInit {
   }
 
   removeLabel(id: number, label: string) {
-    console.log(id, label);
-
     this.noteService.removeLabelFromDB(id, label, 'notes');
   }
 

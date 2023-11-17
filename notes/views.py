@@ -57,7 +57,6 @@ class Notes(viewsets.ViewSet):
             else:
                 notes = Note.objects.filter(user=request.user.id, is_archive=False, is_trash=False).order_by('-id')
             serializer = NoteSerializer(notes, many=True)
-            print(serializer.data)
             return Response(
                 {"message": "Notes Retrieved", "status": 200, "data": serializer.data}, status=200
             )

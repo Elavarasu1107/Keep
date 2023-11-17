@@ -41,4 +41,11 @@ export class RemindersComponent implements AfterContentChecked {
     this.showNoteOptions = null;
   }
 
+  removeCollaborator(id: number, email: string) {
+    this.noteService.removeCollaboratorFromDB(id, email, 'notes');
+  }
+
+  removeLabel(id: number, label: string) {
+    this.noteService.removeLabelFromDB(id, label, 'notes');
+  }
 }
