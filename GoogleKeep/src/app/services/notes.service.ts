@@ -38,10 +38,10 @@ export class NotesService {
 
   collaborators: string[] = [];
 
-  constructor(private httpService: HttpService, private cookie: CookieService) {
-    // this.noteId = 0;
-    // this.noteListReminder = {};
-  }
+  constructor(
+    private httpService: HttpService,
+    private cookie: CookieService
+  ) {}
 
   setNoteToView(newNoteData: note) {
     if (!newNoteData.is_archive)

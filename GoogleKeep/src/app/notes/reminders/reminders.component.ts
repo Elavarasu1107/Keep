@@ -3,24 +3,29 @@ import {
   AfterContentChecked,
   AfterViewInit,
   AfterContentInit,
+  OnDestroy,
 } from '@angular/core';
 import { NotesService } from 'src/app/services/notes.service';
 import { UpdateNoteDialogComponent } from '../note-list/update-note-dialog/update-note-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-reminders',
   templateUrl: './reminders.component.html',
   styleUrls: ['./reminders.component.scss'],
 })
-export class RemindersComponent implements AfterContentChecked {
+export class RemindersComponent implements AfterContentChecked, OnDestroy {
   noteList!: any;
   showNoteOptions!: number | null;
+  subscription = new Subscription();
 
   constructor(private noteService: NotesService, private dialog: MatDialog) {}
 
   ngOnInit(): void {
-    this.noteService.getNotesFromDB('/notes/?fetch=remainder');
+    this.subscription.add(
+      this.noteService.getNotesFromDB('/notes/?fetch=remainder')
+    );
   }
 
   ngAfterContentChecked(): void {
@@ -28,7 +33,9 @@ export class RemindersComponent implements AfterContentChecked {
   }
 
   removeReminder(id: number) {
-    this.noteService.removeReminderFromDB(id, 'reminder');
+    this.subscription.add(
+      this.noteService.removeReminderFromDB(id, 'reminder')
+    );
   }
 
   getNoteList() {
@@ -44,11 +51,15 @@ export class RemindersComponent implements AfterContentChecked {
   }
 
   removeCollaborator(id: number, email: string) {
-    this.noteService.removeCollaboratorFromDB(id, email, 'notes');
+    this.subscription.add(
+      this.noteService.removeCollaboratorFromDB(id, email, 'notes')
+    );
   }
 
   removeLabel(id: number, label: string) {
-    this.noteService.removeLabelFromDB(id, label, 'notes');
+    this.subscription.add(
+      this.noteService.removeLabelFromDB(id, label, 'notes')
+    );
   }
 
   updateNoteDialog(note: any) {
@@ -57,5 +68,9 @@ export class RemindersComponent implements AfterContentChecked {
       width: '30rem',
       height: '35rem',
     });
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 }

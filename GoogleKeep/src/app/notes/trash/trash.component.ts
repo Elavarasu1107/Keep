@@ -1,16 +1,18 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { NotesService } from '../../services/notes.service';
 import { HttpService } from '../../services/http.service';
 import { CookieService } from '../../services/cookie.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-trash',
   templateUrl: './trash.component.html',
   styleUrls: ['./trash.component.scss'],
 })
-export class TrashComponent {
+export class TrashComponent implements OnDestroy {
   noteList!: any;
   showNoteOptions!: number | null;
+  subscription = new Subscription();
 
   constructor(
     private noteService: NotesService,
@@ -19,7 +21,7 @@ export class TrashComponent {
   ) {}
 
   ngOnInit(): void {
-    this.noteService.getNotesFromDB('/notes/trash/');
+    this.subscription.add(this.noteService.getNotesFromDB('/notes/trash/'));
   }
 
   ngAfterContentChecked(): void {
@@ -27,45 +29,55 @@ export class TrashComponent {
   }
 
   restoreNote(id: number) {
-    this.httpService
-      .update(`/notes/trash/?id=${id}`, {}, `Bearer ${this.cookie.getToken()}`)
-      .subscribe((resp) => {
-        this.noteService.noteList.map((item) => {
-          if (item.id === id) {
-            this.noteService.noteList.splice(
-              this.noteService.noteList.indexOf(item),
-              1
-            );
-          }
-          this.noteService.noteList = [...this.noteService.noteList];
-        });
-      });
+    this.subscription.add(
+      this.httpService
+        .update(
+          `/notes/trash/?id=${id}`,
+          {},
+          `Bearer ${this.cookie.getToken()}`
+        )
+        .subscribe((resp) => {
+          this.noteService.noteList.map((item) => {
+            if (item.id === id) {
+              this.noteService.noteList.splice(
+                this.noteService.noteList.indexOf(item),
+                1
+              );
+            }
+            this.noteService.noteList = [...this.noteService.noteList];
+          });
+        })
+    );
   }
 
   deleteNote(id: number) {
-    this.httpService
-      .delete(`/notes/?id=${id}`, `Bearer ${this.cookie.getToken()}`)
-      .subscribe((resp) => {
-        this.noteService.noteList.map((item) => {
-          if (item.id === id) {
-            this.noteService.noteList.splice(
-              this.noteService.noteList.indexOf(item),
-              1
-            );
-          }
-          this.noteService.noteList = [...this.noteService.noteList];
-        });
-      });
+    this.subscription.add(
+      this.httpService
+        .delete(`/notes/?id=${id}`, `Bearer ${this.cookie.getToken()}`)
+        .subscribe((resp) => {
+          this.noteService.noteList.map((item) => {
+            if (item.id === id) {
+              this.noteService.noteList.splice(
+                this.noteService.noteList.indexOf(item),
+                1
+              );
+            }
+            this.noteService.noteList = [...this.noteService.noteList];
+          });
+        })
+    );
   }
 
   deleteAllTrashNotes() {
-    this.httpService
-      .delete('/notes/?delete_all=true', `Bearer ${this.cookie.getToken()}`)
-      .subscribe((resp) => {
-        this.noteService.noteList = this.noteService.noteList.filter(
-          (item) => false
-        );
-      });
+    this.subscription.add(
+      this.httpService
+        .delete('/notes/?delete_all=true', `Bearer ${this.cookie.getToken()}`)
+        .subscribe((resp) => {
+          this.noteService.noteList = this.noteService.noteList.filter(
+            (item) => false
+          );
+        })
+    );
   }
 
   getNoteList() {
@@ -78,5 +90,9 @@ export class TrashComponent {
 
   hideOptions() {
     this.showNoteOptions = null;
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 }

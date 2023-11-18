@@ -2,34 +2,35 @@ import {
   Component,
   AfterContentInit,
   AfterContentChecked,
-  ChangeDetectorRef,
+  OnDestroy,
 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { NotesService } from 'src/app/services/notes.service';
 import { UpdateNoteDialogComponent } from '../note-list/update-note-dialog/update-note-dialog.component';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-archive',
   templateUrl: './archive.component.html',
   styleUrls: ['./archive.component.scss'],
 })
-export class ArchiveComponent implements AfterContentChecked {
+export class ArchiveComponent implements AfterContentChecked, OnDestroy {
   noteList!: any;
   showNoteOptions!: number | null;
+  subscription = new Subscription();
 
   constructor(private noteService: NotesService, private dialog: MatDialog) {}
 
   ngOnInit(): void {
-    this.noteService.getNotesFromDB('/notes/archive/');
+    this.subscription.add(this.noteService.getNotesFromDB('/notes/archive/'));
   }
 
   ngAfterContentChecked(): void {
     this.noteList = this.getNoteList();
-    // this.changeDetectionRef.markForCheck();
   }
 
   removeReminder(id: number) {
-    this.noteService.removeReminderFromDB(id, 'archive');
+    this.subscription.add(this.noteService.removeReminderFromDB(id, 'archive'));
   }
 
   getNoteList() {
@@ -45,11 +46,15 @@ export class ArchiveComponent implements AfterContentChecked {
   }
 
   removeCollaborator(id: number, email: string) {
-    this.noteService.removeCollaboratorFromDB(id, email, 'notes');
+    this.subscription.add(
+      this.noteService.removeCollaboratorFromDB(id, email, 'notes')
+    );
   }
 
   removeLabel(id: number, label: string) {
-    this.noteService.removeLabelFromDB(id, label, 'notes');
+    this.subscription.add(
+      this.noteService.removeLabelFromDB(id, label, 'notes')
+    );
   }
 
   updateNoteDialog(note: any) {
@@ -58,5 +63,9 @@ export class ArchiveComponent implements AfterContentChecked {
       width: '30rem',
       height: '35rem',
     });
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 }

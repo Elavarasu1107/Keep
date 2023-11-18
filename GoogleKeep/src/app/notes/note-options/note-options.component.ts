@@ -8,6 +8,7 @@ import {
   OnInit,
   Optional,
   Inject,
+  OnDestroy,
 } from '@angular/core';
 import {
   MAT_DIALOG_DATA,
@@ -24,18 +25,20 @@ import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
 import { MatIcon, MatIconModule } from '@angular/material/icon';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-note-options',
   templateUrl: './note-options.component.html',
   styleUrls: ['./note-options.component.scss'],
 })
-export class NoteOptionsComponent implements AfterViewInit {
+export class NoteOptionsComponent implements AfterViewInit, OnDestroy {
   @ViewChild('menuTrigger') menuTrigger!: MatMenuTrigger;
   @Input() fromComp!: string;
   @Input() noteId!: any;
   @Output() noteImage = new EventEmitter<File>();
   @Output() is_archive = new EventEmitter<boolean>();
+  subscription = new Subscription();
 
   constructor(
     private dialog: MatDialog,
@@ -139,7 +142,9 @@ export class NoteOptionsComponent implements AfterViewInit {
     });
 
     dialogRef.afterClosed().subscribe((data) => {
-      this.noteService.setCollaboratorForNotes(data.collaborators);
+      this.subscription.add(
+        this.noteService.setCollaboratorForNotes(data.collaborators)
+      );
       this.menuTrigger.focus;
     });
   }
@@ -166,6 +171,10 @@ export class NoteOptionsComponent implements AfterViewInit {
       this.menuTrigger.focus;
     });
   }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
+  }
 }
 
 @Component({
@@ -178,16 +187,23 @@ export class NoteOptionsComponent implements AfterViewInit {
   standalone: true,
   imports: [MatDialogModule, ReactiveFormsModule],
 })
-export class DialogFromMenu {
+export class DialogFromMenu implements OnDestroy {
   inputReminderData = new FormControl();
+  subscription = new Subscription();
   constructor(private noteService: NotesService) {
     this.inputReminderData.valueChanges.subscribe((value) => {
       if (this.noteService.noteId === undefined) {
-        this.noteService.setReminderForNotes(value);
+        this.subscription.add(this.noteService.setReminderForNotes(value));
         return;
       }
-      this.noteService.updateReminderForNotes(this.noteService.noteId, value);
+      this.subscription.add(
+        this.noteService.updateReminderForNotes(this.noteService.noteId, value)
+      );
     });
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 }
 
@@ -233,11 +249,12 @@ export class DialogFromMenu {
     MatIconModule,
   ],
 })
-export class CollaboratorDialog implements OnInit {
+export class CollaboratorDialog implements OnInit, OnDestroy {
   allUsers!: any[];
   searchTerm: string = '';
   filteredUsers: any[] = [];
   collaborators: string[] = [];
+  subscription = new Subscription();
   constructor(
     private httpService: HttpService,
     private cookie: CookieService,
@@ -246,11 +263,13 @@ export class CollaboratorDialog implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.httpService
-      .get(`/user/api/registration/`, `Bearer ${this.cookie.getToken()}`)
-      .subscribe((resp) => {
-        this.allUsers = resp.data;
-      });
+    this.subscription.add(
+      this.httpService
+        .get(`/user/api/registration/`, `Bearer ${this.cookie.getToken()}`)
+        .subscribe((resp) => {
+          this.allUsers = resp.data;
+        })
+    );
   }
 
   filterCollaborators() {
@@ -276,6 +295,10 @@ export class CollaboratorDialog implements OnInit {
 
   onClose() {
     this.dialogRef.close({ collaborators: this.collaborators });
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 }
 
@@ -311,8 +334,9 @@ export class CollaboratorDialog implements OnInit {
     MatCheckboxModule,
   ],
 })
-export class LabelDialog implements OnInit {
+export class LabelDialog implements OnInit, OnDestroy {
   labelList: string[] = [];
+  subscription = new Subscription();
 
   constructor(
     private noteService: NotesService,
@@ -323,11 +347,13 @@ export class LabelDialog implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.httpService
-      .get('/labels/', `Bearer ${this.cookie.getToken()}`)
-      .subscribe((resp) => {
-        this.noteService.labelList = resp.data;
-      });
+    this.subscription.add(
+      this.httpService
+        .get('/labels/', `Bearer ${this.cookie.getToken()}`)
+        .subscribe((resp) => {
+          this.noteService.labelList = resp.data;
+        })
+    );
   }
 
   getLabels() {
@@ -342,5 +368,9 @@ export class LabelDialog implements OnInit {
 
   onSave() {
     this.dialogRef.close({ labels: this.labelList });
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 }

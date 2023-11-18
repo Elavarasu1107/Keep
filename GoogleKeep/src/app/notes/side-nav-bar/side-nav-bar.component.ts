@@ -39,15 +39,11 @@ export class SideNavBarComponent implements AfterViewInit {
   }
 
   showNavBar() {
-    console.log('mouse in');
-
     this.isSideNavOpen = true;
     // this.sideNav.opened = true;
   }
 
   hideNavBar() {
-    console.log('mouse out');
-
     this.isSideNavOpen = false;
     // this.sideNav.opened = false;
   }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
@@ -7,6 +7,7 @@ import {
 } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { HttpService } from 'src/app/services/http.service';
 
 @Component({
@@ -14,10 +15,11 @@ import { HttpService } from 'src/app/services/http.service';
   templateUrl: './sign-up.component.html',
   styleUrls: ['./sign-up.component.scss'],
 })
-export class SignUpComponent implements OnInit {
+export class SignUpComponent implements OnInit, OnDestroy {
   registerForm!: FormGroup;
   hide: boolean = true;
   error = '';
+  subscription = new Subscription();
 
   constructor(
     private fb: FormBuilder,
@@ -80,23 +82,29 @@ export class SignUpComponent implements OnInit {
   }
 
   registerUser() {
-    this.http
-      .post('/user/api/registration/', this.registerForm.value, {})
-      .subscribe((resp: any) => {
-        if (resp.status === 201) {
-          this.registerForm.reset();
-          Object.keys(this.registerForm.controls).forEach((key) => {
-            this.registerForm.get(key)?.setErrors(null);
-            this.registerForm.get(key)?.markAsUntouched();
+    this.subscription.add(
+      this.http
+        .post('/user/api/registration/', this.registerForm.value, {})
+        .subscribe((resp: any) => {
+          if (resp.status === 201) {
+            this.registerForm.reset();
+            Object.keys(this.registerForm.controls).forEach((key) => {
+              this.registerForm.get(key)?.setErrors(null);
+              this.registerForm.get(key)?.markAsUntouched();
 
-            this.router.navigate(['/login']);
-          });
-        }
-        this.snackBar.open(resp['message'], 'Close', {
-          duration: 5000,
-          horizontalPosition: 'center',
-          verticalPosition: 'top',
-        });
-      });
+              this.router.navigate(['/login']);
+            });
+          }
+          // this.snackBar.open(resp['message'], 'Close', {
+          //   duration: 5000,
+          //   horizontalPosition: 'center',
+          //   verticalPosition: 'top',
+          // });
+        })
+    );
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 }

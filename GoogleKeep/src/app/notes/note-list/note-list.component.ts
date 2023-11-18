@@ -1,8 +1,8 @@
-import { Component, AfterViewInit, OnInit } from '@angular/core';
+import { Component, AfterViewInit, OnInit, OnDestroy } from '@angular/core';
 import { CookieService } from '../../services/cookie.service';
 import { HttpService } from '../../services/http.service';
 import { HttpHeaders } from '@angular/common/http';
-import { Observer } from 'rxjs';
+import { Observer, Subscription } from 'rxjs';
 import { NotesService } from '../../services/notes.service';
 import { MatDialog } from '@angular/material/dialog';
 import { UpdateNoteDialogComponent } from './update-note-dialog/update-note-dialog.component';
@@ -12,26 +12,31 @@ import { UpdateNoteDialogComponent } from './update-note-dialog/update-note-dial
   templateUrl: './note-list.component.html',
   styleUrls: ['./note-list.component.scss'],
 })
-export class NoteListComponent implements OnInit {
+export class NoteListComponent implements OnInit, OnDestroy {
   noteList!: any;
   showNoteOptions!: number | null;
+  subscription = new Subscription();
 
   constructor(private noteService: NotesService, private dialog: MatDialog) {}
 
   ngOnInit(): void {
-    this.noteService.getNotesFromDB('/notes/');
+    this.subscription.add(this.noteService.getNotesFromDB('/notes/'));
   }
 
   removeReminder(id: number) {
-    this.noteService.removeReminderFromDB(id, 'notes');
+    this.subscription.add(this.noteService.removeReminderFromDB(id, 'notes'));
   }
 
   removeCollaborator(id: number, email: string) {
-    this.noteService.removeCollaboratorFromDB(id, email, 'notes');
+    this.subscription.add(
+      this.noteService.removeCollaboratorFromDB(id, email, 'notes')
+    );
   }
 
   removeLabel(id: number, label: string) {
-    this.noteService.removeLabelFromDB(id, label, 'notes');
+    this.subscription.add(
+      this.noteService.removeLabelFromDB(id, label, 'notes')
+    );
   }
 
   getNoteList() {
@@ -52,5 +57,9 @@ export class NoteListComponent implements OnInit {
 
   hideOptions() {
     this.showNoteOptions = null;
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 }

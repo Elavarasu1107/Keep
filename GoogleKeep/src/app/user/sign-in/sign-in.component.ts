@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observer } from 'rxjs';
+import { Observer, Subscription } from 'rxjs';
 import { CookieService } from '../../services/cookie.service';
 import { HttpService } from 'src/app/services/http.service';
 
@@ -9,9 +9,9 @@ import { HttpService } from 'src/app/services/http.service';
   templateUrl: './sign-in.component.html',
   styleUrls: ['./sign-in.component.scss'],
 })
-export class SignInComponent {
+export class SignInComponent implements OnDestroy {
   hide: boolean = true;
-
+  subscription = new Subscription();
   constructor(
     private router: Router,
     private http: HttpService,
@@ -19,14 +19,20 @@ export class SignInComponent {
   ) {}
 
   loginSubmit(form: any) {
-    this.http.post('/user/api/login/', form.value, {}).subscribe(
-      (resp) => {
-        if (resp.status === 200) {
-          this.cookie.setToken(resp.data.access);
-          this.router.navigate(['/notes']);
-        }
-      },
-      (error) => {}
+    this.subscription.add(
+      this.http.post('/user/api/login/', form.value, {}).subscribe(
+        (resp) => {
+          if (resp.status === 200) {
+            this.cookie.setToken(resp.data.access);
+            this.router.navigate(['/notes']);
+          }
+        },
+        (error) => {}
+      )
     );
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 }

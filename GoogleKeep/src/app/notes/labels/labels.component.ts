@@ -3,6 +3,7 @@ import {
   AfterViewInit,
   Component,
   ElementRef,
+  OnDestroy,
   OnInit,
 } from '@angular/core';
 import { FormArray, FormControl } from '@angular/forms';
@@ -14,6 +15,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { HttpService } from '../../services/http.service';
 import { CookieService } from '../../services/cookie.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-labels',
@@ -130,10 +132,11 @@ export class LabelsComponent implements OnInit {
     MatFormFieldModule,
   ],
 })
-class LabelDialogComponent implements OnInit, AfterContentChecked {
-  // labels = new FormArray<FormControl>([]);
+class LabelDialogComponent implements OnInit, AfterContentChecked, OnDestroy {
   labels!: any;
   disableInput: boolean = true;
+  subscription = new Subscription();
+
   constructor(
     private noteService: NotesService,
     private httpService: HttpService,
@@ -142,7 +145,7 @@ class LabelDialogComponent implements OnInit, AfterContentChecked {
   ) {}
 
   ngOnInit(): void {
-    this.noteService.getLabelFromDB('/labels/');
+    this.subscription.add(this.noteService.getLabelFromDB('/labels/'));
     this.labels = this.noteService.labelList;
   }
 
@@ -151,19 +154,21 @@ class LabelDialogComponent implements OnInit, AfterContentChecked {
   }
 
   addLabel(ele: HTMLInputElement) {
-    this.httpService
-      .post(
-        '/labels/',
-        { title: ele.value },
-        `Bearer ${this.cookie.getToken()}`
-      )
-      .subscribe((resp: any) => {
-        const data = resp;
-        this.noteService.labelList = [
-          ...this.noteService.labelList,
-          data?.data,
-        ];
-      });
+    this.subscription.add(
+      this.httpService
+        .post(
+          '/labels/',
+          { title: ele.value },
+          `Bearer ${this.cookie.getToken()}`
+        )
+        .subscribe((resp: any) => {
+          const data = resp;
+          this.noteService.labelList = [
+            ...this.noteService.labelList,
+            data?.data,
+          ];
+        })
+    );
     ele.value = '';
   }
 
@@ -186,20 +191,22 @@ class LabelDialogComponent implements OnInit, AfterContentChecked {
   }
 
   updateLabel(newValue: string, id: number) {
-    this.httpService
-      .update(
-        `/labels/?id=${id}`,
-        { title: newValue },
-        `Bearer ${this.cookie.getToken()}`
-      )
-      .subscribe((resp) => {
-        this.noteService.labelList.map((item) => {
-          if (item.id === resp.data.id) {
-            item = resp.data;
-            this.noteService.labelList = [...this.noteService.labelList];
-          }
-        });
-      });
+    this.subscription.add(
+      this.httpService
+        .update(
+          `/labels/?id=${id}`,
+          { title: newValue },
+          `Bearer ${this.cookie.getToken()}`
+        )
+        .subscribe((resp) => {
+          this.noteService.labelList.map((item) => {
+            if (item.id === resp.data.id) {
+              item = resp.data;
+              this.noteService.labelList = [...this.noteService.labelList];
+            }
+          });
+        })
+    );
     const labelsDiv =
       this.el.nativeElement.getElementsByClassName('label-input');
     Array.from(labelsDiv).forEach((item: any) => {
@@ -208,18 +215,24 @@ class LabelDialogComponent implements OnInit, AfterContentChecked {
   }
 
   deleteLabel(id: number) {
-    this.httpService
-      .delete(`/labels/?id=${id}`, `Bearer ${this.cookie.getToken()}`)
-      .subscribe((resp: any) => {
-        this.noteService.labelList.map((item) => {
-          if (item.id === id) {
-            this.noteService.labelList.splice(
-              this.noteService.labelList.indexOf(item),
-              1
-            );
-            this.noteService.labelList = [...this.noteService.labelList];
-          }
-        });
-      });
+    this.subscription.add(
+      this.httpService
+        .delete(`/labels/?id=${id}`, `Bearer ${this.cookie.getToken()}`)
+        .subscribe((resp: any) => {
+          this.noteService.labelList.map((item) => {
+            if (item.id === id) {
+              this.noteService.labelList.splice(
+                this.noteService.labelList.indexOf(item),
+                1
+              );
+              this.noteService.labelList = [...this.noteService.labelList];
+            }
+          });
+        })
+    );
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 }

@@ -5,19 +5,23 @@ import {
   HostListener,
   OnInit,
   ViewChild,
+  OnDestroy,
 } from '@angular/core';
 import { MatExpansionPanel } from '@angular/material/expansion';
 import { HttpService } from '../../services/http.service';
 import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { CookieService } from '../../services/cookie.service';
 import { NotesService } from '../../services/notes.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-note-expansion-panel',
   templateUrl: './note-expansion-panel.component.html',
   styleUrls: ['./note-expansion-panel.component.scss'],
 })
-export class NoteExpansionPanelComponent implements AfterViewInit, OnInit {
+export class NoteExpansionPanelComponent
+  implements AfterViewInit, OnInit, OnDestroy
+{
   @ViewChild('panel') expansionPanel!: MatExpansionPanel;
 
   panel!: any;
@@ -25,6 +29,7 @@ export class NoteExpansionPanelComponent implements AfterViewInit, OnInit {
   inputPlaceHolder!: string;
   noteForm!: FormGroup;
   noteImage!: File | undefined;
+  subscription = new Subscription();
 
   constructor(
     private fb: FormBuilder,
@@ -129,14 +134,16 @@ export class NoteExpansionPanelComponent implements AfterViewInit, OnInit {
       this.noteForm.value.title != null ||
       this.noteForm.value.description != null
     ) {
-      this.httpService
-        .post('/notes/', data, `Bearer ${this.cookie.getToken()}`)
-        .subscribe((resp) => {
-          complete: {
-            const data = resp;
-            this.noteService.setNoteToView(data.data);
-          }
-        });
+      this.subscription.add(
+        this.httpService
+          .post('/notes/', data, `Bearer ${this.cookie.getToken()}`)
+          .subscribe((resp) => {
+            complete: {
+              const data = resp;
+              this.noteService.setNoteToView(data.data);
+            }
+          })
+      );
     }
     this.noteForm.reset({ is_archive: false });
     collaborators.clear();
@@ -157,5 +164,9 @@ export class NoteExpansionPanelComponent implements AfterViewInit, OnInit {
       this.addNote();
       this.expansionPanel.close();
     }
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 }
