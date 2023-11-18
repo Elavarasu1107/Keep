@@ -4,7 +4,8 @@
             <div class="card" style="width: 18rem;" *ngIf="note.is_archive === true && note.is_trash === false"
                 (mouseenter)="showOptions(note.id)" (mouseleave)="hideOptions()">
                 <div class="card-body p-0 m-0">
-                    <div class="px-2 mx-1">
+                    <div class="px-2 mx-1" (click)="updateNoteDialog(note)">
+                        <img *ngIf="note.image != null" [src]="'assets/'+note.image" alt="" class="w-100">
                         <h4 class="card-title my-2">{{ note.title }}</h4>
                         <p class="card-text">{{ note.description }}</p>
                     </div>

@@ -4,7 +4,9 @@ import {
   AfterContentChecked,
   ChangeDetectorRef,
 } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { NotesService } from 'src/app/services/notes.service';
+import { UpdateNoteDialogComponent } from '../note-list/update-note-dialog/update-note-dialog.component';
 
 @Component({
   selector: 'app-archive',
@@ -15,10 +17,7 @@ export class ArchiveComponent implements AfterContentChecked {
   noteList!: any;
   showNoteOptions!: number | null;
 
-  constructor(
-    private noteService: NotesService,
-    private changeDetectionRef: ChangeDetectorRef
-  ) {}
+  constructor(private noteService: NotesService, private dialog: MatDialog) {}
 
   ngOnInit(): void {
     this.noteService.getNotesFromDB('/notes/archive/');
@@ -51,5 +50,13 @@ export class ArchiveComponent implements AfterContentChecked {
 
   removeLabel(id: number, label: string) {
     this.noteService.removeLabelFromDB(id, label, 'notes');
+  }
+
+  updateNoteDialog(note: any) {
+    this.dialog.open(UpdateNoteDialogComponent, {
+      data: note,
+      width: '30rem',
+      height: '35rem',
+    });
   }
 }

@@ -39,7 +39,11 @@ export class NoteListComponent implements OnInit {
   }
 
   updateNoteDialog(note: any) {
-    this.dialog.open(UpdateNoteDialogComponent, { data: note, width: '30rem' });
+    this.dialog.open(UpdateNoteDialogComponent, {
+      data: note,
+      width: '30rem',
+      height: '35rem',
+    });
   }
 
   showOptions(id: number) {

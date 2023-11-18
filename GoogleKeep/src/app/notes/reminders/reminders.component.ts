@@ -5,6 +5,8 @@ import {
   AfterContentInit,
 } from '@angular/core';
 import { NotesService } from 'src/app/services/notes.service';
+import { UpdateNoteDialogComponent } from '../note-list/update-note-dialog/update-note-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-reminders',
@@ -15,7 +17,7 @@ export class RemindersComponent implements AfterContentChecked {
   noteList!: any;
   showNoteOptions!: number | null;
 
-  constructor(private noteService: NotesService) {}
+  constructor(private noteService: NotesService, private dialog: MatDialog) {}
 
   ngOnInit(): void {
     this.noteService.getNotesFromDB('/notes/?fetch=remainder');
@@ -47,5 +49,13 @@ export class RemindersComponent implements AfterContentChecked {
 
   removeLabel(id: number, label: string) {
     this.noteService.removeLabelFromDB(id, label, 'notes');
+  }
+
+  updateNoteDialog(note: any) {
+    this.dialog.open(UpdateNoteDialogComponent, {
+      data: note,
+      width: '30rem',
+      height: '35rem',
+    });
   }
 }

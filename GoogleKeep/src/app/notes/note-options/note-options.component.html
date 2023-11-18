@@ -37,11 +37,12 @@
         </button>
     </div>
     <div>
-        <button mat-icon-button [matMenuTriggerFor]="palette" aria-label="palette">
+        <button mat-icon-button aria-label="palette">
             <mat-icon>palette</mat-icon>
         </button>
-        <mat-menu #palette="matMenu">
-        </mat-menu>
+        <!-- <mat-menu #palette="matMenu">
+            [matMenuTriggerFor]="palette"
+        </mat-menu> -->
     </div>
     <div>
         <input type="file" #fileInput (change)="onFileSelected($event)" style="display: none;" />
