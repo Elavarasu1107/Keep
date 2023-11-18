@@ -24,7 +24,7 @@ export class NoteExpansionPanelComponent implements AfterViewInit, OnInit {
   panelClose!: any;
   inputPlaceHolder!: string;
   noteForm!: FormGroup;
-  noteImage!: File;
+  noteImage!: File | undefined;
 
   constructor(
     private fb: FormBuilder,
@@ -104,6 +104,7 @@ export class NoteExpansionPanelComponent implements AfterViewInit, OnInit {
   }
 
   addNote() {
+    let data!: any;
     const collaborators = this.noteForm.get('collaborator') as FormArray;
     const label = this.noteForm.get('label') as FormArray;
     this.noteService.collaborators.forEach((email) => {
@@ -113,25 +114,23 @@ export class NoteExpansionPanelComponent implements AfterViewInit, OnInit {
     this.noteService.noteLabels.forEach((item) => {
       label.push(new FormControl(item));
     });
+    data = this.noteForm.value;
+    const formData = new FormData();
 
-    // const formData = new FormData();
-    // Object.keys(noteData).forEach((key) => {
-    //   formData.append(key, noteData[key]);
-    // });
-    // if (this.noteImage != undefined) {
-    //   formData.append('image', this.noteImage, this.noteImage.name);
-    // }
+    if (this.noteImage != undefined) {
+      Object.keys(this.noteForm.value).forEach((key) => {
+        formData.append(key, this.noteForm.value[key]);
+      });
+      formData.append('image', this.noteImage, this.noteImage.name);
+      data = formData;
+    }
 
     if (
       this.noteForm.value.title != null ||
       this.noteForm.value.description != null
     ) {
       this.httpService
-        .post(
-          '/notes/',
-          this.noteForm.value,
-          `Bearer ${this.cookie.getToken()}`
-        )
+        .post('/notes/', data, `Bearer ${this.cookie.getToken()}`)
         .subscribe((resp) => {
           complete: {
             const data = resp;
@@ -145,6 +144,7 @@ export class NoteExpansionPanelComponent implements AfterViewInit, OnInit {
     this.noteService.noteLabels = [];
     this.noteService.collaborators = [];
     this.removeReminder();
+    this.noteImage = undefined;
   }
 
   @HostListener('click', ['$event'])

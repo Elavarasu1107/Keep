@@ -9,7 +9,7 @@ class Note(models.Model):
     title = models.CharField(max_length=255, null=True, blank=True)
     description = models.TextField(null=True, blank=True)
     color = models.CharField(max_length=255, null=True, blank=True)
-    image = models.ImageField(upload_to='notes.images', null=True, blank=True)
+    image = models.ImageField(upload_to='GoogleKeep/src/assets/noteImages', null=True, blank=True)
     remainder = models.DateTimeField(null=True)
     is_archive = models.BooleanField(default=False, null=True, blank=True)
     is_trash = models.BooleanField(default=False, null=True, blank=True)

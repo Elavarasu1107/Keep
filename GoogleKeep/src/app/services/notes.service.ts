@@ -14,6 +14,7 @@ interface note {
   user: number;
   collaborator: string[];
   label: string[];
+  image: any;
 }
 
 interface label {
@@ -44,7 +45,11 @@ export class NotesService {
 
   setNoteToView(newNoteData: note) {
     if (!newNoteData.is_archive)
-      this.noteList = [newNoteData, ...this.noteList];
+      if (newNoteData.image != undefined && newNoteData.image != null) {
+        let image = newNoteData.image.split('/');
+        newNoteData.image = image.slice(-1)[0];
+      }
+    this.noteList = [newNoteData, ...this.noteList];
   }
 
   setReminderForNotes(date: string) {
@@ -113,6 +118,12 @@ export class NotesService {
         (observer: Observer<any>) => {
           complete: {
             const data: any = observer;
+            data?.data.forEach((note: any) => {
+              if (note.image != null) {
+                let image = note.image.split('/');
+                note.image = image.slice(-1)[0];
+              }
+            });
             this.noteList = data?.data;
           }
         },

@@ -1,11 +1,10 @@
-from dateutil import parser
-from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from django.views.generic import View
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import viewsets
 from rest_framework.decorators import action
+from rest_framework.parsers import MultiPartParser, JSONParser
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework_simplejwt.authentication import JWTAuthentication
@@ -29,11 +28,37 @@ class Notes(viewsets.ViewSet):
     authentication_classes = (JWTAuthentication, CsrfExemptSessionAuthentication)
     redis_instance = RedisManager()
 
+    def get_parsers(self):
+        content_type = self.request.content_type
+        if content_type == 'multipart/form-data':
+            return [MultiPartParser()]
+        elif content_type == 'application/json':
+            return [JSONParser()]
+        return super().get_parsers()
+
     @swagger_auto_schema(request_body=NoteSerializer)
     def create(self, request):
         try:
-            request.data.update({"user": request.user})
-            serializer = NoteSerializer(data=request.data)
+            request.data.update({'user': request.user})
+            data = request.data.copy()
+            if 'multipart/form-data' in request.content_type:
+                data = {}
+                for key, value in request.data.items():
+                    if key == 'remainder' and value == 'null':
+                        data.update({'remainder': None})
+                    elif key in ['is_archive', 'is_trash']:
+                        if value == 'false':
+                            data.update({key: False})
+                        else:
+                            data.update({key: True})
+                    elif key in ['collaborator', 'label']:
+                        if value != '':
+                            data.update({key: value.split(',')})
+                        else:
+                            data.update({key: []})
+                    else:
+                        data.update({key: value})
+            serializer = NoteSerializer(data=data)
             serializer.is_valid(raise_exception=True)
             serializer.save()
             # self.redis_instance.hset_notes(request.user.id, serializer.data)
