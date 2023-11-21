@@ -32,6 +32,12 @@
                     <mat-icon>cancel</mat-icon>
                 </button>
             </mat-chip-row>
+            <mat-chip-row *ngIf="noteImage != undefined" class="mt-1" (removed)="noteImage=undefined">
+                <h5 class="m-0">{{ noteImage.name }}</h5>
+                <button matChipRemove [attr.aria-label]="'remove image '">
+                    <mat-icon>cancel</mat-icon>
+                </button>
+            </mat-chip-row>
             <div *ngIf="getCollaborators().length != 0">
                 <mat-chip-row *ngFor="let col of getCollaborators()" class="mt-1" (removed)="removeCollaborator(col)">
                     <h5 class="m-0">{{ col }}</h5>
