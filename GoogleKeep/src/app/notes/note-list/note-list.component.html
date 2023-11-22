@@ -1,8 +1,8 @@
 <app-note-expansion-panel class="w-100 d-flex justify-content-center"></app-note-expansion-panel>
 <div class="container-fluid note-list mt-3 p-0">
-    <div class="row d-flex gap-3">
-        <div class="col w-75" *ngFor="let note of getNoteList()">
-            <div class="card" style="width: 18rem;" *ngIf="note.is_archive === false && note.is_trash === false"
+    <div class="row d-flex">
+        <div class="col-3" *ngFor="let note of getNoteList()">
+            <div class="card mb-1" style="width: 18rem;" *ngIf="note.is_archive === false && note.is_trash === false"
                 (mouseenter)="showOptions(note.id)" (mouseleave)="hideOptions()">
                 <div class="card-body p-0 m-0">
                     <div (click)="updateNoteDialog(note)" class="px-2 mx-1">

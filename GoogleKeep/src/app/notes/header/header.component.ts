@@ -1,5 +1,7 @@
 import { Component, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
-import { SideNavTogglerService } from 'src/app/services/side-nav-toggler.service';
+import { CookieService } from '../../services/cookie.service';
+import { SideNavTogglerService } from '../../services/side-nav-toggler.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -9,11 +11,20 @@ import { SideNavTogglerService } from 'src/app/services/side-nav-toggler.service
 export class HeaderComponent {
   @ViewChild('sideNavBar') sideMenuBar!: ElementRef;
 
-  constructor(private togglerService: SideNavTogglerService) {}
+  constructor(
+    private togglerService: SideNavTogglerService,
+    private cookie: CookieService,
+    private router: Router
+  ) {}
 
   // booleanValue$ = this.togglerService.booleanValue$;
 
   triggerToggleService() {
     this.togglerService.toggleBoolean();
+  }
+
+  logout() {
+    this.cookie.deleteToken();
+    this.router.navigate(['/login']);
   }
 }

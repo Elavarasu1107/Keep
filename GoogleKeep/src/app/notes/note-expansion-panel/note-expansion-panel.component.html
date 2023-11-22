@@ -3,9 +3,10 @@
         <mat-expansion-panel-header class="d-flex justify-content-between p-0">
             <mat-panel-title class="">
                 <input matInput class="bg-transparent border border-0 px-3" type="text" [placeholder]="inputPlaceHolder"
-                    formControlName="title">
+                    formControlName="title" (keydown.Space)="$event.stopImmediatePropagation()">
             </mat-panel-title>
-            <mat-panel-description class="d-flex justify-content-end p-0 m-0 nei">
+            <mat-panel-description class="d-flex justify-content-end p-0 m-0 nei"
+                [ngClass]="{'invisible': hidePanelIcons, 'visible': hidePanelIcons}">
                 <div class="div-hover rounded-circle">
                     <button mat-icon-button aria-label="menu">
                         <mat-icon>check_box</mat-icon>

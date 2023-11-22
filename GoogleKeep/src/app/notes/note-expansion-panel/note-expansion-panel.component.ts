@@ -30,6 +30,7 @@ export class NoteExpansionPanelComponent
   noteForm!: FormGroup;
   noteImage!: File | undefined;
   subscription = new Subscription();
+  hidePanelIcons: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -62,6 +63,7 @@ export class NoteExpansionPanelComponent
 
   expandPanel(event: any) {
     this.inputPlaceHolder = 'Title';
+    this.hidePanelIcons = true;
     this.expansionPanel.open();
   }
 
@@ -131,8 +133,8 @@ export class NoteExpansionPanelComponent
     }
 
     if (
-      this.noteForm.value.title != null ||
-      this.noteForm.value.description != null
+      ![null, undefined, ''].includes(this.noteForm.value.title) ||
+      ![null, undefined, ''].includes(this.noteForm.value.description)
     ) {
       this.subscription.add(
         this.httpService
@@ -144,14 +146,14 @@ export class NoteExpansionPanelComponent
             }
           })
       );
+      this.noteForm.reset({ is_archive: false });
+      collaborators.clear();
+      label.clear();
+      this.noteService.noteLabels = [];
+      this.noteService.collaborators = [];
+      this.removeReminder();
+      this.noteImage = undefined;
     }
-    this.noteForm.reset({ is_archive: false });
-    collaborators.clear();
-    label.clear();
-    this.noteService.noteLabels = [];
-    this.noteService.collaborators = [];
-    this.removeReminder();
-    this.noteImage = undefined;
   }
 
   @HostListener('click', ['$event'])
@@ -163,6 +165,7 @@ export class NoteExpansionPanelComponent
       this.inputPlaceHolder = 'Take a note...';
       this.addNote();
       this.expansionPanel.close();
+      this.hidePanelIcons = false;
     }
   }
 

@@ -88,7 +88,7 @@
                     </g>
                 </svg>
             </div>
-            <div class="rounded-circle div-hover">
+            <div class="rounded-circle div-hover" [matMenuTriggerFor]="profile">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="#757575" width="30px" height="30px" viewBox="0 0 24 24"
                     stroke="#757575">
                     <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
@@ -99,6 +99,12 @@
                         </path>
                     </g>
                 </svg>
+                <mat-menu #profile="matMenu">
+                    <button class="d-flex w-100 btn btn-light justify-content-center align-items-center h-50"
+                        (click)="logout()">
+                        <h5 class="m-0 p-0">Logout</h5>
+                    </button>
+                </mat-menu>
             </div>
         </div>
     </mat-toolbar>

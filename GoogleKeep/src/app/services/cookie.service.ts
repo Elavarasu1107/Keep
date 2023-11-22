@@ -19,4 +19,8 @@ export class CookieService {
   checkToken() {
     return this.cookie.check('Auth-Token');
   }
+
+  deleteToken() {
+    this.cookie.delete('Auth-Token');
+  }
 }
