@@ -218,4 +218,36 @@ export class NotesService {
         (error) => {}
       );
   }
+
+  restoreNote(id: number) {
+    this.httpService
+      .update(`/notes/trash/?id=${id}`, {}, `Bearer ${this.cookie.getToken()}`)
+      .subscribe((resp) => {
+        this.noteList.map((item) => {
+          if (item.id === id) {
+            this.noteList.splice(this.noteList.indexOf(item), 1);
+          }
+          this.noteList = [...this.noteList];
+        });
+      });
+  }
+  deleteNote(id: number) {
+    this.httpService
+      .delete(`/notes/?id=${id}`, `Bearer ${this.cookie.getToken()}`)
+      .subscribe((resp) => {
+        this.noteList.map((item) => {
+          if (item.id === id) {
+            this.noteList.splice(this.noteList.indexOf(item), 1);
+          }
+          this.noteList = [...this.noteList];
+        });
+      });
+  }
+  deleteAllTrashNotes() {
+    this.httpService
+      .delete('/notes/?delete_all=true', `Bearer ${this.cookie.getToken()}`)
+      .subscribe((resp) => {
+        this.noteList = this.noteList.filter((item) => false);
+      });
+  }
 }

@@ -1,8 +1,5 @@
-import { Component, AfterViewInit, OnInit, OnDestroy } from '@angular/core';
-import { CookieService } from '../../services/cookie.service';
-import { HttpService } from '../../services/http.service';
-import { HttpHeaders } from '@angular/common/http';
-import { Observer, Subscription } from 'rxjs';
+import { Component, Input, OnInit, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { NotesService } from '../../services/notes.service';
 import { MatDialog } from '@angular/material/dialog';
 import { UpdateNoteDialogComponent } from './update-note-dialog/update-note-dialog.component';
@@ -17,25 +14,28 @@ export class NoteListComponent implements OnInit, OnDestroy {
   showNoteOptions!: number | null;
   subscription = new Subscription();
 
+  @Input() tabs: string = 'notes';
+  @Input() apiUrl: string = '/notes/';
+
   constructor(private noteService: NotesService, private dialog: MatDialog) {}
 
   ngOnInit(): void {
-    this.subscription.add(this.noteService.getNotesFromDB('/notes/'));
+    this.subscription.add(this.noteService.getNotesFromDB(this.apiUrl));
   }
 
   removeReminder(id: number) {
-    this.subscription.add(this.noteService.removeReminderFromDB(id, 'notes'));
+    this.subscription.add(this.noteService.removeReminderFromDB(id, this.tabs));
   }
 
   removeCollaborator(id: number, email: string) {
     this.subscription.add(
-      this.noteService.removeCollaboratorFromDB(id, email, 'notes')
+      this.noteService.removeCollaboratorFromDB(id, email, this.tabs)
     );
   }
 
   removeLabel(id: number, label: string) {
     this.subscription.add(
-      this.noteService.removeLabelFromDB(id, label, 'notes')
+      this.noteService.removeLabelFromDB(id, label, this.tabs)
     );
   }
 
@@ -57,6 +57,14 @@ export class NoteListComponent implements OnInit, OnDestroy {
 
   hideOptions() {
     this.showNoteOptions = null;
+  }
+
+  restoreNote(id: number) {
+    this.noteService.restoreNote(id);
+  }
+
+  deleteNote(id: number) {
+    this.noteService.deleteNote(id);
   }
 
   ngOnDestroy(): void {
