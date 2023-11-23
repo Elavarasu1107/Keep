@@ -1,5 +1,5 @@
 <div>
-    <img [src]="'assets/'+ data.image" alt="" class="w-100 h-100">
+    <img *ngIf="data.image != null" [src]="'assets/'+ data.image" alt="" class="w-100 h-100">
     <input mat-dialog-title class="m-0 p-2 border border-0 w-100" placeholder="Title" [value]="data.title" #title>
     <textarea mat-dialog-content class="m-0 p-2 border border-0 w-100 mt-2 text-dark" placeholder="note"
         [value]="data.description" #description></textarea>
