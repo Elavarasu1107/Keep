@@ -1,4 +1,4 @@
-import { AfterContentChecked, Component } from '@angular/core';
+import { OnInit, Component } from '@angular/core';
 import { NotesService } from '../../services/notes.service';
 
 @Component({
@@ -6,12 +6,11 @@ import { NotesService } from '../../services/notes.service';
   templateUrl: './trash.component.html',
   styleUrls: ['./trash.component.scss'],
 })
-export class TrashComponent implements AfterContentChecked {
-  noteListLength!: number;
+export class TrashComponent {
   constructor(private noteService: NotesService) {}
 
-  ngAfterContentChecked(): void {
-    this.noteListLength = this.noteService.noteList.length;
+  get length() {
+    return this.noteService.noteList.length;
   }
 
   deleteAllTrashNotes() {

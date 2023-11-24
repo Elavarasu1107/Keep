@@ -2,7 +2,7 @@
     *ngIf="['notes'].includes(tabs)"></app-note-expansion-panel>
 <div class="container-fluid note-list mt-3 p-0">
     <div class="row d-flex">
-        <div class="col-3" *ngFor="let note of getNoteList()">
+        <div class="col" *ngFor="let note of getNoteList()">
             <div class="card mb-1" style="width: 18rem;" (mouseenter)="showOptions(note.id)"
                 (mouseleave)="hideOptions()">
                 <div class="card-body p-0 m-0">

@@ -156,17 +156,17 @@ export class NoteExpansionPanelComponent
     }
   }
 
-  @HostListener('click', ['$event'])
+  // @HostListener('click', ['$event'])
   hideExpansionPanel(event: any) {
-    if (
-      !this.panel?.contains(event.target) ||
-      this.panelClose?.contains(event.target)
-    ) {
-      this.inputPlaceHolder = 'Take a note...';
-      this.addNote();
-      this.expansionPanel.close();
-      this.hidePanelIcons = false;
-    }
+    // if (
+    //   !this.panel?.contains(event.target) ||
+    //   this.panelClose?.contains(event.target)
+    // ) {
+    this.inputPlaceHolder = 'Take a note...';
+    this.addNote();
+    this.expansionPanel.close();
+    this.hidePanelIcons = false;
+    // }
   }
 
   ngOnDestroy(): void {

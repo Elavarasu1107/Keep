@@ -1,4 +1,4 @@
-import { Component, AfterContentChecked } from '@angular/core';
+import { Component } from '@angular/core';
 import { NotesService } from 'src/app/services/notes.service';
 
 @Component({
@@ -6,11 +6,11 @@ import { NotesService } from 'src/app/services/notes.service';
   templateUrl: './reminders.component.html',
   styleUrls: ['./reminders.component.scss'],
 })
-export class RemindersComponent implements AfterContentChecked {
+export class RemindersComponent {
   noteListLength!: number;
   constructor(private noteService: NotesService) {}
 
-  ngAfterContentChecked(): void {
-    this.noteListLength = this.noteService.noteList.length;
+  get length() {
+    return this.noteService.noteList.length;
   }
 }

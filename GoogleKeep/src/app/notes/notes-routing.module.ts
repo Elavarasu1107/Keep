@@ -1,14 +1,20 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { NoteComponent } from './note/note.component';
-import { cookieGuard } from '../guards/cookie.guard';
 
 const routes: Routes = [
-  {
-    path: 'notes',
-    component: NoteComponent,
-    canActivate: [cookieGuard],
-  },
+  // {
+  //   path: '',
+  //   component: NoteComponent,
+  //   children: [
+  //     { path: '', component: NoteListComponent },
+  //     { path: 'reminder', component: RemindersComponent },
+  //     { path: 'label', component: LabelsComponent },
+  //     { path: 'archive', component: ArchiveComponent },
+  //     { path: 'trash', component: TrashComponent },
+  //   ],
+  //   canActivate: [cookieGuard],
+  //   pathMatch: 'full',
+  // },
 ];
 
 @NgModule({

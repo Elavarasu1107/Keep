@@ -29,7 +29,7 @@ interface label {
   providedIn: 'root',
 })
 export class NotesService {
-  noteList!: note[];
+  noteList: note[] = [];
   reminderData!: any;
   noteListReminder!: any;
   noteId!: number;
@@ -44,12 +44,13 @@ export class NotesService {
   ) {}
 
   setNoteToView(newNoteData: note) {
-    if (!newNoteData.is_archive)
+    if (!newNoteData.is_archive) {
       if (newNoteData.image != undefined && newNoteData.image != null) {
         let image = newNoteData.image.split('/');
         newNoteData.image = image.slice(-1)[0];
       }
-    this.noteList = [newNoteData, ...this.noteList];
+      this.noteList = [newNoteData, ...this.noteList];
+    }
   }
 
   setReminderForNotes(date: string) {

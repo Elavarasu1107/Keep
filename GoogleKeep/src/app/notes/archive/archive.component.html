@@ -1,4 +1,4 @@
-<div class="d-flex justify-content-center align-items-center" *ngIf="noteListLength === 0">
+<div class="d-flex justify-content-center align-items-center" *ngIf="length === 0">
     <h4>Your archived notes appears here</h4>
 </div>
 <app-note-list [tabs]="'archive'" [apiUrl]="'/notes/archive/'"></app-note-list>

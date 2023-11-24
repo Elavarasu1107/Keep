@@ -1,16 +1,16 @@
-import { Component, AfterContentChecked } from '@angular/core';
-import { NotesService } from 'src/app/services/notes.service';
+import { Component } from '@angular/core';
+import { NotesService } from '../../services/notes.service';
 
 @Component({
   selector: 'app-archive',
   templateUrl: './archive.component.html',
   styleUrls: ['./archive.component.scss'],
 })
-export class ArchiveComponent implements AfterContentChecked {
+export class ArchiveComponent {
   noteListLength!: number;
   constructor(private noteService: NotesService) {}
 
-  ngAfterContentChecked(): void {
-    this.noteListLength = this.noteService.noteList.length;
+  get length() {
+    return this.noteService.noteList.length;
   }
 }

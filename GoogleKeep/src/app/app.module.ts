@@ -10,6 +10,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { ErrorHandlerService } from './services/error-handler.service';
 import { NotesModule } from './notes/notes.module';
 import { CookieService } from 'ngx-cookie-service';
+import { LocationStrategy, HashLocationStrategy } from '@angular/common';
 
 @NgModule({
   declarations: [AppComponent],
@@ -22,7 +23,10 @@ import { CookieService } from 'ngx-cookie-service';
     HttpClientModule,
     MatSnackBarModule,
   ],
-  providers: [CookieService],
+  providers: [
+    CookieService,
+    { provide: LocationStrategy, useClass: HashLocationStrategy },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
