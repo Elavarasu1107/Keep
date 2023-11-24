@@ -1,5 +1,5 @@
 <app-note-expansion-panel class="w-100 d-flex justify-content-center"
-    *ngIf="['notes'].includes(tabs)"></app-note-expansion-panel>
+    *ngIf="['notes', 'reminder'].includes(tabs)"></app-note-expansion-panel>
 <div class="container-fluid note-list mt-3 p-0">
     <div class="row d-flex">
         <div class="col" *ngFor="let note of getNoteList()">

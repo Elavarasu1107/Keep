@@ -1,4 +1,10 @@
-import { Component, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  ViewChild,
+  AfterViewInit,
+  Input,
+} from '@angular/core';
 import { CookieService } from '../../services/cookie.service';
 import { SideNavTogglerService } from '../../services/side-nav-toggler.service';
 import { Router } from '@angular/router';
@@ -10,6 +16,7 @@ import { Router } from '@angular/router';
 })
 export class HeaderComponent {
   @ViewChild('sideNavBar') sideMenuBar!: ElementRef;
+  @Input() activeTab: string = 'keep';
 
   constructor(
     private togglerService: SideNavTogglerService,

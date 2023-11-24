@@ -1,6 +1,7 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Output, ViewChild } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
-import { SideNavTogglerService } from 'src/app/services/side-nav-toggler.service';
+import { NotesService } from '../../services/notes.service';
+import { SideNavTogglerService } from '../../services/side-nav-toggler.service';
 
 @Component({
   selector: 'app-side-nav-bar',
@@ -9,9 +10,13 @@ import { SideNavTogglerService } from 'src/app/services/side-nav-toggler.service
 })
 export class SideNavBarComponent {
   @ViewChild('sideNav') sideNav!: MatSidenav;
+  @Output() activeTab = new EventEmitter<string>();
 
   isSideNavOpen: boolean = false;
-  constructor(private togglerService: SideNavTogglerService) {}
+  constructor(
+    private togglerService: SideNavTogglerService,
+    protected noteService: NotesService
+  ) {}
 
   getBooleanService() {
     return this.togglerService.getBooleanValue();

@@ -1,4 +1,4 @@
 <div class="h-100">
-    <app-header></app-header>
-    <app-side-nav-bar></app-side-nav-bar>
+    <app-header [activeTab]="headerName"></app-header>
+    <app-side-nav-bar (activeTab)="headerName=$event"></app-side-nav-bar>
 </div>
