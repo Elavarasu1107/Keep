@@ -1,8 +1,5 @@
-import { AfterContentChecked, Component, OnDestroy } from '@angular/core';
+import { AfterContentChecked, Component } from '@angular/core';
 import { NotesService } from '../../services/notes.service';
-import { HttpService } from '../../services/http.service';
-import { CookieService } from '../../services/cookie.service';
-import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-trash',
