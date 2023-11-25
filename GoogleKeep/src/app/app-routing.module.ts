@@ -7,6 +7,7 @@ import { RemindersComponent } from './notes/reminders/reminders.component';
 import { TrashComponent } from './notes/trash/trash.component';
 import { NoteComponent } from './notes/note/note.component';
 import { cookieGuard } from './guards/cookie.guard';
+import { apiResolver } from './resolver/api.resolver';
 
 const routes: Routes = [
   {
@@ -18,13 +19,39 @@ const routes: Routes = [
     path: 'notes',
     component: NoteComponent,
     children: [
-      { path: '', component: NoteListComponent, pathMatch: 'full' },
-      { path: 'reminder', component: RemindersComponent, pathMatch: 'full' },
-      { path: 'label', component: LabelsComponent, pathMatch: 'full' },
-      { path: 'archive', component: ArchiveComponent, pathMatch: 'full' },
-      { path: 'trash', component: TrashComponent, pathMatch: 'full' },
+      {
+        path: '',
+        component: NoteListComponent,
+        pathMatch: 'full',
+        resolve: { data: apiResolver },
+      },
+      {
+        path: 'reminder',
+        component: RemindersComponent,
+        pathMatch: 'full',
+        resolve: { data: apiResolver },
+      },
+      {
+        path: 'label',
+        component: LabelsComponent,
+        pathMatch: 'full',
+        resolve: { data: apiResolver },
+      },
+      {
+        path: 'archive',
+        component: ArchiveComponent,
+        pathMatch: 'full',
+        resolve: { data: apiResolver },
+      },
+      {
+        path: 'trash',
+        component: TrashComponent,
+        pathMatch: 'full',
+        resolve: { data: apiResolver },
+      },
     ],
     pathMatch: 'prefix',
+    resolve: { data: apiResolver },
     canActivate: [cookieGuard],
     canActivateChild: [cookieGuard],
   },

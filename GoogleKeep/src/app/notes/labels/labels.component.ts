@@ -145,7 +145,7 @@ class LabelDialogComponent implements OnInit, AfterContentChecked, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.subscription.add(this.noteService.getLabelFromDB('/labels/'));
+    // this.subscription.add(this.noteService.getLabelFromDB('/labels/'));
     this.labels = this.noteService.labelList;
   }
 

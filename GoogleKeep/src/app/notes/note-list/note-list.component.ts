@@ -15,12 +15,11 @@ export class NoteListComponent implements OnInit, OnDestroy {
   subscription = new Subscription();
 
   @Input() tabs: string = 'notes';
-  @Input() apiUrl: string = '/notes/';
 
   constructor(private noteService: NotesService, private dialog: MatDialog) {}
 
   ngOnInit(): void {
-    this.subscription.add(this.noteService.getNotesFromDB(this.apiUrl));
+    // this.subscription.add(this.noteService.getNotesFromDB(this.apiUrl));
   }
 
   removeReminder(id: number) {
