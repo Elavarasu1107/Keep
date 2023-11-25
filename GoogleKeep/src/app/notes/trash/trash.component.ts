@@ -7,7 +7,9 @@ import { NotesService } from '../../services/notes.service';
   styleUrls: ['./trash.component.scss'],
 })
 export class TrashComponent {
-  constructor(private noteService: NotesService) {}
+  constructor(private noteService: NotesService) {
+    this.noteService.checkCookie();
+  }
 
   get length() {
     return this.noteService.noteList.length;

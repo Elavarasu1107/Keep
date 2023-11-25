@@ -142,9 +142,11 @@ export class NoteOptionsComponent implements AfterViewInit, OnDestroy {
     });
 
     dialogRef.afterClosed().subscribe((data) => {
-      this.subscription.add(
-        this.noteService.setCollaboratorForNotes(data.collaborators)
-      );
+      if (data != undefined) {
+        this.subscription.add(
+          this.noteService.setCollaboratorForNotes(data.collaborators)
+        );
+      }
       this.menuTrigger.focus;
     });
   }

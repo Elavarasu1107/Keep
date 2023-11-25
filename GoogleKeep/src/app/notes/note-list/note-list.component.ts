@@ -19,6 +19,7 @@ export class NoteListComponent implements OnInit, OnDestroy {
   constructor(private noteService: NotesService, private dialog: MatDialog) {}
 
   ngOnInit(): void {
+    this.noteService.checkCookie();
     // this.subscription.add(this.noteService.getNotesFromDB(this.apiUrl));
   }
 

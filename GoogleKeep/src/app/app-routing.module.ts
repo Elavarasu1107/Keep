@@ -31,12 +31,12 @@ const routes: Routes = [
         pathMatch: 'full',
         resolve: { data: apiResolver },
       },
-      {
-        path: 'label',
-        component: LabelsComponent,
-        pathMatch: 'full',
-        resolve: { data: apiResolver },
-      },
+      // {
+      //   path: 'label',
+      //   component: LabelsComponent,
+      //   pathMatch: 'full',
+      //   resolve: { data: apiResolver },
+      // },
       {
         path: 'archive',
         component: ArchiveComponent,

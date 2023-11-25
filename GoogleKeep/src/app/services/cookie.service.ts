@@ -13,6 +13,9 @@ export class CookieService {
   }
 
   getToken(): any {
+    if (!this.checkToken()) {
+      this.router.navigate(['/login']);
+    }
     return this.cookie.get('Auth-Token');
   }
 

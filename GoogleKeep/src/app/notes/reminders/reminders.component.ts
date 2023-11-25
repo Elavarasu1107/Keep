@@ -8,7 +8,9 @@ import { NotesService } from 'src/app/services/notes.service';
 })
 export class RemindersComponent {
   noteListLength!: number;
-  constructor(private noteService: NotesService) {}
+  constructor(private noteService: NotesService) {
+    this.noteService.checkCookie();
+  }
 
   get length() {
     return this.noteService.noteList.length;

@@ -43,6 +43,10 @@ export class NotesService {
     private cookie: CookieService
   ) {}
 
+  checkCookie() {
+    return this.cookie.getToken();
+  }
+
   setNoteToView(newNoteData: note) {
     if (!newNoteData.is_archive) {
       if (newNoteData.image != undefined && newNoteData.image != null) {
