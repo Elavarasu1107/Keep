@@ -36,28 +36,32 @@ class Notes(viewsets.ViewSet):
             return [JSONParser()]
         return super().get_parsers()
 
+    def convert_form_data_to_dict(self):
+        data = {}
+        for key, value in self.request.data.items():
+            if key == 'remainder' and value == 'null':
+                data.update({'remainder': None})
+            elif key in ['is_archive', 'is_trash']:
+                if value == 'false':
+                    data.update({key: False})
+                else:
+                    data.update({key: True})
+            elif key in ['collaborator', 'label']:
+                if value != '':
+                    data.update({key: value.split(',')})
+                else:
+                    data.update({key: []})
+            else:
+                data.update({key: value})
+        return data
+
     @swagger_auto_schema(request_body=NoteSerializer)
     def create(self, request):
         try:
             request.data.update({'user': request.user})
             data = request.data.copy()
             if 'multipart/form-data' in request.content_type:
-                data = {}
-                for key, value in request.data.items():
-                    if key == 'remainder' and value == 'null':
-                        data.update({'remainder': None})
-                    elif key in ['is_archive', 'is_trash']:
-                        if value == 'false':
-                            data.update({key: False})
-                        else:
-                            data.update({key: True})
-                    elif key in ['collaborator', 'label']:
-                        if value != '':
-                            data.update({key: value.split(',')})
-                        else:
-                            data.update({key: []})
-                    else:
-                        data.update({key: value})
+                data = self.convert_form_data_to_dict()
             serializer = NoteSerializer(data=data)
             serializer.is_valid(raise_exception=True)
             serializer.save()
@@ -92,10 +96,13 @@ class Notes(viewsets.ViewSet):
     def update(self, request):
         try:
             request.data.update({"user": request.user.id})
+            data = request.data.copy()
+            if 'multipart/form-data' in request.content_type:
+                data = self.convert_form_data_to_dict()
             note = Note.objects.get(
                 id=request.query_params.get("id"), user=request.data.get("user")
             )
-            serializer = NoteSerializer(note, data=request.data, partial=True)
+            serializer = NoteSerializer(note, data=data, partial=True)
             serializer.is_valid(raise_exception=True)
             serializer.save()
             # self.redis_instance.hset_notes(request.user.id, serializer.data)

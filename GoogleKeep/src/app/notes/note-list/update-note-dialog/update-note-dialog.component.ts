@@ -9,15 +9,26 @@ import { NotesService } from 'src/app/services/notes.service';
 })
 export class UpdateNoteDialogComponent {
   constructor(
-    @Inject(MAT_DIALOG_DATA) public data: any,
+    @Inject(MAT_DIALOG_DATA) protected data: any,
     private noteService: NotesService
   ) {}
 
   updateNote(title: string, description: string) {
-    this.noteService.updateNotesData({
-      id: this.data.id,
-      title: title,
-      description: description,
-    });
+    let updataData = {};
+    if (this.data.image === null) {
+      updataData = {
+        id: this.data.id,
+        title: title,
+        description: description,
+        image: this.data.image,
+      };
+    } else {
+      updataData = {
+        id: this.data.id,
+        title: title,
+        description: description,
+      };
+    }
+    this.noteService.updateNotesData(updataData);
   }
 }

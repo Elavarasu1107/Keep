@@ -46,7 +46,7 @@
     </div>
     <div>
         <input type="file" #fileInput (change)="onFileSelected($event)" style="display: none;" />
-        <button mat-icon-button aria-label="image" (click)="fileInput.click()">
+        <button mat-icon-button aria-label="image" (click)="fileInput.click()" (click)="setNoteId()">
             <mat-icon>image</mat-icon>
         </button>
 

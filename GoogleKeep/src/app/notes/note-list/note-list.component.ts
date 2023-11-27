@@ -13,6 +13,7 @@ export class NoteListComponent implements OnInit, OnDestroy {
   noteList!: any;
   showNoteOptions!: number | null;
   subscription = new Subscription();
+  noteImage!: File | undefined;
 
   @Input() tabs: string = 'notes';
 
@@ -21,6 +22,11 @@ export class NoteListComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.noteService.checkCookie();
     // this.subscription.add(this.noteService.getNotesFromDB(this.apiUrl));
+  }
+
+  getImageData(data: any) {
+    this.noteImage = data[0];
+    this.noteService.updateImageToNote(this.noteImage);
   }
 
   removeReminder(id: number) {

@@ -94,6 +94,26 @@ export class NotesService {
     });
   }
 
+  updateImageToNote(data: any) {
+    this.noteList.map((item) => {
+      if (item.id === this.noteId) {
+        const formData = new FormData();
+        formData.append('image', data, data.name);
+        data = formData;
+        this.httpService
+          .update(
+            `/notes/?id=${item.id}`,
+            data,
+            `Bearer ${this.cookie.getToken()}`
+          )
+          .subscribe((resp: any) => {
+            let image = resp.data.image.split('/');
+            item.image = image.slice(-1)[0];
+          });
+      }
+    });
+  }
+
   setCollaboratorForNotes(collabList: string[]) {
     if (this.noteId === undefined) {
       this.collaborators = collabList;
