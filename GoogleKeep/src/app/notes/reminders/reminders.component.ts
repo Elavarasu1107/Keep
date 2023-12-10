@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, inject, DoCheck } from '@angular/core';
 import { NotesService } from 'src/app/services/notes.service';
 
 @Component({
@@ -6,13 +6,15 @@ import { NotesService } from 'src/app/services/notes.service';
   templateUrl: './reminders.component.html',
   styleUrls: ['./reminders.component.scss'],
 })
-export class RemindersComponent {
+export class RemindersComponent implements OnInit, DoCheck {
   noteListLength!: number;
-  constructor(private noteService: NotesService) {
+  noteService: NotesService = inject(NotesService);
+
+  ngOnInit(): void {
     this.noteService.checkCookie();
   }
 
-  get length() {
-    return this.noteService.noteList.length;
+  ngDoCheck(): void {
+    this.noteListLength = this.noteService.noteList.length;
   }
 }

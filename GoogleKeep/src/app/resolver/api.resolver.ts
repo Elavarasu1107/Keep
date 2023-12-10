@@ -2,7 +2,7 @@ import { inject } from '@angular/core';
 import { ResolveFn } from '@angular/router';
 import { NotesService } from '../services/notes.service';
 
-export const apiResolver: ResolveFn<boolean> = (route, state) => {
+export const apiResolver: ResolveFn<any> = (route, state) => {
   let noteService = inject(NotesService);
   let apiUrl: string = '';
   switch (state.url) {
@@ -13,14 +13,12 @@ export const apiResolver: ResolveFn<boolean> = (route, state) => {
       apiUrl = '/notes/?fetch=remainder';
       break;
     case '/notes/label':
-      noteService.getLabelFromDB('/labels/');
-      return true;
+      return noteService.getLabelFromDB('/labels/');
     case '/notes/archive':
       apiUrl = '/notes/archive/';
       break;
     case '/notes/trash':
       apiUrl = '/notes/trash/';
   }
-  noteService.getNotesFromDB(apiUrl);
-  return true;
+  return noteService.getNotesFromDB(apiUrl);
 };

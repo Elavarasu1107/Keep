@@ -3,6 +3,7 @@ import { Subscription } from 'rxjs';
 import { NotesService } from '../../services/notes.service';
 import { MatDialog } from '@angular/material/dialog';
 import { UpdateNoteDialogComponent } from './update-note-dialog/update-note-dialog.component';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-note-list',
@@ -17,11 +18,15 @@ export class NoteListComponent implements OnInit, OnDestroy {
 
   @Input() tabs: string = 'notes';
 
-  constructor(private noteService: NotesService, private dialog: MatDialog) {}
+  constructor(
+    private noteService: NotesService,
+    private dialog: MatDialog,
+    private activeRoute: ActivatedRoute
+  ) {}
 
   ngOnInit(): void {
     this.noteService.checkCookie();
-    // this.subscription.add(this.noteService.getNotesFromDB(this.apiUrl));
+    this.noteService.subscribeNotes(this.activeRoute.snapshot.data['data']);
   }
 
   getImageData(data: any) {

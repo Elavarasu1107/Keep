@@ -29,8 +29,6 @@ export class LabelsComponent implements OnInit, AfterContentChecked, OnDestroy {
 
   ngOnInit(): void {
     this.cookie.getToken();
-    this.subscription.add(this.noteService.getLabelFromDB('/labels/'));
-    this.labels = this.noteService.labelList;
   }
 
   ngAfterContentChecked(): void {

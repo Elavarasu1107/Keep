@@ -10,5 +10,5 @@
     <h4 class="text-center">Notes in Trash are deleted after 7 days.</h4>
 </ng-template>
 
-<div *ngIf="length !=0 then emptyTrash; else trashContent"></div>
+<div *ngIf="noteListLength !=0 then emptyTrash; else trashContent"></div>
 <app-note-list [tabs]="'trash'"></app-note-list>

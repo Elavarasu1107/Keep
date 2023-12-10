@@ -23,6 +23,7 @@ export class SideNavBarComponent {
 
   openLabelDialog() {
     if (!this.noteService.checkCookie()) return;
+    this.noteService.getLabelFromDB('/labels/');
     this.dialog.open(LabelsComponent);
   }
 

@@ -137,23 +137,17 @@ export class NotesService {
   }
 
   getNotesFromDB(endPoint: string) {
-    this.httpService
-      .get(endPoint, `Bearer ${this.cookie.getToken()}`)
-      .subscribe(
-        (observer: Observer<any>) => {
-          complete: {
-            const data: any = observer;
-            data?.data.forEach((note: any) => {
-              if (note.image != null) {
-                let image = note.image.split('/');
-                note.image = image.slice(-1)[0];
-              }
-            });
-            this.noteList = data?.data;
-          }
-        },
-        (error) => {}
-      );
+    return this.httpService.get(endPoint, `Bearer ${this.cookie.getToken()}`);
+  }
+
+  subscribeNotes(data: any) {
+    data?.data.forEach((note: any) => {
+      if (note.image != null) {
+        let image = note.image.split('/');
+        note.image = image.slice(-1)[0];
+      }
+    });
+    this.noteList = data?.data;
   }
 
   removeReminderFromDB(id: number, component: string) {
@@ -256,6 +250,7 @@ export class NotesService {
         });
       });
   }
+
   deleteNote(id: number) {
     this.httpService
       .delete(`/notes/?id=${id}`, `Bearer ${this.cookie.getToken()}`)
@@ -268,6 +263,7 @@ export class NotesService {
         });
       });
   }
+
   deleteAllTrashNotes() {
     this.httpService
       .delete('/notes/?delete_all=true', `Bearer ${this.cookie.getToken()}`)

@@ -1,4 +1,4 @@
-import { OnInit, Component } from '@angular/core';
+import { OnInit, Component, inject, DoCheck } from '@angular/core';
 import { NotesService } from '../../services/notes.service';
 
 @Component({
@@ -6,13 +6,16 @@ import { NotesService } from '../../services/notes.service';
   templateUrl: './trash.component.html',
   styleUrls: ['./trash.component.scss'],
 })
-export class TrashComponent {
-  constructor(private noteService: NotesService) {
+export class TrashComponent implements OnInit, DoCheck {
+  noteListLength!: number;
+  noteService: NotesService = inject(NotesService);
+
+  ngOnInit(): void {
     this.noteService.checkCookie();
   }
 
-  get length() {
-    return this.noteService.noteList.length;
+  ngDoCheck(): void {
+    this.noteListLength = this.noteService.noteList.length;
   }
 
   deleteAllTrashNotes() {
