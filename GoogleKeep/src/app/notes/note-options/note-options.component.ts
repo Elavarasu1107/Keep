@@ -26,6 +26,7 @@ import { CommonModule } from '@angular/common';
 import { MatIcon, MatIconModule } from '@angular/material/icon';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { Subscription } from 'rxjs';
+import { MatChipsModule } from '@angular/material/chips';
 
 @Component({
   selector: 'app-note-options',
@@ -138,7 +139,7 @@ export class NoteOptionsComponent implements AfterViewInit, OnDestroy {
     const dialogRef = this.dialog.open(CollaboratorDialog, {
       restoreFocus: false,
       width: '30rem',
-      height: '20rem',
+      height: '15rem',
     });
 
     dialogRef.afterClosed().subscribe((data) => {
@@ -164,8 +165,8 @@ export class NoteOptionsComponent implements AfterViewInit, OnDestroy {
   openLabelDialog() {
     const dialogRef = this.dialog.open(LabelDialog, {
       restoreFocus: false,
-      width: '20rem',
-      maxHeight: '20rem',
+      // width: '10rem',
+      // height: '10rem',
     });
 
     dialogRef.afterClosed().subscribe((data) => {
@@ -211,34 +212,48 @@ export class DialogFromMenu implements OnDestroy {
 
 @Component({
   selector: 'dialog-from-menu-dialog',
-  template: `<h1 mat-dialog-title>Collaborators</h1>
-    <div mat-dialog-content>
-      <div
+  template: ` <style>
+      input:focus {
+        outline: none;
+        border: none;
+      }
+    </style>
+    <h1 mat-dialog-title class="text-center">Collaborators</h1>
+    <div
+      mat-dialog-content
+      class="d-flex justify-content-center align-items-center flex-column"
+    >
+      <mat-chip-row
         *ngFor="let col of collaborators"
-        class="align-items-center d-flex justify-content-between border border-2 rounded p-2 m-1 bg-light"
+        class="mx-2 mt-1"
+        (removed)="removeCollaborator(col)"
       >
-        <h4 class="m-0 p-0">{{ col }}</h4>
-        <mat-icon (click)="removeCollaborator(col)">close</mat-icon>
-      </div>
+        <h5 class="m-0">{{ col }}</h5>
+        <button matChipRemove [attr.aria-label]="'remove collaborator'">
+          <mat-icon>cancel</mat-icon>
+        </button>
+      </mat-chip-row>
       <input
-        class="form-control mt-2"
+        class="mt-2 border border-primary rounded w-75"
+        mat-input
+        list="users"
         type="text"
         placeholder="Search collaborators"
         [(ngModel)]="searchTerm"
         (keyup)="filterCollaborators()"
+        (keyup.enter)="addCollaborator(searchTerm)"
       />
-      <div class="mt-2 d-flex flex-column">
-        <button
-          mat-button
+      <datalist id="users">
+        <option
           *ngFor="let email of filteredUsers"
+          [value]="email"
           (click)="addCollaborator(email)"
-          class="btn btn-outline-secondary d-flex justify-content-start"
         >
-          <span>{{ email }}</span>
-        </button>
-      </div>
+          {{ email }}
+        </option>
+      </datalist>
     </div>
-    <div mat-dialog-actions class="d-flex justify-content-end">
+    <div mat-dialog-actions class="d-flex justify-content-center">
       <button mat-button mat-dialog-close (click)="onClose()">Save</button>
     </div>`,
   standalone: true,
@@ -249,6 +264,7 @@ export class DialogFromMenu implements OnDestroy {
     MatButtonModule,
     CommonModule,
     MatIconModule,
+    MatChipsModule,
   ],
 })
 export class CollaboratorDialog implements OnInit, OnDestroy {
@@ -287,8 +303,11 @@ export class CollaboratorDialog implements OnInit, OnDestroy {
   }
 
   addCollaborator(email: string) {
-    this.collaborators.push(email);
-    this.filteredUsers.splice(this.filteredUsers.indexOf(email), 1);
+    if (this.allUsers.includes(email)) {
+      this.collaborators.push(email);
+      this.filteredUsers.splice(this.filteredUsers.indexOf(email), 1);
+      this.searchTerm = '';
+    }
   }
 
   removeCollaborator(email: string) {
