@@ -28,7 +28,7 @@
             <input matInput class="bg-transparent border border-0 w-100" type="text" placeholder="Take a note..."
                 formControlName="description">
             <mat-chip-row *ngIf="getReminderDate() != null" class="mt-1" (removed)="removeReminder()">
-                <h5 class="m-0">{{ getReminderDate() }}</h5>
+                <h5 class="m-0">{{ getReminderDate() | date: 'medium' }}</h5>
                 <button matChipRemove [attr.aria-label]="'remove reminder '">
                     <mat-icon>cancel</mat-icon>
                 </button>

@@ -28,6 +28,9 @@ import { LabelsComponent } from './labels/labels.component';
 import { TrashComponent } from './trash/trash.component';
 import { UpdateNoteDialogComponent } from './note-list/update-note-dialog/update-note-dialog.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { ReminderDialogComponent } from './note-options/reminder-dialog/reminder-dialog.component';
+import { CollaboratorDialogComponent } from './note-options/collaborator-dialog/collaborator-dialog.component';
+import { LabelDialogComponent } from './note-options/label-dialog/label-dialog.component';
 
 @NgModule({
   declarations: [
@@ -42,6 +45,9 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     LabelsComponent,
     TrashComponent,
     UpdateNoteDialogComponent,
+    ReminderDialogComponent,
+    CollaboratorDialogComponent,
+    LabelDialogComponent,
   ],
   imports: [
     CommonModule,
