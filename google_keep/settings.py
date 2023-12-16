@@ -30,9 +30,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = []
+DEBUG = os.environ.get("DEBUG")
 
 
 # Application definition
@@ -51,10 +49,11 @@ INSTALLED_APPS = [
     "user.apps.UserConfig",
     "notes.apps.NotesConfig",
     "labels.apps.LabelsConfig",
-    'corsheaders'
+    "corsheaders",
 ]
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -63,7 +62,6 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "corsheaders.middleware.CorsMiddleware"
 ]
 
 ROOT_URLCONF = "google_keep.urls"
@@ -137,13 +135,16 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 STATIC_URL = "static/"
-# STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 #
 # STATICFILES_DIRS = [
 #     os.path.join(BASE_DIR, "templates", "static"),
 # ]
 
 # STATICFILES_STORAGE = "whitenoise.storage.CompressedStaticFilesStorage"
+
+STATIC_URL = "media/"
+STATIC_ROOT = os.path.join(BASE_DIR, "mediafiles")
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
@@ -212,6 +213,8 @@ CELERY_ALWAYS_EAGER = False
 
 CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers:DatabaseScheduler"
 
+
+ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS").split(" ")
 CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
 
@@ -234,10 +237,6 @@ CORS_ALLOW_METHODS = (
     "PUT",
 )
 
-# CORS_ALLOWED_ORIGINS = [
-#     "https://www.safesite.com",
-# ]
+CORS_ALLOWED_ORIGINS = ["http://localhost:4200"]
 
-# CSRF_TRUSTED_ORIGINS = [
-#     'www.safesite.com',
-# ]
+CSRF_TRUSTED_ORIGINS = ["http://localhost:4200"]

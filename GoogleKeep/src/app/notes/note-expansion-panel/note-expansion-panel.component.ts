@@ -138,7 +138,7 @@ export class NoteExpansionPanelComponent
     ) {
       this.subscription.add(
         this.httpService
-          .post('/notes/', data, `Bearer ${this.cookie.getToken()}`)
+          .post('/api/notes/', data, `Bearer ${this.cookie.getToken()}`)
           .subscribe((resp) => {
             complete: {
               const data = resp;

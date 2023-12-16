@@ -29,40 +29,56 @@ export class HttpService {
     });
   }
 
-  post(endPoint: string, data: any, headers: any): Observable<any> {
-    return this.http.post(endPoint, data, headers).pipe(
-      catchError((error: HttpErrorResponse) => {
-        this.snackMessageBox(error);
-        return throwError(() => 'Something went wrong!');
+  post(endPoint: string, data: any, token: any): Observable<any> {
+    return this.http
+      .post('http://127.0.0.1:1337' + endPoint, data, {
+        headers: { Authorization: token },
       })
-    );
+      .pipe(
+        catchError((error: HttpErrorResponse) => {
+          this.snackMessageBox(error);
+          return throwError(() => 'Something went wrong!');
+        })
+      );
   }
 
   get(endPoint: string, token: string): Observable<any> {
-    return this.http.get(endPoint, { headers: { Authorization: token } }).pipe(
-      catchError((error: HttpErrorResponse) => {
-        this.snackMessageBox(error);
-
-        return throwError(() => 'Something went wrong!');
+    return this.http
+      .get('http://127.0.0.1:1337' + endPoint, {
+        headers: { Authorization: token },
       })
-    );
+      .pipe(
+        catchError((error: HttpErrorResponse) => {
+          this.snackMessageBox(error);
+
+          return throwError(() => 'Something went wrong!');
+        })
+      );
   }
 
-  update(endPoint: string, data: any, headers: any): Observable<any> {
-    return this.http.put(endPoint, data, headers).pipe(
-      catchError((error: HttpErrorResponse) => {
-        this.snackMessageBox(error);
-        return throwError(() => 'Something went wrong!');
+  update(endPoint: string, data: any, token: any): Observable<any> {
+    return this.http
+      .put('http://127.0.0.1:1337' + endPoint, data, {
+        headers: { Authorization: token },
       })
-    );
+      .pipe(
+        catchError((error: HttpErrorResponse) => {
+          this.snackMessageBox(error);
+          return throwError(() => 'Something went wrong!');
+        })
+      );
   }
 
-  delete(endPoint: string, headers: any): Observable<any> {
-    return this.http.delete(endPoint, headers).pipe(
-      catchError((error: HttpErrorResponse) => {
-        this.snackMessageBox(error);
-        return throwError(() => 'Something went wrong!');
+  delete(endPoint: string, token: any): Observable<any> {
+    return this.http
+      .delete('http://127.0.0.1:1337' + endPoint, {
+        headers: { Authorization: token },
       })
-    );
+      .pipe(
+        catchError((error: HttpErrorResponse) => {
+          this.snackMessageBox(error);
+          return throwError(() => 'Something went wrong!');
+        })
+      );
   }
 }

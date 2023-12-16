@@ -4,7 +4,7 @@ from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import viewsets
 from rest_framework.decorators import action
-from rest_framework.parsers import MultiPartParser, JSONParser
+from rest_framework.parsers import JSONParser, MultiPartParser
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework_simplejwt.authentication import JWTAuthentication
@@ -12,8 +12,8 @@ from rest_framework_simplejwt.authentication import JWTAuthentication
 from labels.models import Label
 from user.models import User
 from user.utils import CsrfExemptSessionAuthentication
-from utils.redis_cache import RedisManager
 from utils.exception_log import set_logger
+from utils.redis_cache import RedisManager
 
 from .models import Note
 from .serializer import NoteSerializer, UpdateNoteSerializer
@@ -30,25 +30,25 @@ class Notes(viewsets.ViewSet):
 
     def get_parsers(self):
         content_type = self.request.content_type
-        if content_type == 'multipart/form-data':
+        if content_type == "multipart/form-data":
             return [MultiPartParser()]
-        elif content_type == 'application/json':
+        elif content_type == "application/json":
             return [JSONParser()]
         return super().get_parsers()
 
     def convert_form_data_to_dict(self):
         data = {}
         for key, value in self.request.data.items():
-            if key == 'remainder' and value == 'null':
-                data.update({'remainder': None})
-            elif key in ['is_archive', 'is_trash']:
-                if value == 'false':
+            if key == "remainder" and value == "null":
+                data.update({"remainder": None})
+            elif key in ["is_archive", "is_trash"]:
+                if value == "false":
                     data.update({key: False})
                 else:
                     data.update({key: True})
-            elif key in ['collaborator', 'label']:
-                if value != '':
-                    data.update({key: value.split(',')})
+            elif key in ["collaborator", "label"]:
+                if value != "":
+                    data.update({key: value.split(",")})
                 else:
                     data.update({key: []})
             else:
@@ -58,9 +58,9 @@ class Notes(viewsets.ViewSet):
     @swagger_auto_schema(request_body=NoteSerializer)
     def create(self, request):
         try:
-            request.data.update({'user': request.user})
+            request.data.update({"user": request.user})
             data = request.data.copy()
-            if 'multipart/form-data' in request.content_type:
+            if "multipart/form-data" in request.content_type:
                 data = self.convert_form_data_to_dict()
             serializer = NoteSerializer(data=data)
             serializer.is_valid(raise_exception=True)
@@ -81,10 +81,14 @@ class Notes(viewsets.ViewSet):
             #     return Response(
             #         {"message": "Cache Notes Retrieved", "status": 200, "data": redis_data}, status=200
             #     )
-            if request.query_params.get('fetch') == 'remainder':
-                notes = Note.objects.filter(user=request.user.id, remainder__isnull=False).order_by('-id')
+            if request.query_params.get("fetch") == "remainder":
+                notes = Note.objects.filter(user=request.user.id, remainder__isnull=False).order_by(
+                    "-id"
+                )
             else:
-                notes = Note.objects.filter(user=request.user.id, is_archive=False, is_trash=False).order_by('-id')
+                notes = Note.objects.filter(
+                    user=request.user.id, is_archive=False, is_trash=False
+                ).order_by("-id")
             serializer = NoteSerializer(notes, many=True)
             return Response(
                 {"message": "Notes Retrieved", "status": 200, "data": serializer.data}, status=200
@@ -97,7 +101,7 @@ class Notes(viewsets.ViewSet):
         try:
             request.data.update({"user": request.user.id})
             data = request.data.copy()
-            if 'multipart/form-data' in request.content_type:
+            if "multipart/form-data" in request.content_type:
                 data = self.convert_form_data_to_dict()
             note = Note.objects.get(
                 id=request.query_params.get("id"), user=request.data.get("user")
@@ -117,7 +121,7 @@ class Notes(viewsets.ViewSet):
     )
     def destroy(self, request):
         try:
-            if request.query_params.get('delete_all') == 'true':
+            if request.query_params.get("delete_all") == "true":
                 Note.objects.filter(is_trash=True, user=request.user.id).delete()
             else:
                 Note.objects.get(id=request.query_params.get("id"), user=request.user.id).delete()
@@ -169,7 +173,7 @@ class Notes(viewsets.ViewSet):
     @action(methods=["GET"], detail=True)
     def trash_data(self, request):
         try:
-            notes = Note.objects.filter(is_trash=True, user=request.user.id).order_by('-id')
+            notes = Note.objects.filter(is_trash=True, user=request.user.id).order_by("-id")
             serializer = NoteSerializer(notes, many=True)
             return Response(
                 {"message": "Retrieved trash notes", "status": 200, "data": serializer.data},

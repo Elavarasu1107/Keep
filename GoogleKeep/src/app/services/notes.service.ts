@@ -68,7 +68,7 @@ export class NotesService {
         this.noteList = [...this.noteList];
         this.httpService
           .update(
-            `/notes/?id=${item.id}`,
+            `/api/notes/?id=${item.id}`,
             { remainder: data },
             `Bearer ${this.cookie.getToken()}`
           )
@@ -85,7 +85,7 @@ export class NotesService {
         this.noteList = [...this.noteList];
         this.httpService
           .update(
-            `/notes/?id=${item.id}`,
+            `/api/notes/?id=${item.id}`,
             data,
             `Bearer ${this.cookie.getToken()}`
           )
@@ -102,7 +102,7 @@ export class NotesService {
         data = formData;
         this.httpService
           .update(
-            `/notes/?id=${item.id}`,
+            `/api/notes/?id=${item.id}`,
             data,
             `Bearer ${this.cookie.getToken()}`
           )
@@ -124,7 +124,7 @@ export class NotesService {
       if (note.id === this.noteId) {
         this.httpService
           .post(
-            '/notes/collaborator/',
+            '/api/notes/collaborator/',
             { id: note.id, collaborator: collabList },
             `Bearer ${this.cookie.getToken()}`
           )
@@ -161,7 +161,7 @@ export class NotesService {
         this.noteList = [...this.noteList];
         this.httpService
           .update(
-            `/notes/?id=${item.id}`,
+            `/api/notes/?id=${item.id}`,
             { remainder: item.remainder },
             `Bearer ${this.cookie.getToken()}`
           )
@@ -177,7 +177,7 @@ export class NotesService {
         this.noteList = [...this.noteList];
         this.httpService
           .update(
-            `/notes/collaborator/`,
+            `/api/notes/collaborator/`,
             { id: id, collaborator: email },
             `Bearer ${this.cookie.getToken()}`
           )
@@ -193,7 +193,7 @@ export class NotesService {
         this.noteList = [...this.noteList];
         this.httpService
           .update(
-            `/notes/label/`,
+            `/api/notes/label/`,
             { id: id, label: label },
             `Bearer ${this.cookie.getToken()}`
           )
@@ -212,7 +212,7 @@ export class NotesService {
       if (note.id === this.noteId) {
         this.httpService
           .post(
-            '/notes/label/',
+            '/api/notes/label/',
             { id: note.id, label: data.labels },
             `Bearer ${this.cookie.getToken()}`
           )
@@ -240,7 +240,11 @@ export class NotesService {
 
   restoreNote(id: number) {
     this.httpService
-      .update(`/notes/trash/?id=${id}`, {}, `Bearer ${this.cookie.getToken()}`)
+      .update(
+        `/api/notes/trash/?id=${id}`,
+        {},
+        `Bearer ${this.cookie.getToken()}`
+      )
       .subscribe((resp) => {
         this.noteList.map((item) => {
           if (item.id === id) {
@@ -253,7 +257,7 @@ export class NotesService {
 
   deleteNote(id: number) {
     this.httpService
-      .delete(`/notes/?id=${id}`, `Bearer ${this.cookie.getToken()}`)
+      .delete(`/api/notes/?id=${id}`, `Bearer ${this.cookie.getToken()}`)
       .subscribe((resp) => {
         this.noteList.map((item) => {
           if (item.id === id) {
@@ -266,7 +270,7 @@ export class NotesService {
 
   deleteAllTrashNotes() {
     this.httpService
-      .delete('/notes/?delete_all=true', `Bearer ${this.cookie.getToken()}`)
+      .delete('/api/notes/?delete_all=true', `Bearer ${this.cookie.getToken()}`)
       .subscribe((resp) => {
         this.noteList = this.noteList.filter((item) => false);
       });

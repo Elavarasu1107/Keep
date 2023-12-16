@@ -39,7 +39,7 @@ export class LabelsComponent implements OnInit, AfterContentChecked, OnDestroy {
     this.subscription.add(
       this.httpService
         .post(
-          '/labels/',
+          '/api/labels/',
           { title: ele.value },
           `Bearer ${this.cookie.getToken()}`
         )
@@ -76,7 +76,7 @@ export class LabelsComponent implements OnInit, AfterContentChecked, OnDestroy {
     this.subscription.add(
       this.httpService
         .update(
-          `/labels/?id=${id}`,
+          `/api/labels/?id=${id}`,
           { title: newValue },
           `Bearer ${this.cookie.getToken()}`
         )
@@ -99,7 +99,7 @@ export class LabelsComponent implements OnInit, AfterContentChecked, OnDestroy {
   deleteLabel(id: number) {
     this.subscription.add(
       this.httpService
-        .delete(`/labels/?id=${id}`, `Bearer ${this.cookie.getToken()}`)
+        .delete(`/api/labels/?id=${id}`, `Bearer ${this.cookie.getToken()}`)
         .subscribe((resp: any) => {
           this.noteService.labelList.map((item) => {
             if (item.id === id) {

@@ -25,7 +25,7 @@ export class LabelDialogComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.subscription.add(
       this.httpService
-        .get('/labels/', `Bearer ${this.cookie.getToken()}`)
+        .get('/api/labels/', `Bearer ${this.cookie.getToken()}`)
         .subscribe((resp) => {
           this.noteService.labelList = resp.data;
         })

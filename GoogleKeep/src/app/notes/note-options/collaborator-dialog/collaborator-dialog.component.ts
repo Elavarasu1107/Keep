@@ -25,7 +25,7 @@ export class CollaboratorDialogComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.subscription.add(
       this.httpService
-        .get(`/user/api/registration/`, `Bearer ${this.cookie.getToken()}`)
+        .get(`/api/user/registration/`, `Bearer ${this.cookie.getToken()}`)
         .subscribe((resp) => {
           this.allUsers = resp.data;
         })

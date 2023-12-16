@@ -20,7 +20,7 @@ export class SignInComponent implements OnDestroy {
 
   loginSubmit(form: any) {
     this.subscription.add(
-      this.http.post('/user/api/login/', form.value, {}).subscribe(
+      this.http.post('/api/user/login/', form.value, '').subscribe(
         (resp) => {
           if (resp.status === 200) {
             this.cookie.setToken(resp.data.access);

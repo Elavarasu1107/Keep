@@ -82,7 +82,7 @@ export class NoteOptionsComponent implements AfterViewInit, OnDestroy {
     }
     this.httpService
       .update(
-        `/notes/trash/?id=${this.noteId}`,
+        `/api/notes/trash/?id=${this.noteId}`,
         {},
         `Bearer ${this.cookie.getToken()}`
       )
@@ -117,7 +117,7 @@ export class NoteOptionsComponent implements AfterViewInit, OnDestroy {
 
     this.httpService
       .update(
-        `/notes/archive/?id=${this.noteId}`,
+        `/api/notes/archive/?id=${this.noteId}`,
         {},
         `Bearer ${this.cookie.getToken()}`
       )

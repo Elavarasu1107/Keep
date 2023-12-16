@@ -7,18 +7,18 @@ export const apiResolver: ResolveFn<any> = (route, state) => {
   let apiUrl: string = '';
   switch (state.url) {
     case '/notes':
-      apiUrl = '/notes/';
+      apiUrl = '/api/notes/';
       break;
     case '/notes/reminder':
-      apiUrl = '/notes/?fetch=remainder';
+      apiUrl = '/api/notes/?fetch=remainder';
       break;
     case '/notes/label':
-      return noteService.getLabelFromDB('/labels/');
+      return noteService.getLabelFromDB('/api/labels/');
     case '/notes/archive':
-      apiUrl = '/notes/archive/';
+      apiUrl = '/api/notes/archive/';
       break;
     case '/notes/trash':
-      apiUrl = '/notes/trash/';
+      apiUrl = '/api/notes/trash/';
   }
   return noteService.getNotesFromDB(apiUrl);
 };
