@@ -7,7 +7,7 @@
                 (mouseleave)="hideOptions()">
                 <div class="card-body p-0 m-0">
                     <div (click)="updateNoteDialog(note)" class="px-2 mx-1">
-                        <img *ngIf="note.image != null" [src]="'assets/'+note.image" alt="" class="w-100">
+                        <img *ngIf="note.image != null" [src]="imageUrl+note.image" alt="" class="w-100">
                         <h4 class="card-title my-2">{{ note.title }}</h4>
                         <p class="card-text">{{ note.description }}</p>
                     </div>

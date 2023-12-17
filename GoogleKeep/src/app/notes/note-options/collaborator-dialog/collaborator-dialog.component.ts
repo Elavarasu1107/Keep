@@ -3,6 +3,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { CookieService } from '../../../services/cookie.service';
 import { Subscription } from 'rxjs';
 import { HttpService } from 'src/app/services/http.service';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-collaborator-dialog',
@@ -25,7 +26,7 @@ export class CollaboratorDialogComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.subscription.add(
       this.httpService
-        .get(`/api/user/registration/`, `Bearer ${this.cookie.getToken()}`)
+        .get(environment.registerUserUrl, `Bearer ${this.cookie.getToken()}`)
         .subscribe((resp) => {
           this.allUsers = resp.data;
         })

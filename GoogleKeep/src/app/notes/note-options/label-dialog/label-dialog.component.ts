@@ -4,6 +4,7 @@ import { CookieService } from '../../../services/cookie.service';
 import { Subscription } from 'rxjs';
 import { HttpService } from 'src/app/services/http.service';
 import { NotesService } from 'src/app/services/notes.service';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-label-dialog',
@@ -25,7 +26,7 @@ export class LabelDialogComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.subscription.add(
       this.httpService
-        .get('/api/labels/', `Bearer ${this.cookie.getToken()}`)
+        .get(environment.labelUrl, `Bearer ${this.cookie.getToken()}`)
         .subscribe((resp) => {
           this.noteService.labelList = resp.data;
         })

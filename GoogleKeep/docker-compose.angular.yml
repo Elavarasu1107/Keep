@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   angular:
-    container_name: angular
+    container_name: ng-nginx
     build:
       context: .
     ports:

@@ -4,6 +4,7 @@ import { NotesService } from '../../services/notes.service';
 import { MatDialog } from '@angular/material/dialog';
 import { UpdateNoteDialogComponent } from './update-note-dialog/update-note-dialog.component';
 import { ActivatedRoute } from '@angular/router';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-note-list',
@@ -15,6 +16,7 @@ export class NoteListComponent implements OnInit, OnDestroy {
   showNoteOptions!: number | null;
   subscription = new Subscription();
   noteImage!: File | undefined;
+  imageUrl = environment.mediaUrl;
 
   @Input() tabs: string = 'notes';
 

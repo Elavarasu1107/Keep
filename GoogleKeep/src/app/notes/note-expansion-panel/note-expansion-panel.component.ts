@@ -13,6 +13,7 @@ import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { CookieService } from '../../services/cookie.service';
 import { NotesService } from '../../services/notes.service';
 import { Subscription } from 'rxjs';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-note-expansion-panel',
@@ -138,7 +139,7 @@ export class NoteExpansionPanelComponent
     ) {
       this.subscription.add(
         this.httpService
-          .post('/api/notes/', data, `Bearer ${this.cookie.getToken()}`)
+          .post(environment.notesUrl, data, `Bearer ${this.cookie.getToken()}`)
           .subscribe((resp) => {
             complete: {
               const data = resp;

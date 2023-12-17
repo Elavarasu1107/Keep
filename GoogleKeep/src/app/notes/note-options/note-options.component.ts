@@ -16,6 +16,7 @@ import { Subscription } from 'rxjs';
 import { ReminderDialogComponent } from './reminder-dialog/reminder-dialog.component';
 import { CollaboratorDialogComponent } from './collaborator-dialog/collaborator-dialog.component';
 import { LabelDialogComponent } from './label-dialog/label-dialog.component';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-note-options',
@@ -82,7 +83,7 @@ export class NoteOptionsComponent implements AfterViewInit, OnDestroy {
     }
     this.httpService
       .update(
-        `/api/notes/trash/?id=${this.noteId}`,
+        `${environment.archiveUrl}?id=${this.noteId}`,
         {},
         `Bearer ${this.cookie.getToken()}`
       )
@@ -117,7 +118,7 @@ export class NoteOptionsComponent implements AfterViewInit, OnDestroy {
 
     this.httpService
       .update(
-        `/api/notes/archive/?id=${this.noteId}`,
+        `${environment.archiveUrl}?id=${this.noteId}`,
         {},
         `Bearer ${this.cookie.getToken()}`
       )
