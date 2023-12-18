@@ -16,7 +16,7 @@ export class NoteListComponent implements OnInit, OnDestroy {
   showNoteOptions!: number | null;
   subscription = new Subscription();
   noteImage!: File | undefined;
-  imageUrl = environment.mediaUrl;
+  imageUrl!: string;
 
   @Input() tabs: string = 'notes';
 
@@ -27,6 +27,7 @@ export class NoteListComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
+    this.imageUrl = environment.mediaUrl;
     this.noteService.checkCookie();
     this.noteService.subscribeNotes(this.activeRoute.snapshot.data['data']);
   }

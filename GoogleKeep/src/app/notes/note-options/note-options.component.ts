@@ -83,7 +83,7 @@ export class NoteOptionsComponent implements AfterViewInit, OnDestroy {
     }
     this.httpService
       .update(
-        `${environment.archiveUrl}?id=${this.noteId}`,
+        `${environment.trashUrl}?id=${this.noteId}`,
         {},
         `Bearer ${this.cookie.getToken()}`
       )

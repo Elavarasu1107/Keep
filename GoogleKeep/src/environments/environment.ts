@@ -7,7 +7,7 @@ export const environment = {
   archiveUrl: '/api/notes/archive/',
   trashUrl: '/api/notes/trash/',
   labelUrl: '/api/labels/',
-  mediaUrl: 'http://localhost:1337/media/',
+  mediaUrl: 'http://localhost:1337/media/noteImages/',
   registerUserUrl: '/api/user/registration/',
   collaboratorUrl: '/api/notes/collaborator/',
 };

@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { NotesService } from 'src/app/services/notes.service';
 import { environment } from '../../../../environments/environment';
@@ -8,13 +8,17 @@ import { environment } from '../../../../environments/environment';
   templateUrl: './update-note-dialog.component.html',
   styleUrls: ['./update-note-dialog.component.scss'],
 })
-export class UpdateNoteDialogComponent {
-  imageUrl = environment.mediaUrl;
+export class UpdateNoteDialogComponent implements OnInit {
+  imageUrl!: string;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) protected data: any,
     private noteService: NotesService
   ) {}
+
+  ngOnInit(): void {
+    this.imageUrl = environment.mediaUrl;
+  }
 
   updateNote(title: string, description: string) {
     let updataData = {};

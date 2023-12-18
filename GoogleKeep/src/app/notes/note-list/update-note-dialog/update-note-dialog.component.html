@@ -1,6 +1,6 @@
 <div>
     <div class="position-relative">
-        <img *ngIf="data.image != null" [src]="imageUrl + data.image" alt="" class="w-100 h-100 img-fluid">
+        <img *ngIf="data.image != null" [src]="imageUrl+ data.image" alt="" class="w-100 h-100 img-fluid">
         <mat-icon *ngIf="data.image != null" class="position-absolute end-0 bottom-0 m-2" style="cursor: pointer;"
             (click)="data.image=null">delete</mat-icon>
     </div>
