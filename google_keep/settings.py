@@ -14,10 +14,12 @@ import os
 from datetime import timedelta
 from pathlib import Path
 
-from dotenv import find_dotenv, load_dotenv
+# from dotenv import load_dotenv
 
-dotenv_path = os.path.join(os.path.dirname(__file__), ".env")
-load_dotenv(find_dotenv(), override=True)
+# env_file = ".env" if not os.environ.get("ENVIRONMENT") else ".env.prod"
+
+# dotenv_path = os.path.join(Path(os.path.dirname(__file__)).resolve().parent, env_file)
+# load_dotenv(dotenv_path, override=True)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -124,7 +126,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = "UTC"
+TIME_ZONE = "Asia/Kolkata"
 
 USE_I18N = True
 
@@ -191,7 +193,7 @@ SWAGGER_SETTINGS = {
     "SECURITY_DEFINITIONS": {"Bearer": {"type": "apiKey", "name": "Authorization", "in": "header"}},
 }
 
-REDIS_CONFIG = {"host": "localhost", "port": 6379, "db": 0}
+REDIS_CONFIG = {"host": os.environ.get("REDIS_HOST"), "port": os.environ.get("REDIS_PORT"), "db": 0}
 
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = "smtp.gmail.com"
@@ -201,8 +203,9 @@ EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
 BASE_URL = os.environ.get("BASE_URL", "http://localhost:8000")
 
-CELERY_BROKER_URL = "redis://localhost:6379"
-CELERY_RESULT_BACKEND = "redis://localhost:6379"
+CELERY_BROKER = os.environ.get("CELERY_BROKER")
+CELERY_BROKER_URL = CELERY_BROKER
+CELERY_RESULT_BACKEND = CELERY_BROKER
 CELERY_ACCEPT_CONTENT = ["application/json"]
 CELERY_TASK_SERIALIZER = "json"
 CELERY_RESULT_SERIALIZER = "json"
@@ -215,6 +218,7 @@ CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers:DatabaseScheduler"
 
 
 ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS").split(" ")
+
 CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
 
@@ -237,6 +241,6 @@ CORS_ALLOW_METHODS = (
     "PUT",
 )
 
-CORS_ALLOWED_ORIGINS = ["http://localhost:4200"]
+CORS_ALLOWED_ORIGINS = os.environ.get("ALLOWED_ORIGINS").split(" ")
 
-CSRF_TRUSTED_ORIGINS = ["http://localhost:4200"]
+CSRF_TRUSTED_ORIGINS = os.environ.get("ALLOWED_ORIGINS").split(" ")
