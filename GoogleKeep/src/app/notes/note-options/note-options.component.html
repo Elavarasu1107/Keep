@@ -1,7 +1,8 @@
-<div class="d-flex justify-content-between">
+<div class="d-flex justify-content-between gap-1 mt-2">
     <div>
-        <button mat-icon-button [matMenuTriggerFor]="reminder" aria-label="reminder" (click)="setNoteId()">
-            <mat-icon>notifications_none</mat-icon>
+        <button class="bg-none border-0 btn btn-sm" [matMenuTriggerFor]="reminder" aria-label="reminder"
+            (click)="setNoteId()">
+            <span class="material-symbols-outlined" style="font-size: 19px;">add_alert</span>
         </button>
         <mat-menu #reminder="matMenu">
             <h5 class="px-3">Reminder:</h5>
@@ -32,13 +33,14 @@
         </mat-menu>
     </div>
     <div>
-        <button mat-icon-button aria-label="menu" (click)="showCollaborators()" (click)="setNoteId()">
-            <mat-icon>person_add</mat-icon>
+        <button class="bg-none border-0 btn btn-sm" aria-label="menu" (click)="showCollaborators()"
+            (click)="setNoteId()">
+            <span class="material-symbols-outlined" style="font-size: 19px;">person_add</span>
         </button>
     </div>
     <div>
-        <button mat-icon-button aria-label="palette">
-            <mat-icon>palette</mat-icon>
+        <button class="bg-none border-0 btn btn-sm" aria-label="palette">
+            <span class="material-symbols-outlined" style="font-size: 19px;">palette</span>
         </button>
         <!-- <mat-menu #palette="matMenu">
             [matMenuTriggerFor]="palette"
@@ -46,19 +48,20 @@
     </div>
     <div>
         <input type="file" #fileInput (change)="onFileSelected($event)" style="display: none;" />
-        <button mat-icon-button aria-label="image" (click)="fileInput.click()" (click)="setNoteId()">
-            <mat-icon>image</mat-icon>
+        <button class="bg-none border-0 btn btn-sm" aria-label="image" (click)="fileInput.click()"
+            (click)="setNoteId()">
+            <span class="material-symbols-outlined" style="font-size: 19px;">edit</span>
         </button>
 
     </div>
     <div>
-        <button mat-icon-button aria-label="archive" (click)="addNoteToArchive()">
-            <mat-icon>archive</mat-icon>
+        <button class="bg-none border-0 btn btn-sm" aria-label="archive" (click)="addNoteToArchive()">
+            <span class="material-symbols-outlined" style="font-size: 19px;">archive</span>
         </button>
     </div>
     <div>
-        <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="menu">
-            <mat-icon>more_vert</mat-icon>
+        <button class="bg-none border-0 btn btn-sm" [matMenuTriggerFor]="menu" aria-label="menu">
+            <span class="material-symbols-outlined" style="font-size: 19px;">more_vert</span>
         </button>
         <mat-menu #menu="matMenu">
             <div style="width: 8rem;">
