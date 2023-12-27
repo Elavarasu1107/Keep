@@ -61,7 +61,6 @@ export class NoteListComponent implements OnInit, OnDestroy {
     this.dialog.open(UpdateNoteDialogComponent, {
       data: note,
       width: '30rem',
-      height: '35rem',
     });
   }
 

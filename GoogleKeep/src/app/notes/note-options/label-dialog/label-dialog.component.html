@@ -1,11 +1,12 @@
-<h2 class="text-center">Labels</h2>
+<h2 class="mt-2">Labels</h2>
+<hr>
 <mat-dialog-actions class="d-flex flex-column justify-content-start">
     <div *ngFor="let label of getLabels()">
         <mat-checkbox (change)="isChecked($event, label.title)" [value]="label.title">{{ label.title }}</mat-checkbox>
     </div>
-    <div mat-dialog-actions class="d-flex justify-content-end">
-        <button mat-button mat-dialog-close (click)="onSave()" class="btn btn-outline-secondary">
-            Save
-        </button>
-    </div>
 </mat-dialog-actions>
+<div mat-dialog-actions class="d-flex justify-content-end bg-light w-100">
+    <button mat-button mat-dialog-close (click)="onSave()" class="btn btn-outline-secondary">
+        Save
+    </button>
+</div>

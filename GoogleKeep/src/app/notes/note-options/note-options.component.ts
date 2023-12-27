@@ -27,6 +27,8 @@ export class NoteOptionsComponent implements AfterViewInit, OnDestroy {
   @ViewChild('menuTrigger') menuTrigger!: MatMenuTrigger;
   @Input() fromComp!: string;
   @Input() noteId!: any;
+  @Input() collaborator!: string[];
+  @Input() labels!: string[];
   @Output() noteImage = new EventEmitter<File>();
   @Output() is_archive = new EventEmitter<boolean>();
   subscription = new Subscription();
@@ -126,10 +128,12 @@ export class NoteOptionsComponent implements AfterViewInit, OnDestroy {
   }
 
   showCollaborators() {
+    if (!this.cookie.getToken()) return;
     const dialogRef = this.dialog.open(CollaboratorDialogComponent, {
       restoreFocus: false,
       width: '30rem',
-      height: '15rem',
+      // height: '15rem',
+      data: this.collaborator,
     });
 
     dialogRef.afterClosed().subscribe((data) => {
@@ -143,6 +147,7 @@ export class NoteOptionsComponent implements AfterViewInit, OnDestroy {
   }
 
   openDialog() {
+    if (!this.cookie.getToken()) return;
     const dialogRef = this.dialog.open(ReminderDialogComponent, {
       restoreFocus: false,
     });
@@ -153,14 +158,16 @@ export class NoteOptionsComponent implements AfterViewInit, OnDestroy {
   }
 
   openLabelDialog() {
+    if (!this.cookie.getToken()) return;
     const dialogRef = this.dialog.open(LabelDialogComponent, {
       restoreFocus: false,
-      // width: '10rem',
+      data: this.labels,
+      width: '20rem',
       // height: '10rem',
     });
 
     dialogRef.afterClosed().subscribe((data) => {
-      this.noteService.setLabelForNotes(data);
+      if (data != undefined) this.noteService.setLabelForNotes(data);
       this.menuTrigger.focus;
     });
   }

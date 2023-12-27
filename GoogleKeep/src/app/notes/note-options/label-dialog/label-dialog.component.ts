@@ -29,6 +29,9 @@ export class LabelDialogComponent implements OnInit, OnDestroy {
         .get(environment.labelUrl, `Bearer ${this.cookie.getToken()}`)
         .subscribe((resp) => {
           this.noteService.labelList = resp.data;
+          this.noteService.labelList = this.noteService.labelList.filter(
+            (ele) => !this.labelData.includes(ele.title)
+          );
         })
     );
   }
