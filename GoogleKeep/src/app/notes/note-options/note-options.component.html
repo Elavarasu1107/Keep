@@ -44,7 +44,7 @@
             <span class="material-symbols-outlined" style="font-size: 19px;">palette</span>
         </button>
         <mat-menu #palette="matMenu">
-            <div class="d-flex gap-1">
+            <div class="d-flex gap-1 flex-wrap">
                 <button *ngFor=" let color of paletteList" (click)="emitColor(color)"
                     class="btn btn-lg border border-secondary rounded-circle" [style.background-color]="color"
                     [value]="color" style="width: 2rem; height: 2rem;"></button>

@@ -2,10 +2,10 @@ import {
   Component,
   ViewChild,
   Input,
-  AfterViewInit,
   EventEmitter,
   Output,
   OnDestroy,
+  ElementRef,
 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatMenuTrigger } from '@angular/material/menu';
@@ -23,7 +23,7 @@ import { environment } from '../../../environments/environment';
   templateUrl: './note-options.component.html',
   styleUrls: ['./note-options.component.scss'],
 })
-export class NoteOptionsComponent implements AfterViewInit, OnDestroy {
+export class NoteOptionsComponent implements OnDestroy {
   @ViewChild('menuTrigger') menuTrigger!: MatMenuTrigger;
   @Input() fromComp!: string;
   @Input() noteId!: any;
@@ -54,11 +54,6 @@ export class NoteOptionsComponent implements AfterViewInit, OnDestroy {
     private httpService: HttpService,
     private cookie: CookieService
   ) {}
-
-  ngAfterViewInit(): void {
-    // console.log(this.noteId);
-    // this.noteService.noteId = this.noteId;
-  }
 
   setNoteId() {
     this.noteService.noteId = this.noteId;

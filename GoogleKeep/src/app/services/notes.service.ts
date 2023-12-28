@@ -30,6 +30,7 @@ interface label {
   providedIn: 'root',
 })
 export class NotesService {
+  allNotes: note[] = [];
   noteList: note[] = [];
   reminderData!: any;
   noteListReminder!: any;
@@ -165,6 +166,7 @@ export class NotesService {
       }
     });
     this.noteList = data?.data;
+    this.allNotes = data?.data;
   }
 
   removeReminderFromDB(id: number, component: string) {
@@ -297,5 +299,15 @@ export class NotesService {
       .subscribe((resp) => {
         this.noteList = this.noteList.filter((item) => false);
       });
+  }
+
+  searchNotes(value: string) {
+    if (value === null || value === undefined || value === '') {
+      this.noteList = this.allNotes;
+      return;
+    }
+    this.noteList = this.allNotes.filter((item) =>
+      item.title.toLowerCase().includes(value.toLowerCase())
+    );
   }
 }

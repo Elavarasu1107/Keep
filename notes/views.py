@@ -1,3 +1,4 @@
+from django.db.models import Q
 from django.shortcuts import redirect, render
 from django.views.generic import View
 from drf_yasg import openapi
@@ -87,7 +88,9 @@ class Notes(viewsets.ViewSet):
                 )
             else:
                 notes = Note.objects.filter(
-                    user=request.user.id, is_archive=False, is_trash=False
+                    Q(collaborator__id=request.user.id) | Q(user__id=request.user.id),
+                    is_archive=False,
+                    is_trash=False,
                 ).order_by("-id")
             serializer = NoteSerializer(notes, many=True)
             return Response(
