@@ -20,8 +20,8 @@ a{
 }
 
 .div-hover{
-    height: 48px;
-    width: 50px;
+    height: 3rem;
+    width: 3rem;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -30,5 +30,6 @@ a{
 .div-hover:hover{
     background-color: #FEEFC3;
     cursor: pointer;
+    transition: 0.3s ease-in-out;
 }
 

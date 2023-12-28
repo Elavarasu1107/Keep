@@ -3,8 +3,8 @@
 <div class="container-fluid note-list mt-3 p-0">
     <div class="row d-flex">
         <div class="col-lg-3 col-md-6 col-sm-12" *ngFor="let note of getNoteList()">
-            <div class="card mb-1 note-card" style="width: 15rem;" (mouseenter)="showOptions(note.id)"
-                (mouseleave)="hideOptions()">
+            <div class="card mb-1 note-card" style="width: 15rem;" [style.background-color]="note.color"
+                (mouseenter)="showOptions(note.id)" (mouseleave)="hideOptions()">
                 <div class="card-body p-0 m-0">
                     <div (click)="updateNoteDialog(note)" class="px-2 mx-1">
                         <img *ngIf="note.image != null" [src]="imageUrl+note.image" alt="" class="w-100">
@@ -34,7 +34,8 @@
                     <div class="d-flex justify-content-between invisible"
                         [ngClass]="{'show-options': showNoteOptions === note.id}" *ngIf="tabs != 'trash'">
                         <app-note-options [noteId]="note.id" [fromComp]="tabs" [collaborator]="note.collaborator"
-                            [labels]="note.label" (noteImage)="getImageData($event)"></app-note-options>
+                            [labels]="note.label" (noteImage)="getImageData($event)"
+                            (noteColor)="setNoteColor($event)"></app-note-options>
                     </div>
                     <div class="d-flex justify-content-between my-2 px-2 invisible"
                         [ngClass]="{'show-options': showNoteOptions === note.id}" *ngIf="tabs === 'trash'">

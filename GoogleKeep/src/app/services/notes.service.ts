@@ -115,6 +115,22 @@ export class NotesService {
     });
   }
 
+  updateColorToNote(data: any) {
+    this.noteList.map((item) => {
+      if (item.id === this.noteId) {
+        item.color = data;
+        this.noteList = [...this.noteList];
+        this.httpService
+          .update(
+            `${environment.notesUrl}?id=${item.id}`,
+            { id: item.id, color: data, user: item.user },
+            `Bearer ${this.cookie.getToken()}`
+          )
+          .subscribe((resp: any) => {});
+      }
+    });
+  }
+
   setCollaboratorForNotes(collabList: string[]) {
     if (this.noteId === undefined) {
       this.collaborators = collabList;

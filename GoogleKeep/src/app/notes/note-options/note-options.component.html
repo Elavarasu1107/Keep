@@ -1,7 +1,7 @@
 <div class="d-flex justify-content-between gap-1 mt-2">
     <div>
-        <button class="bg-none border-0 btn btn-sm" [matMenuTriggerFor]="reminder" aria-label="reminder"
-            (click)="setNoteId()">
+        <button class="bg-none btn btn-sm rounded-circle d-flex align-items-center justify-content-center"
+            [matMenuTriggerFor]="reminder" aria-label="reminder" (click)="setNoteId()">
             <span class="material-symbols-outlined" style="font-size: 19px;">add_alert</span>
         </button>
         <mat-menu #reminder="matMenu">
@@ -33,34 +33,41 @@
         </mat-menu>
     </div>
     <div>
-        <button class="bg-none border-0 btn btn-sm" aria-label="menu" (click)="showCollaborators()"
-            (click)="setNoteId()">
+        <button class="bg-none btn btn-sm rounded-circle d-flex align-items-center justify-content-center"
+            aria-label="menu" (click)="showCollaborators()" (click)="setNoteId()">
             <span class="material-symbols-outlined" style="font-size: 19px;">person_add</span>
         </button>
     </div>
     <div>
-        <button class="bg-none border-0 btn btn-sm" aria-label="palette">
+        <button class="bg-none rounded-circle d-flex align-items-center justify-content-center btn btn-sm"
+            [matMenuTriggerFor]="palette" aria-label="palette">
             <span class="material-symbols-outlined" style="font-size: 19px;">palette</span>
         </button>
-        <!-- <mat-menu #palette="matMenu">
-            [matMenuTriggerFor]="palette"
-        </mat-menu> -->
+        <mat-menu #palette="matMenu">
+            <div class="d-flex gap-1">
+                <button *ngFor=" let color of paletteList" (click)="emitColor(color)"
+                    class="btn btn-lg border border-secondary rounded-circle" [style.background-color]="color"
+                    [value]="color" style="width: 2rem; height: 2rem;"></button>
+            </div>
+        </mat-menu>
     </div>
     <div>
         <input type="file" #fileInput (change)="onFileSelected($event)" style="display: none;" />
-        <button class="bg-none border-0 btn btn-sm" aria-label="image" (click)="fileInput.click()"
-            (click)="setNoteId()">
+        <button class="bg-none rounded-circle d-flex align-items-center justify-content-center btn btn-sm"
+            aria-label="image" (click)="fileInput.click()" (click)="setNoteId()">
             <span class="material-symbols-outlined" style="font-size: 19px;">image</span>
         </button>
 
     </div>
     <div>
-        <button class="bg-none border-0 btn btn-sm" aria-label="archive" (click)="addNoteToArchive()">
+        <button class="bg-none rounded-circle d-flex align-items-center justify-content-center btn btn-sm"
+            aria-label="archive" (click)="addNoteToArchive()">
             <span class="material-symbols-outlined" style="font-size: 19px;">archive</span>
         </button>
     </div>
     <div>
-        <button class="bg-none border-0 btn btn-sm" [matMenuTriggerFor]="menu" aria-label="menu">
+        <button class="bg-none rounded-circle d-flex align-items-center justify-content-center btn btn-sm"
+            [matMenuTriggerFor]="menu" aria-label="menu">
             <span class="material-symbols-outlined" style="font-size: 19px;">more_vert</span>
         </button>
         <mat-menu #menu="matMenu">

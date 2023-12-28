@@ -31,6 +31,21 @@ export class NoteOptionsComponent implements AfterViewInit, OnDestroy {
   @Input() labels!: string[];
   @Output() noteImage = new EventEmitter<File>();
   @Output() is_archive = new EventEmitter<boolean>();
+  @Output() noteColor = new EventEmitter<string>();
+  paletteList = [
+    '#FFFFFF',
+    '#FAAFA8',
+    '#F39F76',
+    '#FFF8B8',
+    '#E2F6D3',
+    '#B4DDD3',
+    '#D4E4ED',
+    '#AECCDC',
+    '#D3BFDB',
+    '#F6E2DD',
+    '#E9E3D4',
+    '#EFEFF1',
+  ];
   subscription = new Subscription();
 
   constructor(
@@ -77,6 +92,11 @@ export class NoteOptionsComponent implements AfterViewInit, OnDestroy {
 
   onFileSelected(event: any) {
     this.noteImage.emit(event.target.files);
+  }
+
+  emitColor(color: string) {
+    this.setNoteId();
+    this.noteColor.emit(color);
   }
 
   deleteNote() {

@@ -61,7 +61,12 @@ export class NoteListComponent implements OnInit, OnDestroy {
     this.dialog.open(UpdateNoteDialogComponent, {
       data: note,
       width: '30rem',
+      maxHeight: '90vh',
     });
+  }
+
+  setNoteColor(value: string) {
+    this.noteService.updateColorToNote(value);
   }
 
   showOptions(id: number) {

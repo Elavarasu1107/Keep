@@ -1,8 +1,9 @@
-<h2 class="mt-2">Labels</h2>
-<hr>
+<h3 class="mt-2 mx-2">Labels</h3>
+<mat-divider></mat-divider>
 <mat-dialog-actions class="d-flex flex-column justify-content-start">
     <div *ngFor="let label of getLabels()">
-        <mat-checkbox (change)="isChecked($event, label.title)" [value]="label.title">{{ label.title }}</mat-checkbox>
+        <mat-checkbox (change)="isChecked($event, label.title)" [value]="label.title">{{ label.title
+            }}</mat-checkbox>
     </div>
 </mat-dialog-actions>
 <div mat-dialog-actions class="d-flex justify-content-end bg-light w-100">
