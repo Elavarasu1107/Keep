@@ -25,7 +25,7 @@ export class CollaboratorDialogComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.collaborators = this.collabData;
+    this.collaborators = [...this.collabData[0]];
     this.subscription.add(
       this.httpService
         .get(environment.registerUserUrl, `Bearer ${this.cookie.getToken()}`)
@@ -49,7 +49,7 @@ export class CollaboratorDialogComponent implements OnInit, OnDestroy {
 
   addCollaborator(email: string) {
     if (this.allUsers.includes(email)) {
-      if (!this.collaborators.includes(email)) {
+      if (!this.collaborators.includes(email) && email !== this.collabData[1]) {
         this.collaborators.push(email);
       } else {
         this.showWarning = true;

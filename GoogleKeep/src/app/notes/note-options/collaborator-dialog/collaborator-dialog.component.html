@@ -1,12 +1,13 @@
 <h1 mat-dialog-title class="collab-header d-flex align-items-center m-0 p-0 pt-2 px-2">Collaborators</h1>
 <mat-divider></mat-divider>
 <div class="mx-2 d-flex align-items-center flex-column">
-    <!-- <mat-chip-row *ngFor="let col of collaborators" class="mx-2 mt-1" (removed)="removeCollaborator(col)">
-        <h5 class="m-0">{{ col }}</h5>
-        <button matChipRemove [attr.aria-label]="'remove collaborator'">
-            <mat-icon>cancel</mat-icon>
-        </button>
-    </mat-chip-row> -->
+    <div class="w-100 d-flex justify-content-between align-items-center">
+        <div class="d-flex align-items-center gap-1">
+            <span class="material-symbols-outlined" style="font-size: 20px;">account_circle</span>
+            <p class="m-0 my-1 font-weight-bold">{{ collabData[1]+'(Owner)' }}</p>
+        </div>
+    </div>
+
     <div *ngFor="let col of collaborators" class="w-100 d-flex justify-content-between align-items-center">
         <div class="d-flex align-items-center gap-1">
             <span class="material-symbols-outlined" style="font-size: 20px;">account_circle</span>

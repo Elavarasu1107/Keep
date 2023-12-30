@@ -9,6 +9,7 @@ from .models import Note
 class NoteSerializer(serializers.ModelSerializer):
     label = serializers.SerializerMethodField("get_label_name")
     collaborator = serializers.SerializerMethodField("get_collaborator_name")
+    owner = serializers.SerializerMethodField("get_owner_name")
 
     class Meta:
         model = Note
@@ -24,14 +25,18 @@ class NoteSerializer(serializers.ModelSerializer):
             "collaborator",
             "label",
             "image",
+            "owner",
         ]
-        read_only_fields = ["collaborator", "label", "user"]
+        read_only_fields = ["collaborator", "label", "user", "owner"]
 
     def get_label_name(self, note):
         return note.label.values_list("title", flat=True)
 
     def get_collaborator_name(self, note):
         return note.collaborator.values_list("email", flat=True)
+
+    def get_owner_name(self, note):
+        return note.user.email
 
     def create(self, validated_data):
         validated_data.update({"user": self.initial_data.get("user")})

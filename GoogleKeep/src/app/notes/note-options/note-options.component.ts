@@ -29,6 +29,7 @@ export class NoteOptionsComponent implements OnDestroy {
   @Input() noteId!: any;
   @Input() collaborator!: string[];
   @Input() labels!: string[];
+  @Input() owner!: string;
   @Output() noteImage = new EventEmitter<File>();
   @Output() is_archive = new EventEmitter<boolean>();
   @Output() noteColor = new EventEmitter<string>();
@@ -148,14 +149,37 @@ export class NoteOptionsComponent implements OnDestroy {
       restoreFocus: false,
       width: '30rem',
       // height: '15rem',
-      data: this.collaborator,
+      data: [this.collaborator, this.owner],
     });
 
     dialogRef.afterClosed().subscribe((data) => {
       if (data != undefined) {
-        this.subscription.add(
-          this.noteService.setCollaboratorForNotes(data.collaborators)
+        const collaborators = Array.from(new Set<string>(data.collaborators));
+        let addCollaborators = collaborators.filter(
+          (email: string) => !this.collaborator.includes(email)
         );
+
+        let removeCollaborators = this.collaborator.filter(
+          (email) => !collaborators.includes(email)
+        );
+
+        console.log(addCollaborators);
+        console.log(removeCollaborators);
+
+        if (addCollaborators.length > 0) {
+          this.subscription.add(
+            this.noteService.setCollaboratorForNotes(data.collaborators)
+          );
+        }
+        if (removeCollaborators.length > 0) {
+          this.noteService.removeCollaboratorFromDB(
+            this.noteId,
+            removeCollaborators
+          );
+          // for (let email of removeCollaborators) {
+          //   this.noteService.removeCollaboratorFromDB(this.noteId, email);
+          // }
+        }
       }
       this.menuTrigger.focus;
     });

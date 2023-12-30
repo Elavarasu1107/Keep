@@ -42,15 +42,11 @@ export class NoteListComponent implements OnInit, OnDestroy {
   }
 
   removeCollaborator(id: number, email: string) {
-    this.subscription.add(
-      this.noteService.removeCollaboratorFromDB(id, email, this.tabs)
-    );
+    // this.subscription.add(this.noteService.removeCollaboratorFromDB(id, email));
   }
 
   removeLabel(id: number, label: string) {
-    this.subscription.add(
-      this.noteService.removeLabelFromDB(id, label, this.tabs)
-    );
+    this.subscription.add(this.noteService.removeLabelFromDB(id, label));
   }
 
   getNoteList() {

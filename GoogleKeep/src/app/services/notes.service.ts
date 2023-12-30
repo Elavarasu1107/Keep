@@ -16,6 +16,7 @@ interface note {
   collaborator: string[];
   label: string[];
   image: any;
+  owner: string;
 }
 
 interface label {
@@ -189,15 +190,19 @@ export class NotesService {
     });
   }
 
-  removeCollaboratorFromDB(id: number, email: string, component: string) {
+  removeCollaboratorFromDB(id: number, emails: string[]) {
     this.noteList.map((item) => {
       if (item.id === id) {
-        item.collaborator.splice(item.collaborator.indexOf(email), 1);
+        // item.collaborator.splice(item.collaborator.indexOf(emails), 1);
+        for (let email of emails) {
+          item.collaborator.splice(item.collaborator.indexOf(email), 1);
+        }
         this.noteList = [...this.noteList];
+
         this.httpService
           .update(
             environment.collaboratorUrl,
-            { id: id, collaborator: email },
+            { id: id, collaborator: emails },
             `Bearer ${this.cookie.getToken()}`
           )
           .subscribe((resp: any) => {});
@@ -205,7 +210,7 @@ export class NotesService {
     });
   }
 
-  removeLabelFromDB(id: number, label: string, component: string) {
+  removeLabelFromDB(id: number, label: string) {
     this.noteList.map((item) => {
       if (item.id === id) {
         item.label.splice(item.label.indexOf(label), 1);

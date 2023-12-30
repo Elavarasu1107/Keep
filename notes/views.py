@@ -202,9 +202,12 @@ class Notes(viewsets.ViewSet):
     @action(methods=["PUT"], detail=True)
     def delete_collaborator(self, request):
         try:
-            note = Note.objects.get(id=request.data.get("id"), user=request.user.id)
-            collaborator = User.objects.get(email=request.data.get("collaborator"))
-            note.collaborator.remove(collaborator)
+            note = Note.objects.get(
+                Q(user__id=request.user.id) | Q(collaborator__id=request.user.id),
+                id=request.data.get("id"),
+            )
+            collaborator = User.objects.filter(email__in=request.data.get("collaborator"))
+            [note.collaborator.remove(col) for col in collaborator]
             return Response(
                 {"message": "Collaborator Removed", "status": 200, "data": {}},
                 status=200,

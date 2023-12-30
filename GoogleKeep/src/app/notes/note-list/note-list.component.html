@@ -20,9 +20,9 @@
                     <mat-chip-row *ngFor="let col of note.collaborator" class="mt-1 mx-2"
                         (removed)="removeCollaborator(note.id, col)">
                         <h5 class="m-0">{{ col }}</h5>
-                        <button matChipRemove [attr.aria-label]="'remove collaborator'">
+                        <!-- <button matChipRemove [attr.aria-label]="'remove collaborator'">
                             <mat-icon>cancel</mat-icon>
-                        </button>
+                        </button> -->
                     </mat-chip-row>
                     <mat-chip-row *ngFor="let label of note.label" class="mt-1 mx-2"
                         (removed)="removeLabel(note.id, label)">
@@ -34,7 +34,7 @@
                     <div class="d-flex justify-content-between invisible"
                         [ngClass]="{'show-options': showNoteOptions === note.id}" *ngIf="tabs != 'trash'">
                         <app-note-options [noteId]="note.id" [fromComp]="tabs" [collaborator]="note.collaborator"
-                            [labels]="note.label" (noteImage)="getImageData($event)"
+                            [owner]="note.owner" [labels]="note.label" (noteImage)="getImageData($event)"
                             (noteColor)="setNoteColor($event)"></app-note-options>
                     </div>
                     <div class="d-flex justify-content-between my-2 px-2 invisible"
