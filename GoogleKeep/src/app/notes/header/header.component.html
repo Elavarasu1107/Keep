@@ -40,8 +40,14 @@
                 <span class="material-symbols-outlined" style="font-size: 24px;">settings</span>
             </div>
             <div class="rounded-circle div-hover" [matMenuTriggerFor]="profile">
-                <span class="material-symbols-outlined" style="font-size: 24px;">account_circle</span>
+                <!-- <span class="material-symbols-outlined" style="font-size: 24px;">account_circle</span> -->
+                <div class="border-1 w-75 h-75 d-flex justify-content-center align-items-center border-secondary rounded-circle"
+                    [style.background]="accountColor">
+                    <span class="text-white" style="font-size: 20px;">{{
+                        loggrdInUser.split('')[0].toUpperCase()}}</span>
+                </div>
                 <mat-menu #profile="matMenu">
+                    <h5 class="text-center">{{ loggrdInUser }}</h5>
                     <button class="d-flex w-100 btn btn-light justify-content-center align-items-center h-50"
                         (click)="logout()">
                         <h5 class="m-0 p-0">Logout</h5>

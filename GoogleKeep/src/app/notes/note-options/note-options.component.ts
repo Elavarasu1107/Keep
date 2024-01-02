@@ -163,9 +163,6 @@ export class NoteOptionsComponent implements OnDestroy {
           (email) => !collaborators.includes(email)
         );
 
-        console.log(addCollaborators);
-        console.log(removeCollaborators);
-
         if (addCollaborators.length > 0) {
           this.subscription.add(
             this.noteService.setCollaboratorForNotes(data.collaborators)
@@ -176,9 +173,6 @@ export class NoteOptionsComponent implements OnDestroy {
             this.noteId,
             removeCollaborators
           );
-          // for (let email of removeCollaborators) {
-          //   this.noteService.removeCollaboratorFromDB(this.noteId, email);
-          // }
         }
       }
       this.menuTrigger.focus;

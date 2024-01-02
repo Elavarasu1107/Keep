@@ -38,7 +38,6 @@ export class NotesService {
   noteId!: number;
   labelList!: label[];
   noteLabels: string[] = [];
-
   collaborators: string[] = [];
 
   constructor(

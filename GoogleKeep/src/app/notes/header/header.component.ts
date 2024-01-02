@@ -4,6 +4,7 @@ import {
   ViewChild,
   Input,
   Renderer2,
+  OnInit,
 } from '@angular/core';
 import { CookieService } from '../../services/cookie.service';
 import { SideNavTogglerService } from '../../services/side-nav-toggler.service';
@@ -17,17 +18,20 @@ import {
 } from '@angular/router';
 import { NotesService } from '../../services/notes.service';
 import { filter } from 'rxjs';
+import { LoginService } from 'src/app/services/login.service';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnInit {
   @ViewChild('sideNavBar') sideMenuBar!: ElementRef;
   @ViewChild('refreshBtn') refreshBtn!: ElementRef;
   @Input() activeTab: string = 'keep';
-  searchInput!: string;
+  searchInput: string = '';
+  accountColor!: string;
+  loggrdInUser!: any;
 
   constructor(
     private togglerService: SideNavTogglerService,
@@ -35,10 +39,13 @@ export class HeaderComponent {
     private router: Router,
     private noteService: NotesService,
     private renderer: Renderer2,
-    private activeRoute: ActivatedRoute
+    private loginService: LoginService
   ) {}
 
-  // booleanValue$ = this.togglerService.booleanValue$;
+  ngOnInit(): void {
+    this.accountColor = this.getRandomColor();
+    this.loggrdInUser = this.loginService.getLoggedUser();
+  }
 
   searchNote() {
     this.noteService.searchNotes(this.searchInput);
@@ -63,6 +70,15 @@ export class HeaderComponent {
 
   triggerToggleService() {
     this.togglerService.toggleBoolean();
+  }
+
+  getRandomColor(): string {
+    const letters = '0123456789ABCDEF';
+    let color = '#';
+    for (let i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * letters.length)];
+    }
+    return color;
   }
 
   logout() {

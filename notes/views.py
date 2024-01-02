@@ -33,7 +33,7 @@ class Notes(viewsets.ViewSet):
         content_type = self.request.content_type
         if content_type == "multipart/form-data":
             return [MultiPartParser()]
-        elif content_type == "application/json":
+        if content_type == "application/json":
             return [JSONParser()]
         return super().get_parsers()
 
@@ -82,13 +82,12 @@ class Notes(viewsets.ViewSet):
             #     return Response(
             #         {"message": "Cache Notes Retrieved", "status": 200, "data": redis_data}, status=200
             #     )
+            look_up = Q(collaborator__id=request.user.id) | Q(user__id=request.user.id)
             if request.query_params.get("fetch") == "remainder":
-                notes = Note.objects.filter(user=request.user.id, remainder__isnull=False).order_by(
-                    "-id"
-                )
+                notes = Note.objects.filter(look_up, remainder__isnull=False).order_by("-id")
             else:
                 notes = Note.objects.filter(
-                    Q(collaborator__id=request.user.id) | Q(user__id=request.user.id),
+                    look_up,
                     is_archive=False,
                     is_trash=False,
                 ).order_by("-id")

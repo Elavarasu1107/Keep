@@ -5,6 +5,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { UpdateNoteDialogComponent } from './update-note-dialog/update-note-dialog.component';
 import { ActivatedRoute } from '@angular/router';
 import { environment } from '../../../environments/environment';
+import { LoginService } from 'src/app/services/login.service';
 
 @Component({
   selector: 'app-note-list',
@@ -17,16 +18,19 @@ export class NoteListComponent implements OnInit, OnDestroy {
   subscription = new Subscription();
   noteImage!: File | undefined;
   imageUrl!: string;
+  loggedInUser!: any;
 
   @Input() tabs: string = 'notes';
 
   constructor(
     private noteService: NotesService,
     private dialog: MatDialog,
-    private activeRoute: ActivatedRoute
+    private activeRoute: ActivatedRoute,
+    private loginService: LoginService
   ) {}
 
   ngOnInit(): void {
+    this.loggedInUser = this.loginService.getLoggedUser();
     this.imageUrl = environment.mediaUrl;
     this.noteService.checkCookie();
     this.noteService.subscribeNotes(this.activeRoute.snapshot.data['data']);
