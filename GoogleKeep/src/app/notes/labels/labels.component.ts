@@ -9,6 +9,7 @@ import { NotesService } from '../../services/notes.service';
 import { HttpService } from '../../services/http.service';
 import { CookieService } from '../../services/cookie.service';
 import { Subscription } from 'rxjs';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-labels',
@@ -39,7 +40,7 @@ export class LabelsComponent implements OnInit, AfterContentChecked, OnDestroy {
     this.subscription.add(
       this.httpService
         .post(
-          '/labels/',
+          environment.labelUrl,
           { title: ele.value },
           `Bearer ${this.cookie.getToken()}`
         )
@@ -76,7 +77,7 @@ export class LabelsComponent implements OnInit, AfterContentChecked, OnDestroy {
     this.subscription.add(
       this.httpService
         .update(
-          `/labels/?id=${id}`,
+          `${environment.labelUrl}?id=${id}`,
           { title: newValue },
           `Bearer ${this.cookie.getToken()}`
         )
@@ -99,7 +100,10 @@ export class LabelsComponent implements OnInit, AfterContentChecked, OnDestroy {
   deleteLabel(id: number) {
     this.subscription.add(
       this.httpService
-        .delete(`/labels/?id=${id}`, `Bearer ${this.cookie.getToken()}`)
+        .delete(
+          `${environment.labelUrl}?id=${id}`,
+          `Bearer ${this.cookie.getToken()}`
+        )
         .subscribe((resp: any) => {
           this.noteService.labelList.map((item) => {
             if (item.id === id) {

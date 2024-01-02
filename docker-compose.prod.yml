@@ -1,0 +1,103 @@
+version: '3.8'
+
+services:
+  postgres_db:
+    container_name: postgres
+    image: postgres:alpine
+    restart: always
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    env_file:
+      - .env.prod
+    environment:
+      - POSTGRES_PASSWORD=${PASSWORD}
+      - POSTGRES_USER=${USER}
+      - POSTGRES_DB=${NAME}
+      - POSTGRES_COLLATION=en_US.utf8
+      - POSTGRES_CTYPE=en_US.utf8
+    healthcheck:
+      test: ["CMD", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 1
+    ports:
+      - 5432:5432
+  app:
+    container_name: Keep
+    image: dj-keep
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
+    command: gunicorn google_keep.wsgi:application --bind 0.0.0.0:8000
+    volumes:
+      - ./:/usr/src/app/
+      - static_volume:/home/app/web/staticfiles
+      - media_volume:/home/app/web/mediafiles
+    restart: always
+    environment:
+      - TZ=Asia/Kolkata
+      - ENVIRONMENT=docker
+    expose:
+      - 8000
+    env_file:
+      - .env.prod
+    depends_on:
+      - postgres_db
+  redis:
+    container_name: redis
+    image: redis:alpine
+    command: redis-server --requirepass ${REDIS_PWD}
+    restart: always
+    volumes:
+      - redis_data:/data
+    env_file:
+      - .env.prod
+    environment:
+      REDIS_PWD: ${REDIS_PWD}
+    ports:
+      - 6379:6379
+  celery_worker:
+    container_name: celery_worker
+    image: dj-keep
+    command: sh -c "celery -A google_keep worker -l INFO --pool=solo --uid=0"
+    restart: always
+    env_file:
+      - .env.prod
+    environment:
+      - TZ=Asia/Kolkata
+      - ENVIRONMENT=docker
+      - C_FORCE_ROOT= true
+      # - CELERY_BROKER_URL=${CELERY_BROKER}
+      # - CELERY_RESULT_BACKEND=${CELERY_BROKER}
+    depends_on:
+      - app
+      - redis
+  celery_beat:
+    container_name: celery_beat
+    image: dj-keep
+    command: sh -c "celery -A google_keep beat -l INFO"
+    restart: always
+    env_file:
+      - .env.prod
+    environment:
+      - TZ=Asia/Kolkata
+      - ENVIRONMENT=docker
+    depends_on:
+      - app
+      - redis
+  dj-nginx:
+    container_name: dj-nginx
+    build: ./nginx
+    volumes:
+      - static_volume:/home/app/web/staticfiles
+      - media_volume:/home/app/web/mediafiles
+    ports:
+      - 1337:80
+    depends_on:
+      - app
+
+volumes:
+  postgres_data:
+  static_volume:
+  media_volume:
+  redis_data:

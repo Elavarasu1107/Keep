@@ -31,6 +31,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { ReminderDialogComponent } from './note-options/reminder-dialog/reminder-dialog.component';
 import { CollaboratorDialogComponent } from './note-options/collaborator-dialog/collaborator-dialog.component';
 import { LabelDialogComponent } from './note-options/label-dialog/label-dialog.component';
+import { MatDividerModule } from '@angular/material/divider';
 
 @NgModule({
   declarations: [
@@ -68,6 +69,7 @@ import { LabelDialogComponent } from './note-options/label-dialog/label-dialog.c
     MatDialogModule,
     MatChipsModule,
     MatCheckboxModule,
+    MatDividerModule,
   ],
 })
 export class NotesModule {}

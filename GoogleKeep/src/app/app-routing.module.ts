@@ -51,14 +51,18 @@ const routes: Routes = [
       },
     ],
     pathMatch: 'prefix',
-    resolve: { data: apiResolver },
+    // resolve: { data: apiResolver },
     canActivate: [cookieGuard],
     canActivateChild: [cookieGuard],
   },
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [
+    RouterModule.forRoot(routes, {
+      onSameUrlNavigation: 'reload',
+    }),
+  ],
   exports: [RouterModule],
 })
 export class AppRoutingModule {}

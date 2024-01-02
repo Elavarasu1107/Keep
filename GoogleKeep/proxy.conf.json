@@ -1,14 +1,14 @@
 {
-    "/user/api/*": {
-      "target": "http://127.0.0.1:8000",
+    "/api/user/*": {
+      "target": "http://127.0.0.1:1337",
       "secure": false
     },
-    "/notes/": {
-      "target": "http://127.0.0.1:8000",
+    "/api/notes/": {
+      "target": "http://127.0.0.1:1337",
       "secure": false
     },
-    "/labels/": {
-      "target": "http://127.0.0.1:8000",
+    "/api/labels/": {
+      "target": "http://127.0.0.1:1337",
       "secure": false
     }
 }

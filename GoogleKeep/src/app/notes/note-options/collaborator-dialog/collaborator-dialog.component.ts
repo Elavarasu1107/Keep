@@ -3,6 +3,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { CookieService } from '../../../services/cookie.service';
 import { Subscription } from 'rxjs';
 import { HttpService } from 'src/app/services/http.service';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-collaborator-dialog',
@@ -15,6 +16,7 @@ export class CollaboratorDialogComponent implements OnInit, OnDestroy {
   filteredUsers: any[] = [];
   collaborators: string[] = [];
   subscription = new Subscription();
+  showWarning: boolean = false;
   constructor(
     private httpService: HttpService,
     private cookie: CookieService,
@@ -23,9 +25,10 @@ export class CollaboratorDialogComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
+    this.collaborators = [...this.collabData[0]];
     this.subscription.add(
       this.httpService
-        .get(`/user/api/registration/`, `Bearer ${this.cookie.getToken()}`)
+        .get(environment.registerUserUrl, `Bearer ${this.cookie.getToken()}`)
         .subscribe((resp) => {
           this.allUsers = resp.data;
         })
@@ -46,8 +49,15 @@ export class CollaboratorDialogComponent implements OnInit, OnDestroy {
 
   addCollaborator(email: string) {
     if (this.allUsers.includes(email)) {
-      this.collaborators.push(email);
-      this.filteredUsers.splice(this.filteredUsers.indexOf(email), 1);
+      if (!this.collaborators.includes(email) && email !== this.collabData[1]) {
+        this.collaborators.push(email);
+      } else {
+        this.showWarning = true;
+        setTimeout(() => {
+          this.showWarning = false;
+        }, 2000);
+      }
+      // this.filteredUsers.splice(this.filteredUsers.indexOf(email), 1);
       this.searchTerm = '';
     }
   }

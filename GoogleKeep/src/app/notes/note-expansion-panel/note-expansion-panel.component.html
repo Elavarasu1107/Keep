@@ -1,8 +1,8 @@
 <form class="w-50 mt-3" [formGroup]="noteForm">
-    <mat-expansion-panel hideToggle id="note-expansion-panel" #panel>
+    <mat-expansion-panel hideToggle id="note-expansion-panel" #panel [style.background-color]="noteColor">
         <mat-expansion-panel-header class="d-flex justify-content-between p-0" (click)="expandPanel($event)">
             <mat-panel-title class="">
-                <input matInput class="bg-transparent border border-0 px-3" type="text" [placeholder]="inputPlaceHolder"
+                <input matInput class="bg-transparent border border-0 px-4" type="text" [placeholder]="inputPlaceHolder"
                     formControlName="title" (keydown.Space)="$event.stopImmediatePropagation()">
             </mat-panel-title>
             <mat-panel-description class="d-flex justify-content-end p-0 m-0 nei"
@@ -25,7 +25,7 @@
             </mat-panel-description>
         </mat-expansion-panel-header>
         <div class="p-0 position-relative" style="left: -10px;">
-            <input matInput class="bg-transparent border border-0 w-100" type="text" placeholder="Take a note..."
+            <input matInput class="bg-transparent border border-0 w-100 px-2" type="text" placeholder="Take a note..."
                 formControlName="description">
             <mat-chip-row *ngIf="getReminderDate() != null" class="mt-1" (removed)="removeReminder()">
                 <h5 class="m-0">{{ getReminderDate() | date: 'medium' }}</h5>
@@ -57,16 +57,16 @@
             </div>
             <div class="d-flex justify-content-between align-items-center">
                 <div class="d-flex justify-content-between">
-                    <app-note-options (noteImage)="getImageData($event)"
-                        (is_archive)="archiveWhileCreation($event)"></app-note-options>
-                    <div>
-                        <button mat-icon-button aria-label="menu">
-                            <mat-icon>undo</mat-icon>
+                    <app-note-options (noteImage)="getImageData($event)" (is_archive)="archiveWhileCreation($event)"
+                        (noteColor)="noteColor=$event"></app-note-options>
+                    <div class="mt-2">
+                        <button class="bg-none border-0 btn btn-sm" aria-label="menu">
+                            <span class="material-symbols-outlined" style="font-size: 19px;">undo</span>
                         </button>
                     </div>
-                    <div>
-                        <button mat-icon-button aria-label="menu">
-                            <mat-icon>redo</mat-icon>
+                    <div class="mt-2">
+                        <button class="bg-none border-0 btn btn-sm" aria-label="menu">
+                            <span class="material-symbols-outlined" style="font-size: 19px;">redo</span>
                         </button>
                     </div>
                 </div>

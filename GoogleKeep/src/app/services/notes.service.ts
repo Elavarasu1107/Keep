@@ -2,6 +2,7 @@ import { ChangeDetectorRef, Injectable } from '@angular/core';
 import { HttpService } from './http.service';
 import { CookieService } from './cookie.service';
 import { Observer } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 interface note {
   id: number;
@@ -15,6 +16,7 @@ interface note {
   collaborator: string[];
   label: string[];
   image: any;
+  owner: string;
 }
 
 interface label {
@@ -29,13 +31,13 @@ interface label {
   providedIn: 'root',
 })
 export class NotesService {
+  allNotes: note[] = [];
   noteList: note[] = [];
   reminderData!: any;
   noteListReminder!: any;
   noteId!: number;
   labelList!: label[];
   noteLabels: string[] = [];
-
   collaborators: string[] = [];
 
   constructor(
@@ -68,7 +70,7 @@ export class NotesService {
         this.noteList = [...this.noteList];
         this.httpService
           .update(
-            `/notes/?id=${item.id}`,
+            `${environment.notesUrl}?id=${item.id}`,
             { remainder: data },
             `Bearer ${this.cookie.getToken()}`
           )
@@ -85,7 +87,7 @@ export class NotesService {
         this.noteList = [...this.noteList];
         this.httpService
           .update(
-            `/notes/?id=${item.id}`,
+            `${environment.notesUrl}?id=${item.id}`,
             data,
             `Bearer ${this.cookie.getToken()}`
           )
@@ -102,7 +104,7 @@ export class NotesService {
         data = formData;
         this.httpService
           .update(
-            `/notes/?id=${item.id}`,
+            `${environment.notesUrl}?id=${item.id}`,
             data,
             `Bearer ${this.cookie.getToken()}`
           )
@@ -110,6 +112,22 @@ export class NotesService {
             let image = resp.data.image.split('/');
             item.image = image.slice(-1)[0];
           });
+      }
+    });
+  }
+
+  updateColorToNote(data: any) {
+    this.noteList.map((item) => {
+      if (item.id === this.noteId) {
+        item.color = data;
+        this.noteList = [...this.noteList];
+        this.httpService
+          .update(
+            `${environment.notesUrl}?id=${item.id}`,
+            { id: item.id, color: data, user: item.user },
+            `Bearer ${this.cookie.getToken()}`
+          )
+          .subscribe((resp: any) => {});
       }
     });
   }
@@ -124,7 +142,7 @@ export class NotesService {
       if (note.id === this.noteId) {
         this.httpService
           .post(
-            '/notes/collaborator/',
+            environment.collaboratorUrl,
             { id: note.id, collaborator: collabList },
             `Bearer ${this.cookie.getToken()}`
           )
@@ -148,6 +166,7 @@ export class NotesService {
       }
     });
     this.noteList = data?.data;
+    this.allNotes = data?.data;
   }
 
   removeReminderFromDB(id: number, component: string) {
@@ -161,7 +180,7 @@ export class NotesService {
         this.noteList = [...this.noteList];
         this.httpService
           .update(
-            `/notes/?id=${item.id}`,
+            `${environment.notesUrl}?id=${item.id}`,
             { remainder: item.remainder },
             `Bearer ${this.cookie.getToken()}`
           )
@@ -170,15 +189,19 @@ export class NotesService {
     });
   }
 
-  removeCollaboratorFromDB(id: number, email: string, component: string) {
+  removeCollaboratorFromDB(id: number, emails: string[]) {
     this.noteList.map((item) => {
       if (item.id === id) {
-        item.collaborator.splice(item.collaborator.indexOf(email), 1);
+        // item.collaborator.splice(item.collaborator.indexOf(emails), 1);
+        for (let email of emails) {
+          item.collaborator.splice(item.collaborator.indexOf(email), 1);
+        }
         this.noteList = [...this.noteList];
+
         this.httpService
           .update(
-            `/notes/collaborator/`,
-            { id: id, collaborator: email },
+            environment.collaboratorUrl,
+            { id: id, collaborator: emails },
             `Bearer ${this.cookie.getToken()}`
           )
           .subscribe((resp: any) => {});
@@ -186,14 +209,14 @@ export class NotesService {
     });
   }
 
-  removeLabelFromDB(id: number, label: string, component: string) {
+  removeLabelFromDB(id: number, label: string) {
     this.noteList.map((item) => {
       if (item.id === id) {
         item.label.splice(item.label.indexOf(label), 1);
         this.noteList = [...this.noteList];
         this.httpService
           .update(
-            `/notes/label/`,
+            environment.noteLabelUrl,
             { id: id, label: label },
             `Bearer ${this.cookie.getToken()}`
           )
@@ -212,7 +235,7 @@ export class NotesService {
       if (note.id === this.noteId) {
         this.httpService
           .post(
-            '/notes/label/',
+            environment.noteLabelUrl,
             { id: note.id, label: data.labels },
             `Bearer ${this.cookie.getToken()}`
           )
@@ -240,7 +263,11 @@ export class NotesService {
 
   restoreNote(id: number) {
     this.httpService
-      .update(`/notes/trash/?id=${id}`, {}, `Bearer ${this.cookie.getToken()}`)
+      .update(
+        `${environment.trashUrl}?id=${id}`,
+        {},
+        `Bearer ${this.cookie.getToken()}`
+      )
       .subscribe((resp) => {
         this.noteList.map((item) => {
           if (item.id === id) {
@@ -253,7 +280,10 @@ export class NotesService {
 
   deleteNote(id: number) {
     this.httpService
-      .delete(`/notes/?id=${id}`, `Bearer ${this.cookie.getToken()}`)
+      .delete(
+        `${environment.notesUrl}?id=${id}`,
+        `Bearer ${this.cookie.getToken()}`
+      )
       .subscribe((resp) => {
         this.noteList.map((item) => {
           if (item.id === id) {
@@ -266,9 +296,22 @@ export class NotesService {
 
   deleteAllTrashNotes() {
     this.httpService
-      .delete('/notes/?delete_all=true', `Bearer ${this.cookie.getToken()}`)
+      .delete(
+        `${environment.notesUrl}?delete_all=true`,
+        `Bearer ${this.cookie.getToken()}`
+      )
       .subscribe((resp) => {
         this.noteList = this.noteList.filter((item) => false);
       });
+  }
+
+  searchNotes(value: string) {
+    if (value === null || value === undefined || value === '') {
+      this.noteList = this.allNotes;
+      return;
+    }
+    this.noteList = this.allNotes.filter((item) =>
+      item.title.toLowerCase().includes(value.toLowerCase())
+    );
   }
 }

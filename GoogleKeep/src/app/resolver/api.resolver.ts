@@ -1,24 +1,25 @@
 import { inject } from '@angular/core';
 import { ResolveFn } from '@angular/router';
 import { NotesService } from '../services/notes.service';
+import { environment } from '../../environments/environment';
 
 export const apiResolver: ResolveFn<any> = (route, state) => {
   let noteService = inject(NotesService);
   let apiUrl: string = '';
   switch (state.url) {
     case '/notes':
-      apiUrl = '/notes/';
+      apiUrl = environment.notesUrl;
       break;
     case '/notes/reminder':
-      apiUrl = '/notes/?fetch=remainder';
+      apiUrl = environment.reminderUrl;
       break;
     case '/notes/label':
-      return noteService.getLabelFromDB('/labels/');
+      return noteService.getLabelFromDB(environment.labelUrl);
     case '/notes/archive':
-      apiUrl = '/notes/archive/';
+      apiUrl = environment.archiveUrl;
       break;
     case '/notes/trash':
-      apiUrl = '/notes/trash/';
+      apiUrl = environment.trashUrl;
   }
   return noteService.getNotesFromDB(apiUrl);
 };

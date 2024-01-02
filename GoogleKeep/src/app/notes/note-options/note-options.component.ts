@@ -2,10 +2,10 @@ import {
   Component,
   ViewChild,
   Input,
-  AfterViewInit,
   EventEmitter,
   Output,
   OnDestroy,
+  ElementRef,
 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatMenuTrigger } from '@angular/material/menu';
@@ -16,18 +16,37 @@ import { Subscription } from 'rxjs';
 import { ReminderDialogComponent } from './reminder-dialog/reminder-dialog.component';
 import { CollaboratorDialogComponent } from './collaborator-dialog/collaborator-dialog.component';
 import { LabelDialogComponent } from './label-dialog/label-dialog.component';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-note-options',
   templateUrl: './note-options.component.html',
   styleUrls: ['./note-options.component.scss'],
 })
-export class NoteOptionsComponent implements AfterViewInit, OnDestroy {
+export class NoteOptionsComponent implements OnDestroy {
   @ViewChild('menuTrigger') menuTrigger!: MatMenuTrigger;
   @Input() fromComp!: string;
   @Input() noteId!: any;
+  @Input() collaborator!: string[];
+  @Input() labels!: string[];
+  @Input() owner!: string;
   @Output() noteImage = new EventEmitter<File>();
   @Output() is_archive = new EventEmitter<boolean>();
+  @Output() noteColor = new EventEmitter<string>();
+  paletteList = [
+    '#FFFFFF',
+    '#FAAFA8',
+    '#F39F76',
+    '#FFF8B8',
+    '#E2F6D3',
+    '#B4DDD3',
+    '#D4E4ED',
+    '#AECCDC',
+    '#D3BFDB',
+    '#F6E2DD',
+    '#E9E3D4',
+    '#EFEFF1',
+  ];
   subscription = new Subscription();
 
   constructor(
@@ -36,11 +55,6 @@ export class NoteOptionsComponent implements AfterViewInit, OnDestroy {
     private httpService: HttpService,
     private cookie: CookieService
   ) {}
-
-  ngAfterViewInit(): void {
-    // console.log(this.noteId);
-    // this.noteService.noteId = this.noteId;
-  }
 
   setNoteId() {
     this.noteService.noteId = this.noteId;
@@ -76,13 +90,18 @@ export class NoteOptionsComponent implements AfterViewInit, OnDestroy {
     this.noteImage.emit(event.target.files);
   }
 
+  emitColor(color: string) {
+    this.setNoteId();
+    this.noteColor.emit(color);
+  }
+
   deleteNote() {
     if (!this.noteId) {
       return;
     }
     this.httpService
       .update(
-        `/notes/trash/?id=${this.noteId}`,
+        `${environment.trashUrl}?id=${this.noteId}`,
         {},
         `Bearer ${this.cookie.getToken()}`
       )
@@ -117,7 +136,7 @@ export class NoteOptionsComponent implements AfterViewInit, OnDestroy {
 
     this.httpService
       .update(
-        `/notes/archive/?id=${this.noteId}`,
+        `${environment.archiveUrl}?id=${this.noteId}`,
         {},
         `Bearer ${this.cookie.getToken()}`
       )
@@ -125,23 +144,43 @@ export class NoteOptionsComponent implements AfterViewInit, OnDestroy {
   }
 
   showCollaborators() {
+    if (!this.cookie.getToken()) return;
     const dialogRef = this.dialog.open(CollaboratorDialogComponent, {
       restoreFocus: false,
       width: '30rem',
-      height: '15rem',
+      // height: '15rem',
+      data: [this.collaborator, this.owner],
     });
 
     dialogRef.afterClosed().subscribe((data) => {
       if (data != undefined) {
-        this.subscription.add(
-          this.noteService.setCollaboratorForNotes(data.collaborators)
+        const collaborators = Array.from(new Set<string>(data.collaborators));
+        let addCollaborators = collaborators.filter(
+          (email: string) => !this.collaborator.includes(email)
         );
+
+        let removeCollaborators = this.collaborator.filter(
+          (email) => !collaborators.includes(email)
+        );
+
+        if (addCollaborators.length > 0) {
+          this.subscription.add(
+            this.noteService.setCollaboratorForNotes(data.collaborators)
+          );
+        }
+        if (removeCollaborators.length > 0) {
+          this.noteService.removeCollaboratorFromDB(
+            this.noteId,
+            removeCollaborators
+          );
+        }
       }
       this.menuTrigger.focus;
     });
   }
 
   openDialog() {
+    if (!this.cookie.getToken()) return;
     const dialogRef = this.dialog.open(ReminderDialogComponent, {
       restoreFocus: false,
     });
@@ -152,14 +191,16 @@ export class NoteOptionsComponent implements AfterViewInit, OnDestroy {
   }
 
   openLabelDialog() {
+    if (!this.cookie.getToken()) return;
     const dialogRef = this.dialog.open(LabelDialogComponent, {
       restoreFocus: false,
-      // width: '10rem',
+      data: this.labels,
+      width: '20rem',
       // height: '10rem',
     });
 
     dialogRef.afterClosed().subscribe((data) => {
-      this.noteService.setLabelForNotes(data);
+      if (data != undefined) this.noteService.setLabelForNotes(data);
       this.menuTrigger.focus;
     });
   }

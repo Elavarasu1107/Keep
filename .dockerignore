@@ -1,0 +1,9 @@
+.idea/
+.vs/
+*.log
+venv/
+GoogleKeep/
+noteImages/
+.gitignore
+.git/
+.vscode/

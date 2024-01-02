@@ -1,8 +1,6 @@
 import {
   AfterViewInit,
-  AfterContentChecked,
   Component,
-  HostListener,
   OnInit,
   ViewChild,
   OnDestroy,
@@ -13,6 +11,7 @@ import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { CookieService } from '../../services/cookie.service';
 import { NotesService } from '../../services/notes.service';
 import { Subscription } from 'rxjs';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-note-expansion-panel',
@@ -31,6 +30,7 @@ export class NoteExpansionPanelComponent
   noteImage!: File | undefined;
   subscription = new Subscription();
   hidePanelIcons: boolean = false;
+  noteColor: string | null = null;
 
   constructor(
     private fb: FormBuilder,
@@ -47,6 +47,7 @@ export class NoteExpansionPanelComponent
       is_archive: new FormControl(false),
       collaborator: this.fb.array([]),
       label: this.fb.array([]),
+      color: new FormControl(),
     });
 
     this.inputPlaceHolder = 'Take a note...';
@@ -56,10 +57,6 @@ export class NoteExpansionPanelComponent
     this.panel = document.getElementById('note-expansion-panel');
     this.panelClose = document.getElementById('panel-close');
   }
-
-  // ngAfterContentChecked(): void {
-  //   this.inputPlaceHolder = 'Take a note...';
-  // }
 
   expandPanel(event: any) {
     this.inputPlaceHolder = 'Title';
@@ -117,28 +114,28 @@ export class NoteExpansionPanelComponent
     this.noteService.collaborators.forEach((email) => {
       collaborators.push(new FormControl(email));
     });
-
     this.noteService.noteLabels.forEach((item) => {
       label.push(new FormControl(item));
     });
+
+    this.noteForm.get('color')?.patchValue(this.noteColor);
     data = this.noteForm.value;
-    const formData = new FormData();
 
     if (this.noteImage != undefined) {
+      const formData = new FormData();
       Object.keys(this.noteForm.value).forEach((key) => {
         formData.append(key, this.noteForm.value[key]);
       });
       formData.append('image', this.noteImage, this.noteImage.name);
       data = formData;
     }
-
     if (
       ![null, undefined, ''].includes(this.noteForm.value.title) ||
       ![null, undefined, ''].includes(this.noteForm.value.description)
     ) {
       this.subscription.add(
         this.httpService
-          .post('/notes/', data, `Bearer ${this.cookie.getToken()}`)
+          .post(environment.notesUrl, data, `Bearer ${this.cookie.getToken()}`)
           .subscribe((resp) => {
             complete: {
               const data = resp;
@@ -153,20 +150,15 @@ export class NoteExpansionPanelComponent
       this.noteService.collaborators = [];
       this.removeReminder();
       this.noteImage = undefined;
+      this.noteColor = null;
     }
   }
 
-  // @HostListener('click', ['$event'])
   hideExpansionPanel(event: any) {
-    // if (
-    //   !this.panel?.contains(event.target) ||
-    //   this.panelClose?.contains(event.target)
-    // ) {
     this.inputPlaceHolder = 'Take a note...';
     this.addNote();
     this.expansionPanel.close();
     this.hidePanelIcons = false;
-    // }
   }
 
   ngOnDestroy(): void {

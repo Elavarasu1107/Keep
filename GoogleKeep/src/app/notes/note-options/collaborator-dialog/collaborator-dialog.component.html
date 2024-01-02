@@ -1,20 +1,32 @@
-<h1 mat-dialog-title class="text-center">Collaborators</h1>
-<div mat-dialog-content class="d-flex justify-content-center align-items-center flex-column">
-    <mat-chip-row *ngFor="let col of collaborators" class="mx-2 mt-1" (removed)="removeCollaborator(col)">
-        <h5 class="m-0">{{ col }}</h5>
-        <button matChipRemove [attr.aria-label]="'remove collaborator'">
-            <mat-icon>cancel</mat-icon>
+<h1 mat-dialog-title class="collab-header d-flex align-items-center m-0 p-0 pt-2 px-2">Collaborators</h1>
+<mat-divider></mat-divider>
+<div class="mx-2 d-flex align-items-center flex-column">
+    <div class="w-100 d-flex justify-content-between align-items-center">
+        <div class="d-flex align-items-center gap-1">
+            <span class="material-symbols-outlined" style="font-size: 20px;">account_circle</span>
+            <p class="m-0 my-1 font-weight-bold">{{ collabData[1]+'(Owner)' }}</p>
+        </div>
+    </div>
+
+    <div *ngFor="let col of collaborators" class="w-100 d-flex justify-content-between align-items-center">
+        <div class="d-flex align-items-center gap-1">
+            <span class="material-symbols-outlined" style="font-size: 20px;">account_circle</span>
+            <h3 class="m-0">{{ col }}</h3>
+        </div>
+        <button class="btn border-0 bg-none" [attr.aria-label]="'remove collaborator'"
+            (click)="removeCollaborator(col)">
+            <span class="material-symbols-outlined" style="font-size: 15px;">close</span>
         </button>
-    </mat-chip-row>
-    <input class="mt-2 border border-primary rounded w-75" mat-input list="users" type="text"
-        placeholder="Search collaborators" [(ngModel)]="searchTerm" (keyup)="filterCollaborators()"
-        (keyup.enter)="addCollaborator(searchTerm)" />
+    </div>
+    <input class="mt-2 border-0 rounded w-100" mat-input list="users" type="text" placeholder="Search collaborators"
+        [(ngModel)]="searchTerm" (keyup)="filterCollaborators()" (keyup.enter)="addCollaborator(searchTerm)" />
     <datalist id="users">
         <option *ngFor="let email of filteredUsers" [value]="email" (click)="addCollaborator(email)">
             {{ email }}
         </option>
     </datalist>
 </div>
-<div mat-dialog-actions class="d-flex justify-content-center">
+<span *ngIf="showWarning" class="text-danger mx-2">Email already exists!</span>
+<div mat-dialog-actions class="mt-3 d-flex justify-content-end bg-light">
     <button mat-button mat-dialog-close (click)="onClose()">Save</button>
 </div>

@@ -6,8 +6,9 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
 from rest_framework_simplejwt.tokens import RefreshToken
-from .serializer import LoginSerializer, RegisterSerializer
+
 from .models import User
+from .serializer import LoginSerializer, RegisterSerializer
 
 # Create your views here.
 
@@ -30,7 +31,7 @@ class UserRegistration(viewsets.ViewSet):
 
     def list(self, request):
         try:
-            users = User.objects.all().values_list('email', flat=True)
+            users = User.objects.all().values_list("email", flat=True)
             # serializer = RegisterSerializer(users, many=True)
             return Response(
                 {"message": "Users Retrieved", "status": 200, "data": users},
@@ -52,10 +53,15 @@ class UserLogin(viewsets.ViewSet):
             serializer.save()
             token = RefreshToken.for_user(serializer.instance)
             return Response(
-                {"message": "Logged in Successfully", "status": 200, "data": {
-                    'access': str(token.access_token),
-                    'refresh': str(token)
-                }},
+                {
+                    "message": "Logged in Successfully",
+                    "status": 200,
+                    "data": {
+                        "access": str(token.access_token),
+                        "refresh": str(token),
+                        "user": serializer.data,
+                    },
+                },
                 status=status.HTTP_200_OK,
             )
         except Exception as ex:

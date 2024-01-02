@@ -19,4 +19,13 @@ mat-icon{
 
 .show-options{
     visibility: visible !important;
+    transition: 2s ease-in-out !important;
 }
+
+.note-card{
+    transition: box-shadow 0.3s;
+}
+
+.note-card:hover {
+    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.2); /* Apply shadow on hover */
+  }

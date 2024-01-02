@@ -4,6 +4,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -29,40 +30,56 @@ export class HttpService {
     });
   }
 
-  post(endPoint: string, data: any, headers: any): Observable<any> {
-    return this.http.post(endPoint, data, headers).pipe(
-      catchError((error: HttpErrorResponse) => {
-        this.snackMessageBox(error);
-        return throwError(() => 'Something went wrong!');
+  post(endPoint: string, data: any, token: any): Observable<any> {
+    return this.http
+      .post(environment.serverUrl + endPoint, data, {
+        headers: { Authorization: token },
       })
-    );
+      .pipe(
+        catchError((error: HttpErrorResponse) => {
+          this.snackMessageBox(error);
+          return throwError(() => 'Something went wrong!');
+        })
+      );
   }
 
   get(endPoint: string, token: string): Observable<any> {
-    return this.http.get(endPoint, { headers: { Authorization: token } }).pipe(
-      catchError((error: HttpErrorResponse) => {
-        this.snackMessageBox(error);
-
-        return throwError(() => 'Something went wrong!');
+    return this.http
+      .get(environment.serverUrl + endPoint, {
+        headers: { Authorization: token },
       })
-    );
+      .pipe(
+        catchError((error: HttpErrorResponse) => {
+          this.snackMessageBox(error);
+
+          return throwError(() => 'Something went wrong!');
+        })
+      );
   }
 
-  update(endPoint: string, data: any, headers: any): Observable<any> {
-    return this.http.put(endPoint, data, headers).pipe(
-      catchError((error: HttpErrorResponse) => {
-        this.snackMessageBox(error);
-        return throwError(() => 'Something went wrong!');
+  update(endPoint: string, data: any, token: any): Observable<any> {
+    return this.http
+      .put(environment.serverUrl + endPoint, data, {
+        headers: { Authorization: token },
       })
-    );
+      .pipe(
+        catchError((error: HttpErrorResponse) => {
+          this.snackMessageBox(error);
+          return throwError(() => 'Something went wrong!');
+        })
+      );
   }
 
-  delete(endPoint: string, headers: any): Observable<any> {
-    return this.http.delete(endPoint, headers).pipe(
-      catchError((error: HttpErrorResponse) => {
-        this.snackMessageBox(error);
-        return throwError(() => 'Something went wrong!');
+  delete(endPoint: string, token: any): Observable<any> {
+    return this.http
+      .delete(environment.serverUrl + endPoint, {
+        headers: { Authorization: token },
       })
-    );
+      .pipe(
+        catchError((error: HttpErrorResponse) => {
+          this.snackMessageBox(error);
+          return throwError(() => 'Something went wrong!');
+        })
+      );
   }
 }

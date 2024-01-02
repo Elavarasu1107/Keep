@@ -4,6 +4,8 @@ import { NotesService } from '../../services/notes.service';
 import { MatDialog } from '@angular/material/dialog';
 import { UpdateNoteDialogComponent } from './update-note-dialog/update-note-dialog.component';
 import { ActivatedRoute } from '@angular/router';
+import { environment } from '../../../environments/environment';
+import { LoginService } from 'src/app/services/login.service';
 
 @Component({
   selector: 'app-note-list',
@@ -15,16 +17,21 @@ export class NoteListComponent implements OnInit, OnDestroy {
   showNoteOptions!: number | null;
   subscription = new Subscription();
   noteImage!: File | undefined;
+  imageUrl!: string;
+  loggedInUser!: any;
 
   @Input() tabs: string = 'notes';
 
   constructor(
     private noteService: NotesService,
     private dialog: MatDialog,
-    private activeRoute: ActivatedRoute
+    private activeRoute: ActivatedRoute,
+    private loginService: LoginService
   ) {}
 
   ngOnInit(): void {
+    this.loggedInUser = this.loginService.getLoggedUser();
+    this.imageUrl = environment.mediaUrl;
     this.noteService.checkCookie();
     this.noteService.subscribeNotes(this.activeRoute.snapshot.data['data']);
   }
@@ -39,15 +46,11 @@ export class NoteListComponent implements OnInit, OnDestroy {
   }
 
   removeCollaborator(id: number, email: string) {
-    this.subscription.add(
-      this.noteService.removeCollaboratorFromDB(id, email, this.tabs)
-    );
+    // this.subscription.add(this.noteService.removeCollaboratorFromDB(id, email));
   }
 
   removeLabel(id: number, label: string) {
-    this.subscription.add(
-      this.noteService.removeLabelFromDB(id, label, this.tabs)
-    );
+    this.subscription.add(this.noteService.removeLabelFromDB(id, label));
   }
 
   getNoteList() {
@@ -58,8 +61,12 @@ export class NoteListComponent implements OnInit, OnDestroy {
     this.dialog.open(UpdateNoteDialogComponent, {
       data: note,
       width: '30rem',
-      height: '35rem',
+      maxHeight: '90vh',
     });
+  }
+
+  setNoteColor(value: string) {
+    this.noteService.updateColorToNote(value);
   }
 
   showOptions(id: number) {

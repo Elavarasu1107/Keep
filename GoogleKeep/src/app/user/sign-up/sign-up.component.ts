@@ -84,7 +84,7 @@ export class SignUpComponent implements OnInit, OnDestroy {
   registerUser() {
     this.subscription.add(
       this.http
-        .post('/user/api/registration/', this.registerForm.value, {})
+        .post('/api/user/registration/', this.registerForm.value, '')
         .subscribe((resp: any) => {
           if (resp.status === 201) {
             this.registerForm.reset();

@@ -4,6 +4,7 @@ import { NotesService } from '../../services/notes.service';
 import { SideNavTogglerService } from '../../services/side-nav-toggler.service';
 import { MatDialog } from '@angular/material/dialog';
 import { LabelsComponent } from '../labels/labels.component';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-side-nav-bar',
@@ -23,7 +24,7 @@ export class SideNavBarComponent {
 
   openLabelDialog() {
     if (!this.noteService.checkCookie()) return;
-    this.noteService.getLabelFromDB('/labels/');
+    this.noteService.getLabelFromDB(environment.labelUrl);
     this.dialog.open(LabelsComponent);
   }
 
