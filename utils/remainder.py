@@ -1,7 +1,6 @@
 import json
 from datetime import datetime, timedelta
 
-from dateutil import parser
 from django_celery_beat.models import CrontabSchedule, PeriodicTask
 
 
@@ -28,6 +27,8 @@ def set_remainder(instance):
         PeriodicTask.objects.create(
             name=f"For note {instance.title} {instance.id} and user {instance.user.email}",
             crontab=crontab,
-            task="notes.tasks.send_remainder",
-            args=json.dumps([instance.title, instance.user.email]),
+            task="utils.tasks.celery_send_email",
+            args=json.dumps(
+                [instance.title, f"Reminder for note {instance.title}", instance.user.email]
+            ),
         )

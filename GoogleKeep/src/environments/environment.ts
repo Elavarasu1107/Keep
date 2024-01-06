@@ -10,4 +10,6 @@ export const environment = {
   mediaUrl: 'http://localhost:1337/media/noteImages/',
   registerUserUrl: '/api/user/registration/',
   collaboratorUrl: '/api/notes/collaborator/',
+  forgotPasswordUrl: '/api/user/forgotPassword/',
+  resetPasswordUrl: '/api/user/resetPassword/',
 };

@@ -1,11 +1,17 @@
-from django.contrib.auth import authenticate, login, logout
-from django.shortcuts import redirect, render
-from django.views.generic import View
+from datetime import datetime, timedelta
+from os import environ
+
+import jwt
+from django.contrib.auth import logout
 from rest_framework import status, viewsets
-from rest_framework.decorators import api_view
+from rest_framework.decorators import action, api_view
+from rest_framework.exceptions import NotFound
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
 from rest_framework_simplejwt.tokens import RefreshToken
+
+from utils.exception_log import logger
+from utils.tasks import celery_send_email
 
 from .models import User
 from .serializer import LoginSerializer, RegisterSerializer
@@ -67,22 +73,58 @@ class UserLogin(viewsets.ViewSet):
         except Exception as ex:
             return Response({"message": ex.args[0], "status": 400, "data": {}}, status=400)
 
+    @action(methods=["POST"], detail=True)
+    def forgot_password(self, request):
+        try:
+            user = User.objects.get(email=request.data.get("email"))
+            token = jwt.encode(
+                {
+                    "email": user.email,
+                    "exp": datetime.utcnow() + timedelta(hours=1),
+                    "aud": "resetPassword",
+                },
+                key=environ.get("SECRET_KEY"),
+                algorithm=environ.get("JWT_ALGORITHM"),
+            )
+            url = environ.get("CLIENT_URL") + "/#/resetPassword" + f"?token={token}"
+            celery_send_email.delay("Reset Password", url, user.email)
+            return Response(
+                {"message": f"Reset password link send to {user.email}", "status": 200}, status=200
+            )
+        except User.DoesNotExist:
+            return Response({"message": "User not found", "status": 404, "data": {}}, status=404)
+        except Exception as ex:
+            return Response({"message": ex.args[0], "status": 400, "data": {}}, status=400)
+
+    @action(methods=["POST"], detail=True)
+    def reset_password(self, request):
+        try:
+            new_password = request.data.get("new_password")
+            confirm_passowrd = request.data.get("confirm_password")
+            if new_password != confirm_passowrd:
+                raise NotFound("Password mismatch", code=404)
+            token = request.query_params.get("token")
+            if not token:
+                raise NotFound("Token required", code=404)
+            data = jwt.decode(
+                token,
+                key=environ.get("SECRET_KEY"),
+                audience="resetPassword",
+                algorithms=[environ.get("JWT_ALGORITHM")],
+            )
+            user = User.objects.get(email=data.get("email"))
+            user.set_password(new_password)
+            user.save()
+            return Response(
+                {"message": "Password reset password successful", "status": 200}, status=200
+            )
+        except User.DoesNotExist:
+            return Response({"message": "User not found", "status": 404, "data": {}}, status=404)
+        except Exception as ex:
+            return Response({"message": ex.args[0], "status": 400, "data": {}}, status=400)
+
 
 @api_view(["GET"])
 def logout_user(request):
     logout(request)
     return Response({"message": "Logged out Successfully", "status": 201, "data": {}}, status=200)
-
-
-class LoginView(View):
-    authentication_classes = ()
-
-    def get(self, request):
-        return render(request, "login.html")
-
-    def post(self, request):
-        user = authenticate(email=request.POST.get("email"), password=request.POST.get("password"))
-        if user:
-            login(request, user)
-            return redirect("home")
-        return render(request, "login.html")

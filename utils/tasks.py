@@ -4,10 +4,10 @@ from django.core.mail import send_mail
 
 
 @shared_task(bind=True)
-def send_remainder(self, subject, email):
+def celery_send_email(self, subject, message, email):
     send_mail(
-        subject="Google Keep Remainder",
-        message=f"Check the note that you have created {subject}",
+        subject=subject,
+        message=message,
         from_email=settings.EMAIL_HOST_USER,
         recipient_list=[email],
     )
