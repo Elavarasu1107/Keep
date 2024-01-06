@@ -5,14 +5,17 @@ import { Router } from '@angular/router';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
+import { SnackBarService } from './snack-bar.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class HttpService {
+  requestStarted: boolean = false;
+
   constructor(
     private http: HttpClient,
-    private snackBar: MatSnackBar,
+    private snackBar: SnackBarService,
     private router: Router
   ) {}
 
@@ -20,14 +23,12 @@ export class HttpService {
     console.log(message);
 
     if (message.status === 401) {
+      this.snackBar.setSnackBar('Unauthorized or session expired');
       this.router.navigate(['/login']);
+      return;
     }
 
-    this.snackBar.open('Something went wrong!', 'Close', {
-      duration: 5000,
-      horizontalPosition: 'center',
-      verticalPosition: 'top',
-    });
+    this.snackBar.setSnackBar('Something went wrong!');
   }
 
   post(endPoint: string, data: any, token: any): Observable<any> {
@@ -37,6 +38,7 @@ export class HttpService {
       })
       .pipe(
         catchError((error: HttpErrorResponse) => {
+          this.requestStarted = false;
           this.snackMessageBox(error);
           return throwError(() => 'Something went wrong!');
         })

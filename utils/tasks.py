@@ -5,7 +5,6 @@ from django.core.mail import send_mail
 
 @shared_task(bind=True)
 def celery_send_email(self, subject, message, email):
-    print(subject, message, email)
     send_mail(
         subject=subject,
         message=message,

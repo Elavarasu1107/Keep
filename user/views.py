@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 from os import environ
 
 import jwt
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import logout
 from rest_framework import status, viewsets
 from rest_framework.decorators import action, api_view
 from rest_framework.exceptions import NotFound
@@ -86,7 +86,7 @@ class UserLogin(viewsets.ViewSet):
                 key=environ.get("SECRET_KEY"),
                 algorithm=environ.get("JWT_ALGORITHM"),
             )
-            url = environ.get("BASE_URL") + reverse("resetPassword") + f"?token={token}"
+            url = environ.get("CLIENT_URL") + "/#/resetPassword" + f"?token={token}"
             celery_send_email.delay("Reset Password", url, user.email)
             return Response(
                 {"message": f"Reset password link send to {user.email}", "status": 200}, status=200
