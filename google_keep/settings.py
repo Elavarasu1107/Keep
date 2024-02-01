@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     "notes.apps.NotesConfig",
     "labels.apps.LabelsConfig",
     "corsheaders",
+    "storages",
 ]
 
 MIDDLEWARE = [
@@ -244,3 +245,15 @@ CORS_ALLOW_METHODS = (
 CORS_ALLOWED_ORIGINS = os.environ.get("ALLOWED_ORIGINS").split(" ")
 
 CSRF_TRUSTED_ORIGINS = os.environ.get("ALLOWED_ORIGINS").split(" ")
+
+# AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID")
+
+# AWS_SECRET_KEY = os.environ.get("AWS_SECRET_KEY")
+
+# AWS_STORAGE_BUCKET_NAME = "zeus-django-keep"
+
+# DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
+
+# STATIC_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
+
+# AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.amazomaws.com"
