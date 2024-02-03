@@ -57,20 +57,20 @@ COPY --from=builder /usr/src/app/requirements.txt .
 RUN pip install --upgrade pip
 RUN pip install --no-cache /wheels/*
 
-# chown all the files to the app user
-RUN chown -R adminuser:admingroup $APP_HOME/entrypoint.prod.sh
-
-# change to the app user
-USER adminuser
-
-
 # copy entrypoint.prod.sh
 COPY ./entrypoint.prod.sh .
 RUN sed -i 's/\r$//g'  $APP_HOME/entrypoint.prod.sh
-RUN chmod +x  $APP_HOME
 
 # copy project
 COPY . $APP_HOME
+
+# chown all the files to the adminuser
+RUN chown -R adminuser:admingroup $APP_HOME
+
+RUN chmod +x  $APP_HOME
+
+# change to adminuser
+USER adminuser
 
 # run entrypoint.prod.sh
 ENTRYPOINT ["/home/app/web/entrypoint.prod.sh"]
